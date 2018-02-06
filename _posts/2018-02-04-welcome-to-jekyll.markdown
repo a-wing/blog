@@ -1,25 +1,19 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
+title:  "Welcome to Jekyll! ——————————————历史的分割线"
 date:   2018-02-04 18:11:35 +0800
-categories: jekyll update
+categories: log
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+新的一年把博客从WordPress迁移到jekyll，原来的文章有些格式有点混乱，有时间再修吧。。。。
 
-To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+Linuxdeer 项目成功的太监了。。。。
 
-Jekyll also offers powerful support for code snippets:
+原来的地址 http://a-wing.top
 
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
+新域名 http://a-wing.me
 
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
+主题先改改有时间再说。。。话说我WordPress用了两年的默认主题
 
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+2017年终总结一直拖着到现在还没写。。。。过年回家时写吧。。。可能没时间
+
+懒癌患者改怎么治。。。。。。
