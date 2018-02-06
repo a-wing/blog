@@ -1,0 +1,35 @@
+---
+author: shiyongxin
+comments: true
+date: 2017-12-11 08:49:37+00:00
+layout: post
+link: http://a-wing.top/iptables-%e8%b7%af%e7%94%b1%e5%99%a8/
+slug: iptables-%e8%b7%af%e7%94%b1%e5%99%a8
+title: iptables 路由器
+wordpress_id: 121
+categories:
+- Linux
+---
+
+<code class="hljs lasso has-numbering">
+    //
+    //
+    
+    
+    iptables <span class="hljs-attribute">-t</span> nat <span class="hljs-attribute">-A</span> POSTROUTING <span class="hljs-attribute">-s</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>/<span class="hljs-number">24</span> <span class="hljs-attribute">-o</span> eth0 <span class="hljs-attribute">-j</span> MASQUERADE
+    
+    // -s 来源地址
+    // -o 输出网口
+    // -j 转换地址 
+    
+    iptables -t nat -L //查看nat 表 </code>
+
+
+
+
+
+经常忘记这个记一下
+
+
+
+

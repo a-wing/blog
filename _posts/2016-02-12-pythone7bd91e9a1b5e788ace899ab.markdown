@@ -1,0 +1,35 @@
+---
+author: shiyongxin
+comments: true
+date: 2016-02-12 06:22:29+00:00
+layout: post
+link: http://a-wing.top/python%e7%bd%91%e9%a1%b5%e7%88%ac%e8%99%ab/
+slug: python%e7%bd%91%e9%a1%b5%e7%88%ac%e8%99%ab
+title: python网页爬虫
+wordpress_id: 40
+categories:
+- 未分类
+---
+
+#coding=utf-8
+    import urllib
+    import re
+    
+    def getHtml(url):
+        page = urllib.urlopen(url)
+        html = page.read()
+        return html
+    
+    def getImg(html):
+        reg = r'src="(.+?\.jpg)" pic_ext'
+        imgre = re.compile(reg)
+        imglist = re.findall(imgre,html)
+        x = 0
+        for imgurl in imglist:
+            urllib.urlretrieve(imgurl,'%s.jpg' % x)
+            x+=1
+    
+    
+    html = getHtml("http://tieba.baidu.com/p/2460150866")
+    
+    print getImg(html)
