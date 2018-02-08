@@ -11,18 +11,16 @@ categories:
 - Linux
 ---
 
-<code class="hljs lasso has-numbering">
-    //
-    //
-    
-    
-    iptables <span class="hljs-attribute">-t</span> nat <span class="hljs-attribute">-A</span> POSTROUTING <span class="hljs-attribute">-s</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>/<span class="hljs-number">24</span> <span class="hljs-attribute">-o</span> eth0 <span class="hljs-attribute">-j</span> MASQUERADE
-    
+```bash
+
+    iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
+
     // -s 来源地址
     // -o 输出网口
-    // -j 转换地址 
-    
-    iptables -t nat -L //查看nat 表 </code>
+    // -j 转换地址
+
+    iptables -t nat -L //查看nat 表
+```
 
 
 
