@@ -14,12 +14,13 @@ categories:
 
 问题如下
 
-    
+```
+
     gem install pg -v '0.17.1'
     Building native extensions.  This could take a while...
     ERROR:  Error installing pg:
     	ERROR: Failed to build gem native extension.
-    
+
         /home/metal/.rvm/rubies/ruby-2.2.3/bin/ruby -r ./siteconf20160302-12784-fo1uxu.rb extconf.rb
     checking for pg_config... yes
     Using config values from /usr/bin/pg_config
@@ -31,7 +32,7 @@ categories:
     Could not create Makefile due to some reason, probably lack of necessary
     libraries and/or headers.  Check the mkmf.log file for more details.  You may
     need configuration options.
-    
+
     Provided configuration options:
     	--with-opt-dir
     	--without-opt-dir
@@ -56,13 +57,13 @@ categories:
     	--without-pg-include=${pg-dir}/include
     	--with-pg-lib
     	--without-pg-lib=${pg-dir}/lib
-    
+
     extconf failed, exit code 1
-    
+
     Gem files will remain installed in /home/metal/.rvm/gems/ruby-2.2.3/gems/pg-0.17.1 for inspection.
     Results logged to /home/metal/.rvm/gems/ruby-2.2.3/extensions/x86_64-linux/2.2.0/pg-0.17.1/gem_make.out
 
-
+```
 原因是缺少postgresql的开发库
 
 debian : apt-get install postgresql-server-dev-all
