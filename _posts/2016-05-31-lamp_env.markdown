@@ -1,15 +1,11 @@
 ---
-author: shiyongxin
+author: metal A-wing
 comments: true
 date: 2016-05-31 08:14:47+00:00
 layout: post
-link: http://a-wing.top/%e3%80%90%e6%95%99%e7%a8%8b%e3%80%91lamp%e7%8e%af%e5%a2%83/
-slug: '%e3%80%90%e6%95%99%e7%a8%8b%e3%80%91lamp%e7%8e%af%e5%a2%83'
 title: 【教程】lamp环境
-wordpress_id: 72
 categories:
-- 基础教程
-- 计算机技术
+- tutorial
 ---
 
 Linux+Apache+Mysql/MariaDB+Perl/PHP/Python一组常用来搭建动态网站或者服务器的开源软件，本身都是各 自独立的程序，但是因为常被放在一起使用，拥有了越来越高的兼容度，共同组成了一个强大的Web应用程序平台。随着开源潮流的蓬勃发展，开放源代码的 LAMP已经与J2EE和.Net商业软件形成三足鼎立之势，并且该软件开发的项目在软件方面的投资成本较低，因此受到整个IT界的关注。从网站的流量上 来说，70%以上的访问流量是LAMP来提供的，LAMP是最强大的网站解决方案．
@@ -34,22 +30,19 @@ Php，Python，Perl
 
 以debian为例安装lamp环境
 
-    
-    apt-get install mysql
-    apt-get install php
-    apt-get install php5-mysql
-    apt-get install apache
-    apt-get install libapache-mod-php
-
+```bash
+apt install -y mysql php php5-mysql apache libapache-mod-php
+```
 
 查看本机在浏览器输入localhost
 
 测试PHP环境
 
-    
-    <?php
-        phpinfo();
-    ?>
+> 注：文件扩展名要已.php结尾的
 
+```php
+<?php
+  phpinfo();
+?>
+```
 
-windows环境下有很多一键安装包这里推荐appserv
