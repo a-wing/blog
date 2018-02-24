@@ -11,6 +11,8 @@ categories:
 - Linux
 ---
 
+经常忘记这个记一下
+
 ```bash
 
     iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
@@ -21,13 +23,5 @@ categories:
 
     iptables -t nat -L //查看nat 表
 ```
-
-
-
-
-
-经常忘记这个记一下
-
-
 
 

@@ -31,6 +31,18 @@ mkdir .ssh && cat id_rsa.pub >> .ssh/authorized_keys
 ssh-copy-id user@remote-server
 ```
 
+#### 追加写入文件？没权限？
+```sh
+# 例：
+echo 233 >> /etc/ssh/sshd_config
+
+# 这样会没权限理所应当会想到：
+sudo echo 233 >> /etc/ssh/sshd_config
+
+# 还是没权限？什么鬼？试试这样写：
+sudo sh -c "echo 233 >> /etc/ssh/sshd_config"
+```
+
 ### 批量搜索文件内容
 ```bash
 find 目录名 -type f | xargs cat | grep 要搜索的内容
@@ -40,4 +52,5 @@ find 目录名 -type f | xargs cat | grep 要搜索的内容
 1. `crtl + v` 进入超级块模式
 2. 选中要插入行的行首
 3. 用 `I` 命令
-4. `esc`
+4. 输入注释字符`#` 或 `//`
+5. `esc`
