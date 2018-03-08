@@ -122,4 +122,14 @@ bundle install
 rails server
 ```
 
+产品环境应该已服务类型启动
+
+```sh
+rails server -d
+
+# 关闭服务
+kill `cat tmp/pids/server.pid`
+```
+
+
 
