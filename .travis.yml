@@ -1,0 +1,19 @@
+language: ruby
+dist: trusty
+rvm:
+  - 2.5.0
+
+install:
+  - gem install jekyll
+  - bundle install
+
+script:
+  - jekyll build
+
+after_success:
+  - wget http://collection.b0.upaiyun.com/softwares/upx/upx-linux-amd64-v0.2.3 && mv upx-linux-amd64-v0.2.3 upx
+  - ls
+  - ./upx login $BUCKET $USERNAME $PASSWORD
+  - ./upx sync _site/ --delete
+  - ./upx logout
+
