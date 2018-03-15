@@ -80,3 +80,10 @@ sed -i 's/config.assets.compile = false/config.assets.compile = true/g' config/e
 
 我不太理解rails 这个默认参数。以后有待补充
 
+
+两天后再来补充：
+
+好多ruby on rails 自动部署的都是用`capistrano` 。关于这个以后有时间再研究
+
+
+
