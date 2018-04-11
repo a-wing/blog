@@ -14,7 +14,7 @@ permalink: /about/
 
 * 从2016年开始写博客，不知不觉两年了
 
-* ID a-wing aawing mawing maawing 大概就这几种 最开始的昵称a-wing 英文名metal 有些网站不支持 - 还有点把- 自动转换成了a 来存储。。。。
+* ID a-wing a_wing aawing a_wing 大概就这几种 最开始的昵称a-wing 英文名metal 有些网站不支持 - 还有点把- 自动转换成了a 来存储。。。。
 
 * 一个没事闲的瞎搞的胡搞的渣渣
 
@@ -26,7 +26,7 @@ permalink: /about/
 
 * 唯一熟练的就是用php来写CRUD
 
-* archlinux + dde 用户足以说明我很菜，想换gentoo + dde 感觉没时间搞
+* archlinux + ~dde~ i3-wm 用户足以说明我很菜，想换gentoo + ~dde~ i3-wm 感觉没时间搞
 
 * dde 姑且承认他很漂亮，kde 感觉功能太多太杂，gnome 不想做任何评论。。。单奔WM？。以后可能会吧
 
