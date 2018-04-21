@@ -3,7 +3,7 @@ rvm:
   - 2.5.0
 
 install:
-  - gem install jekyll
+  #  - gem install jekyll
   - bundle install
 
 script:
