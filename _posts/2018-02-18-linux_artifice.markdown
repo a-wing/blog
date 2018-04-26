@@ -6,7 +6,7 @@ date:   2018-02-18 15:11:35 +0800
 categories: linux
 ---
 
-简单的东西觉得水，难的东西不会写。作为一个资深linux用户，讲点使用linux的骚操作。没啥实际用途。。。不过可以拿来装逼，也可以提高linux使用效率
+简单的东西觉得水，难的东西不会写。作为一个 ~~资深~~ linux用户，讲点使用linux的骚操作。没啥实际用途。。。不过可以拿来装逼，也可以提高linux使用效率
 
 
 ### 关于ssh:
@@ -54,3 +54,21 @@ find 目录名 -type f | xargs cat | grep 要搜索的内容
 3. 用 `I` 命令
 4. 输入注释字符`#` 或 `//`
 5. `esc`
+
+
+### 如果你用的是deb 系的包管理
+在执行`make install`时会安装。但卸载会有问题
+
+有些软件不提供 `make uninstall`
+
+可以用 `checkinstall` 来代替`make install`来安装软件
+
+checkinstall 会产生一个虚拟环境来执行make install 然后打包成 deb 包
+
+这样卸载时就可以通过`dpkg`来移除软件包
+
+可以先搜索一下这个软件属于哪个包
+
+```sh
+dpkg -S <软件名>
+```
