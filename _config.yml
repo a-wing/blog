@@ -30,6 +30,7 @@ plugins:
 
 google_analytics: UA-117419557-1
 
+
 show_excerpts: True
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
