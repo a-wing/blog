@@ -6,7 +6,11 @@ permalink: /about/
 
 ![Avatar](/assets/avatar.png)
 
-# metal A-wing (新一)
+# metal A-wing
+### ChineseName : 新一
+
+gpg: `1C9084FAFE017CEAE4AF59C91DF6CF104433578C`
+
 * * *
 <br/>
 
@@ -22,6 +26,8 @@ permalink: /about/
 
 * 某不知名无人机公司的研发工程师（就是个敲代码的。。。）
 
+* Bug 攻城狮。专业写bug。233333333333333333 ～
+
 * 应该在博客里教你们如何玩无人机，虽然我也很菜
 
 * 想把ruby当做主要学习编程语言，元编程我到现在都不会用。好吧我承认我是为了rails
@@ -30,7 +36,7 @@ permalink: /about/
 
 * archlinux + ~~dde~~ i3-wm 用户足以说明我很菜，想换gentoo + ~~dde~~ i3-wm 感觉没时间搞
 
-* dde 姑且承认他很漂亮，kde 感觉功能太多太杂，gnome 不想做任何评论。。。单奔WM 大法好
+* dde 姑且承认他很漂亮，kde 感觉功能太多太杂，gnome 不想做任何评论。。。单奔WM 大法好～
 
 * 极度反感JavaScript这种反人类的设计，ES6还可以吧。。原型和回调我承认很强大
 
