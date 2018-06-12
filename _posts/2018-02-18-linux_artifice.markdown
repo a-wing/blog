@@ -72,3 +72,13 @@ checkinstall 会产生一个虚拟环境来执行make install 然后打包成 de
 ```sh
 dpkg -S <软件名>
 ```
+
+### 录屏？
+一个简单的录屏命令
+```sh
+ffmpeg -video_size 1024x768 -framerate 25 -f x11grab -i :0.0+100,200 output.mp4
+```
+
+参考来源：
+https://trac.ffmpeg.org/wiki/Capture/Desktop#Linux
+
