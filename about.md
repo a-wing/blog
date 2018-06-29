@@ -18,6 +18,8 @@ gpg: `1C9084FAFE017CEAE4AF59C91DF6CF104433578C`
 
 * 懒癌患者。。。。
 
+* archlinuxcn 打包工。。。
+
 * 从2016年开始写博客，不知不觉两年了
 
 * ID a-wing a_wing aawing 大概就这几种 最开始的昵称a-wing 英文名metal 有些网站不支持 - 还有点把- 自动转换成了a 来存储。。。。
