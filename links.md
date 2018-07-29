@@ -6,5 +6,6 @@ permalink: /links/
 
 * [caoxm 大学好基友](https://caoxm-me.github.io/)
 * [neoFelhs's Blog](https://blog.nfz.moe/)
+* [Rex Zeng](https://www.rexskz.info/)
 
 
