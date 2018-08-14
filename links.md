@@ -7,6 +7,6 @@ permalink: /links/
 * [caoxm 大学好基友](https://caoxm-me.github.io/)
 * [neoFelhs 喵's Blog](https://blog.nfz.moe/)
 * [Rex Zeng](https://www.rexskz.info/)
-* [Mame 教主j](https://www.yangmame.org/)
+* [Mame 教主](https://www.yangmame.org/)
 
 
