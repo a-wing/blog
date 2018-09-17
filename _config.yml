@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Hi! 上天不?
-email: 1 at 233 dot email
+email: echo MUAyMzMuZW1haWwK |base64 -d
 description: >- # this means to ignore newlines until "baseurl:"
   新一的个人博客
 baseurl: "" # the subpath of your site, e.g. /blog
