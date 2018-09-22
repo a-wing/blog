@@ -11,7 +11,9 @@ permalink: /about/
 
 gpg: `1C9084FAFE017CEAE4AF59C91DF6CF104433578C`
 
+email: `echo MUAyMzMuZW1haWwK | base64 -d`
 * * *
+
 <br/>
 
 * 其实我的博客备案了，我就是不想写备案号而已。。。
@@ -32,11 +34,11 @@ gpg: `1C9084FAFE017CEAE4AF59C91DF6CF104433578C`
 
 * 应该在博客里教你们如何玩无人机，虽然我也很菜
 
-* 想把ruby当做主要学习编程语言，元编程我到现在都不会用。好吧我承认我是为了rails
+* 想把`ruby`当做主要学习编程语言，元编程我到现在都不会用。好吧我承认我是为了rails
 
 * 唯一熟练的就是用php来写CRUD
 
-* archlinux + ~~dde~~ i3-wm 用户足以说明我很菜，想换gentoo + ~~dde~~ i3-wm 感觉没时间搞
+* archlinux + ~~dde~~ ~~i3-wm~~ wayland + sway 用户
 
 * dde 姑且承认他很漂亮，kde 感觉功能太多太杂，gnome 不想做任何评论。。。单奔WM 大法好～
 
