@@ -35,4 +35,7 @@ categories: ruby
 
 - eval, instance_eval, module_eval, class_eval
 
+- [attr_accessor](https://kaochenlong.com/2015/03/21/attr_accessor/)
+  - attr_reader (getter)
+  - attr_writer (setter)
 
