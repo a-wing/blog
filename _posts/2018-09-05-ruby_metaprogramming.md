@@ -39,3 +39,9 @@ categories: ruby
   - attr_reader (getter)
   - attr_writer (setter)
 
+- [block, proc 和 lambda ](https://ruby-china.org/topics/10414)
+
+- define_method 添加类的实例方法 `A.send(:define_method, :hi, &p1)` 等于 `Class A; define_method, :hi, &p1; end`
+- singleton_class 添加类所具有的方法 `A.singleton_class.send(:define_method, :hi, &p1)` 等于 `Class A; self.define_method, :hi, &p1; end`
+
+
