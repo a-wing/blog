@@ -16,5 +16,5 @@ permalink: /links/
 * [硬核的 惠狐大佬](https://blog.megumifox.com/)
 * [是 萌狼 horo](https://blog.yoitsu.moe/)
 * [萌萌的 **五 黄 鼠**](https://fiveyellowmice.com/)
-
+* [archlinux TU fc 老师](http://farseerfc.me/)
 
