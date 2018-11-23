@@ -8,5 +8,6 @@ permalink: /links/
 * [neoFelhs 喵's Blog](https://blog.nfz.moe/)
 * [Rex Zeng](https://www.rexskz.info/)
 * [Mame 教主](https://www.yangmame.org/)
+* [布鲁斯兔兔](https://blog.brucezhang.cf/)
 
 
