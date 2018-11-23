@@ -9,5 +9,10 @@ permalink: /links/
 * [Rex Zeng](https://www.rexskz.info/)
 * [Mame 教主](https://www.yangmame.org/)
 * [布鲁斯兔兔](https://blog.brucezhang.cf/)
+* [漩涡，圆角，漩涡，圆角](https://xuanwo.io)
+* [是艾老师，烧死艾老师和皮老师](https://axionl.me/)
+* [是皮老师，烧死艾老师和皮老师](https://amane.live/)
+* [年轻有为的 origincode](https://origincode.github.io/)
+* [硬核的 惠狐大佬](https://blog.megumifox.com/)
 
 
