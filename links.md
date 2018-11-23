@@ -14,5 +14,6 @@ permalink: /links/
 * [是皮老师，烧死艾老师和皮老师](https://amane.live/)
 * [年轻有为的 origincode](https://origincode.github.io/)
 * [硬核的 惠狐大佬](https://blog.megumifox.com/)
+* [是 萌狼 horo](https://blog.yoitsu.moe/)
 
 
