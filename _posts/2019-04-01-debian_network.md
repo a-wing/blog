@@ -7,7 +7,7 @@ comments: true
 categories: linux
 ---
 
-最近在修一个复杂的多网卡问题，产生的玄学问题，把 interfaces 文档都读了一边
+最近在修一个复杂的多网卡问题，产生的玄学问题，趁机把 interfaces 文档都读了一边
 
 > 注：本文内容是在 `raspbian` 系统上验证的
 
@@ -17,7 +17,6 @@ Debian 自带的网络管理的名字叫 `ifupdown`
 
 这个文件可以分成两部分，`INTERFACE SELECTION` 和 `ADDRESS FAMILY`
 
-其实可以看成是了两层：
 `INTERFACE SELECTION` 是 这个物理设备（可能是虚拟的）怎么样怎么样，指： 自动启动，允许热拔插啊之类的...
 
 `ADDRESS FAMILY` 是上层的网络，设置 ip 地址啊，子网掩码，网关之类的...
