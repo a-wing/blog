@@ -120,7 +120,7 @@ $ dpkg -L dhcpcd5
 /var/lib/dhcpcd5
 
 ```
-### 我门熟知的`/etc/wpa_supplicant/wpa_supplicant.conf`是什么时候运行的？
+### 我们熟知的`/etc/wpa_supplicant/wpa_supplicant.conf`是什么时候运行的？
 
 `/lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant` 是这里，只要启动了 dhcpcd 服务就会运行
 
