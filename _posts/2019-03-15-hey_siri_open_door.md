@@ -67,6 +67,8 @@ echo out > /sys/class/gpio/gpio3/direction
 
 这东西我一行 `javascript` 都没写。手撸 `html` 和 `css`。用 css 手撸的壁纸
 
+![argus_login](/assets/img/hey_siri_open_door/argus_login.png)
+
 然后自己给argus做个logo:
 
 <p align="center">
