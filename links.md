@@ -18,4 +18,5 @@ permalink: /links/
 * [萌萌的 **五 黄 鼠**](https://fiveyellowmice.com/)
 * [archlinux TU fc 老师](http://farseerfc.me/)
 * [敲可爱的 kiri ](https://kirikira.moe/)
+* [Caffreyfans](https://www.caffreyfans.top/)
 
