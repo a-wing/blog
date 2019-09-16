@@ -4,10 +4,11 @@ rvm:
 
 install:
   #  - gem install jekyll
-  - bundle install
+  - gem install bundler
+  - bundler install
 
 script:
-  - JEKYLL_ENV=production jekyll build
+  - JEKYLL_ENV=production bundler exec jekyll build
 
 before_deploy:
   - wget http://collection.b0.upaiyun.com/softwares/upx/upx-linux-amd64-v0.2.3 && mv upx-linux-amd64-v0.2.3 upx
