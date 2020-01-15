@@ -25,12 +25,14 @@ permalink: /equipment/
 - Home
   - 米家投影仪 青春版（咸鱼已出）
   - 小米米家智能摄像机 1080P
+  - 小米米家床头灯2
   - TPLINK360度全景网络摄像头
   - 长帝 CRTF32K搪瓷烤箱
   - Kindle
   - iPad
   - ikbc DC87
   - Apple Watch Series 3
+  - airpods 2
   - synology 218j
   - 暴风播库云
   - YubiKey 4
@@ -95,6 +97,13 @@ airplay 来投屏还掉帧，抱歉，airplay 投屏视频真的没法看。
 
 这个硬件还是不错。固件 Github 上有破解的，可以 rtsp 推流，连接群晖
 
+### 小米米家床头灯2
+
+这个灯不错，支持 homekit， 还便宜，强力推荐
+
+![mijia_bedside_lamp](/assets/img/equipment/mijia_bedside_lamp.jpg)
+
+
 ### TPLINK360度全景网络摄像头
 ![tplink-ipc53a.jpg](/assets/img/equipment/tplink-ipc53a.jpg)
 
@@ -122,7 +131,14 @@ airplay 来投屏还掉帧，抱歉，airplay 投屏视频真的没法看。
 这是我最喜欢的设备，也是我使用频率最高的一个设备，前几天我 iPad 的屏幕下方再闪。本来是个无关紧要的问题，去天才吧修。然后二话没说直接给我换了一个全新的。我现在吹爆苹果
 
 ### Apple Watch Series 3
-这个很爽，我在深圳，可以使用 esim 。。。一号双终端，一号双终端使用费 10 元/月，首年年费。 iphone 必须要和 apple watch 用同一个手机号。。。然后就是 apple pay 。。可以直接刷手表做地铁。
+这个很爽，我在深圳，可以使用 esim 。。。一号双终端，一号双终端使用费 10 元/月，首年免费用一年。 iphone 必须要和 apple watch 用同一个手机号。。。然后就是 apple pay 。。可以直接刷手表做地铁。
+
+然后配合这个充电器创意底座，放在床头，来电话直接用手表接电话。我吹爆
+
+![apple_watch.jpg](/assets/img/equipment/apple_watch.jpg)
+
+### airpods 2
+还不错，除了有点小贵，我一般一周充两次电
 
 ### synology 218j
 群晖很好用。所谓 nas 就是放在一个角落，然后几年不去动他
