@@ -151,8 +151,6 @@ systemctl start wpa_supplicant.service
 systemctl enable wpa_supplicant.service
 ```
 
-如果有多个无线网卡直接往 `wpa_supplicant-wlan0.conf` 写就可以。然后用 `systemctl start wpa_supplicant@wlan0.service`
-
 
 `man wpa_supplicant.conf` 其实已经讲的很清楚了
 
@@ -161,17 +159,103 @@ systemctl enable wpa_supplicant.service
 
 > 对的，这是两套网络管理器，搅在一起了。然后同时使用。。。
 
-我们来看个好点的实现：`systemd 大法好`
+以下内容为 2020.02.13 更新
+======
+
+我们来看个好点的实现：`systemd 大法好`。。。聊聊 `systemd-networkd`
+
+本来想新开一篇文章，后来想想还是算了，还是在这片上接着写吧
+
+以下内容在 `Raspbian 10 (buster)` 上验证
+
+最简单的 dhcp eth0 文件放这里 `/etc/systemd/network/eth0.network` 这样写
+```
+[Match]
+Name=eth0
+
+[Network]
+DHCP=ipv4
+```
 
 ## systemd-networkd
-```shell
+```sh
+# 禁用掉 `ifupdown`
 mv /etc/network/interfaces /etc/network/interfaces.save
 
+# 关闭 dhcpcd 客户端。这个好像只有树莓需要，原版 debian 我没测试
+systemctl disable dhcpcd.service
+
+# 启用 systemd-networkd
 systemctl enable systemd-networkd
 ```
 
-这个地方官方文档讲的很清楚： [https://wiki.debian.org/SystemdNetworkd](https://wiki.debian.org/SystemdNetworkd)
+### **`wpa_supplicant` 的 debian systemd 这里有个坑**
 
+先来看一下这个：`systemctl cat wpa_supplicant`
+```sh
+# /lib/systemd/system/wpa_supplicant.service
+[Unit]
+Description=WPA supplicant
+Before=network.target
+After=dbus.service
+Wants=network.target
 
-下一篇文章再来聊聊 `systemd-networkd`
+[Service]
+Type=dbus
+BusName=fi.w1.wpa_supplicant1
+ExecStart=/sbin/wpa_supplicant -u -s -O /run/wpa_supplicant
+
+[Install]
+WantedBy=multi-user.target
+Alias=dbus-fi.w1.wpa_supplicant1.service
+```
+
+再看一下这个：`systemctl cat wpa_supplicant@`
+```sh
+# /lib/systemd/system/wpa_supplicant@.service
+[Unit]
+Description=WPA supplicant daemon (interface-specific version)
+Requires=sys-subsystem-net-devices-%i.device
+After=sys-subsystem-net-devices-%i.device
+Before=network.target
+Wants=network.target
+
+# NetworkManager users will probably want the dbus version instead.
+
+[Service]
+Type=simple
+ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -Dnl80211,wext -i%I
+
+[Install]
+Alias=multi-user.target.wants/wpa_supplicant@%i.service
+```
+
+我们看到那两个文件是不一样的，不仅仅是一个加个模版变量
+
+如果你使用 `systemd-networkd`，`wpa_supplicant` 服务请使用带模版变量那个（别问我为什么）
+
+```sh
+# 新建个无线连接的配置文件
+cat > /etc/wpa_supplicant/wpa_supplicant-wlan0.conf << EOF
+country=CN
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+  ssid="<You SSID>"
+  psk="<You Pass>"
+}
+
+EOF
+
+# 禁用掉 wpa_supplicant 服务
+systemctl disable wpa_supplicant.service
+
+# 用这个服务运行
+systemctl enable wpa_supplicant@wlan0.service
+```
+
+这个地方 Debian 的官方文档讲的很清楚： [SystemdNetworkd](https://wiki.debian.org/SystemdNetworkd)
+
+详细参数可以用`man systemd.network` 来看，也可以看这里：[man systemd.network](https://manpages.debian.org/buster/systemd/systemd.network.5.en.html)
 
