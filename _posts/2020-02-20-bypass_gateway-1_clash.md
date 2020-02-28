@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "自制旁路网关 ——使用clash做代理"
+title:  "自制旁路网关（一） ——使用clash做代理"
 author: metal A-wing
 date:   2020-02-22 22:00:00 +0800
 comments: true
