@@ -11,9 +11,18 @@ categories: network
 
 这次优化网路的经历我准备写一个系列（预计三篇文章：代理，dns，分流增强）。我也不知道能不能写完，也说不定后面两篇文章会咕掉
 
-代理软件使用 clash ，这个软件的特色就是他的分流功能和自动选择节点
+#### **实际上并没有咕掉，而且还多写了一篇。本系列文章：**
+1. 这应该算是第零篇，建议先看这篇 [细说 Debian 的网络管理 network/interfaces](/linux/2019/04/01/debian_network.html)
+2. 自制旁路网关（一） ——使用clash做代理 (本篇)
+3. [自制旁路网关（一点一） ——增加clash订阅功能](/network/2020/02/28/bypass_gateway-1-1_subscription.html)
+4. [自制旁路网关（二） ——用unbound和smartdns来优化dns服务](/network/2020/03/01/bypass_gateway-2_improve_dns.html)
+5. [自制旁路网关（三） ——nftables 来做透明代理](/network/2020/03/07/bypass_gateway-3_nftables.html)
 
 **不可否认，我省略了一些过于基础的细节，但本文的确是从我的笔记上摘录的**
+
+**本系列用到的代码都在 Raspbian GNU/Linux 10 (buster) 上验证过，请放心食用**
+
+代理软件使用 clash ，这个软件的特色就是他的分流功能和自动选择节点
 
 ```sh
 # 我是树莓 pi3b 请根据cpu架构选择合适的二进制包
@@ -64,7 +73,7 @@ dns:
     - '*.lan'
     - localhost.ptlogin2.qq.com
 ```
-关于 fake-ip 功能，请移步去 [苏卡卡的 使用 KoolClash 作为代理网关](https://blog.skk.moe/post/alternate-surge-koolclash-as-gateway/)
+关于 fake-ip 功能，请出门左转去 [苏卡卡的 使用 KoolClash 作为代理网关](https://blog.skk.moe/post/alternate-surge-koolclash-as-gateway/)
 
 然后我们再给 clash 加个 UI，这个 webUI 没有提供预编译版本，要自行编译
 
@@ -140,16 +149,13 @@ define private_list = {
 
 再来修改主配置文件 `/etc/nftables.conf`
 ```sh
+#!/usr/sbin/nft -f
+
 include "/etc/nftables/private.nft"
 
 table ip nat {
-	set whitelistset {
-		type ipv4_addr
-			flags interval
-			elements = $private_list
-	}
 	chain proxy {
-		ip daddr @whitelistset return
+		ip daddr $private_list return
 			ip protocol tcp redirect to :7892
 	}
 	chain prerouting {
@@ -177,6 +183,4 @@ systemctl enable nftables.service
 [V2Ray 做透明代理](https://toutyrater.github.io/app/transparent_proxy.html)
 
 [debian10 使用 nftables 替换 iptables](https://ghost.qinan.co/debian10_iptables_to_nftables/)
-
-[谈谈使用nftables配置透明代理碰到的那些坑](https://www.dazhuanlan.com/2019/09/26/5d8ca8b9730d5/)
 
