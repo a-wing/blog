@@ -177,6 +177,16 @@ Name=eth0
 DHCP=ipv4
 ```
 
+静态 IP 的话，这样写
+```
+[Match]
+Name=eth0
+
+[Network]
+Address=192.168.123.10/24
+Gateway=192.168.123.1
+```
+
 ## systemd-networkd
 ```sh
 # 禁用掉 `ifupdown`
