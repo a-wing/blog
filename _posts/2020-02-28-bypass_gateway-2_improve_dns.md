@@ -116,6 +116,7 @@ RESOLVCONF="false"
 
 # 这个我也不知道具体是干什么的，反正是 DD (Debian Developer) 自己搞出来东西，直接禁用就行 ╮(￣▽￣)╭
 ROOT_TRUST_ANCHOR_UPDATE="false"
+EOF
 ```
 
 然后去修改 `/etc/unbound/unbound.conf`
