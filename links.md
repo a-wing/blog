@@ -19,4 +19,9 @@ permalink: /links/
 * [archlinux TU fc 老师](http://farseerfc.me/)
 * [敲可爱的 kiri ](https://kirikira.moe/)
 * [Caffreyfans](https://www.caffreyfans.top/)
+* [~~乔老师~~ 乔姐姐](https://blog.nanpuyue.com/)
+* [竹砸](https://blog.justforlxz.com)
+* [破爱酱](https://blog.poi.cat/)
+* [谭枫 `_{:3 」∠}_`](https://keyin.now.sh/)
+* [IO 酱](https://iovxw.net/)
 
