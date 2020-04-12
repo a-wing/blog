@@ -4,6 +4,22 @@ title: 个人项目
 permalink: /projects/
 ---
 
+# webrtc-book-cn ![webrtc-book-cn](https://img.shields.io/github/stars/a-wing/webrtc-book-cn.svg?style=social&label=Star)
+中文翻译 《 Real-Time Communication with WebRTC 》
+
+这个三月，在你们都在玩动物深林的时候，我把全部的休息的时间都用来翻译这本书了
+
+其实我很想翻译出版这本书，然后拿着这本书去找当时劝我放弃学英语的那个英语老师，把这本书直接打在她脸上。（我不光英语没落下，我还可以翻译书了
+
+虽然目前的翻译我还是觉得不够好
+
+选定良辰吉日公开这个项目（雾），就决定在 2020.04.04 发布了
+
+为了能在这天发布，这周我基本上都是连续通宵（白天一天工作的代码，晚上一天翻译。
+
+* * *
+<br/>
+
 # endplayer ![endplayer](https://img.shields.io/github/stars/a-wing/endplayer.svg?style=social&label=Star)
 这是刚开的新坑。。。一个基于 mpv 和 Electron 的本地弹幕播放器
 
