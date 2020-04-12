@@ -24,4 +24,5 @@ permalink: /links/
 * [破爱酱](https://blog.poi.cat/)
 * [谭枫 `_{:3 」∠}_`](https://keyin.now.sh/)
 * [IO 酱](https://iovxw.net/)
+* [是稀释](https://blog.stdin.in/)
 
