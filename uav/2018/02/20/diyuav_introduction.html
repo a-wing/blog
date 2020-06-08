@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DIY 多旋翼无人机基础 - Hi! 上天不?</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>DIY 多旋翼无人机基础 | Hi! 上天不?</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="DIY 多旋翼无人机基础" />
+<meta name="author" content="metal A-wing" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="作为无人机公司的工程师应该教说说玩无人机的事。核心的东西不能说，只能说点简单的、基础的。" />
+<meta property="og:description" content="作为无人机公司的工程师应该教说说玩无人机的事。核心的东西不能说，只能说点简单的、基础的。" />
+<link rel="canonical" href="https://a-wing.top/uav/2018/02/20/diyuav_introduction.html" />
+<meta property="og:url" content="https://a-wing.top/uav/2018/02/20/diyuav_introduction.html" />
+<meta property="og:site_name" content="Hi! 上天不?" />
+<meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-02-20T07:00:35+00:00" />
+<script type="application/ld+json">
+{"description":"作为无人机公司的工程师应该教说说玩无人机的事。核心的东西不能说，只能说点简单的、基础的。","@type":"BlogPosting","headline":"DIY 多旋翼无人机基础","dateModified":"2018-02-20T07:00:35+00:00","datePublished":"2018-02-20T07:00:35+00:00","image":"https://a-wing.top/assets/avatar.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/uav/2018/02/20/diyuav_introduction.html"},"author":{"@type":"Person","name":"metal A-wing"},"url":"https://a-wing.top/uav/2018/02/20/diyuav_introduction.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
+  
+    <script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-117419557-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+
+          <a href="https://travis-ci.org/a-wing/blog">
+            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
+          </a>
+
+            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
+
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">关于我</a>
+            
+          
+            
+            
+            <a class="page-link" href="/equipment/">硬件设备</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/links/">友情连接</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/projects/">个人项目</a>
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">DIY 多旋翼无人机基础</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-02-20T07:00:35+00:00" itemprop="datePublished">
+        
+        Feb 20, 2018
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>作为无人机公司的工程师应该教说说玩无人机的事。核心的东西不能说，只能说点简单的、基础的。</p>
+
+<p>此篇文章就是介绍一下个个部件有什么用</p>
+
+<h2 id="一个可以飞的四旋翼你大概需要如下部件">一个可以飞的四旋翼你大概需要如下部件</h2>
+
+<blockquote>
+  <p>常见四旋翼的大体上分成两种，一种是用无刷电机（例：大疆精灵），另一种是用空心杯电机（例：市面上200~500元的玩具飞机）
+下面以无刷电机多旋翼制作为例</p>
+</blockquote>
+
+<ol>
+  <li>机架</li>
+  <li>飞控</li>
+  <li>无刷电机</li>
+  <li>电子调速器</li>
+  <li>浆</li>
+  <li>遥控器</li>
+  <li>航模动力电池</li>
+</ol>
+
+<h3 id="机架">机架</h3>
+<p>顾名思义，就是个架子</p>
+
+<p>最常见的要属大疆公司研发的风火轮F450 机架了（轴距450mm）。某宝上有好多仿制品，经过了好多年的山寨。和真品几乎没什么差距了</p>
+
+<p>不过预算充足也可以考虑买带上倾角的机架 如：s500</p>
+
+<h3 id="飞控">飞控</h3>
+<p>这个零件的出现几乎改变整个无人机行业的发展，从此多旋翼进入了一个新时代</p>
+
+<blockquote>
+  <p>最早的多旋翼是没有飞控的，是靠遥控器输出的混控信号和飞手的操控来达到稳定状态</p>
+</blockquote>
+
+<p>大疆公司最早就是做飞控的</p>
+
+<p>飞控最早是用来自动控制多旋翼的稳定的状态的，现在的飞控上加上了很多功能</p>
+
+<p>飞控上最主要的部件是三轴加速度传感器和陀螺仪</p>
+
+<p>飞控上跑在的主要算法是PID和卡尔曼滤波</p>
+
+<p>输出的控制信号是PWM波</p>
+
+<p>飞控可选择的有很多，比如开源的apm、px4、大疆公司的naza</p>
+
+<h3 id="无刷电机">无刷电机</h3>
+<p>无刷电机用的原本是三相电，相位相差120° 的那种三相电（可不是左零右火上接地的那种）</p>
+
+<p>2212的电机用的比较多（大疆精灵就是不错的选择），朗宇2212电机也是不错的选择</p>
+
+<h3 id="电子调速器">电子调速器</h3>
+<p>把直流电转化为三项交流电，根据接收的PWM输出不同的电压</p>
+
+<h3 id="浆">浆</h3>
+<p>。。。。好像没啥可说的。有正浆和反浆两张，有塑料浆和碳纤维浆</p>
+
+<h3 id="遥控器">遥控器</h3>
+<p>遥控器和接收机是匹配的，不同品牌的接收机和遥控器不能混用</p>
+
+<p>常见的遥控器接收机输出信号的有PWM、PPM、SBUS</p>
+
+<p>最常用的PWM，不过近几年的发展PPM和SBUS开始增多（PWM由于体积原因一般只能有9个通道以下）</p>
+
+<h3 id="航模动力电池">航模动力电池</h3>
+<p>这个和一般的锂电池不一样，要放点倍率很高的那种</p>
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://a-wing.top/uav/2018/02/20/diyuav_introduction.html';
+      this.page.identifier = 'https://a-wing.top/uav/2018/02/20/diyuav_introduction.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://a-wing-1.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+
+  <a class="u-url" href="/uav/2018/02/20/diyuav_introduction.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hi! 上天不?</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hi! 上天不?
+            
+            </li>
+            
+        </ul>
+
+        <a href="https://www.upyun.com/">
+          <img src="https://a-wing.top/assets/upyun_logo.png"/>
+        </a>
+
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
+  
+  
+  
+  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
+  
+  
+  
+</ul>
+
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+        </a>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>新一的个人博客</p>
+        <p>Power by Jekyll && Theme by minima-改</p>
+        <p>Copyright © 2016-2019 Powered by a-wing</p>
+      </div>
+
+      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

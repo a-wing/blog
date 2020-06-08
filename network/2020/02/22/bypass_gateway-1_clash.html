@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>自制旁路网关（一） ——使用clash做代理 - Hi! 上天不?</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>自制旁路网关（一） ——使用clash做代理 | Hi! 上天不?</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="自制旁路网关（一） ——使用clash做代理" />
+<meta name="author" content="metal A-wing" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="由于武汉新冠肺炎（COVID-19）的关系，我被困在老家，自从我买了 ac68u 之后基本上就再也没折腾过网。由于长期在家办公，需要好的网络，还好手里有树莓派，还有 nas。只能使用传统技能（时代变化还真实快，一觉醒来工具链全变了）" />
+<meta property="og:description" content="由于武汉新冠肺炎（COVID-19）的关系，我被困在老家，自从我买了 ac68u 之后基本上就再也没折腾过网。由于长期在家办公，需要好的网络，还好手里有树莓派，还有 nas。只能使用传统技能（时代变化还真实快，一觉醒来工具链全变了）" />
+<link rel="canonical" href="https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html" />
+<meta property="og:url" content="https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html" />
+<meta property="og:site_name" content="Hi! 上天不?" />
+<meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-02-22T14:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"由于武汉新冠肺炎（COVID-19）的关系，我被困在老家，自从我买了 ac68u 之后基本上就再也没折腾过网。由于长期在家办公，需要好的网络，还好手里有树莓派，还有 nas。只能使用传统技能（时代变化还真实快，一觉醒来工具链全变了）","@type":"BlogPosting","headline":"自制旁路网关（一） ——使用clash做代理","dateModified":"2020-02-22T14:00:00+00:00","datePublished":"2020-02-22T14:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html"},"author":{"@type":"Person","name":"metal A-wing"},"url":"https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
+  
+    <script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-117419557-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+
+          <a href="https://travis-ci.org/a-wing/blog">
+            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
+          </a>
+
+            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
+
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">关于我</a>
+            
+          
+            
+            
+            <a class="page-link" href="/equipment/">硬件设备</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/links/">友情连接</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/projects/">个人项目</a>
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">自制旁路网关（一） ——使用clash做代理</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-02-22T14:00:00+00:00" itemprop="datePublished">
+        
+        Feb 22, 2020
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>由于武汉新冠肺炎（<a href="https://zh.wikipedia.org/wiki/2019%E5%86%A0%E7%8A%B6%E7%97%85%E6%AF%92%E7%97%85">COVID-19</a>）的关系，我被困在老家，自从我买了 ac68u 之后基本上就再也没折腾过网。由于长期在家办公，需要好的网络，还好手里有树莓派，还有 nas。只能使用传统技能（时代变化还真实快，一觉醒来工具链全变了）</p>
+
+<p>这次优化网路的经历我准备写一个系列（预计三篇文章：代理，dns，分流增强）。我也不知道能不能写完，也说不定后面两篇文章会咕掉</p>
+
+<h4 id="实际上并没有咕掉而且还多写了一篇本系列文章"><strong>实际上并没有咕掉，而且还多写了一篇。本系列文章：</strong></h4>
+<ol>
+  <li>这应该算是第零篇，建议先看这篇 <a href="/linux/2019/04/01/debian_network.html">细说 Debian 的网络管理 network/interfaces</a></li>
+  <li>自制旁路网关（一） ——使用clash做代理 (本篇)</li>
+  <li><a href="/network/2020/02/28/bypass_gateway-1-1_subscription.html">自制旁路网关（一点一） ——增加clash订阅功能</a></li>
+  <li><a href="/network/2020/03/01/bypass_gateway-2_improve_dns.html">自制旁路网关（二） ——用unbound和smartdns来优化dns服务</a></li>
+  <li><a href="/network/2020/03/07/bypass_gateway-3_nftables.html">自制旁路网关（三） ——nftables 来做透明代理</a></li>
+</ol>
+
+<p><strong>不可否认，我省略了一些过于基础的细节，但本文的确是从我的笔记上摘录的</strong></p>
+
+<p><strong>本系列用到的代码都在 Raspbian GNU/Linux 10 (buster) 上验证过，请放心食用</strong></p>
+
+<p>代理软件使用 clash ，这个软件的特色就是他的分流功能和自动选择节点</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 我是树莓 pi3b 请根据cpu架构选择合适的二进制包</span>
+wget https://github.com/Dreamacro/clash/releases/download/v0.17.1/clash-linux-armv7-v0.17.1.gz
+<span class="nb">gzip</span> <span class="nt">-d</span> clash-linux-armv7-v0.17.1.gz
+<span class="nb">install</span> <span class="nt">-Dm755</span> clash-linux-armv7-v0.17.1 /usr/local/bin/clash
+
+<span class="c"># 把 clash 配置目录放在 /etc 目录下</span>
+<span class="nb">mkdir</span> /etc/clash/
+</code></pre></div></div>
+
+<p>创建一个本地的 systemd 配置<code class="highlighter-rouge">/etc/systemd/system/clash.service</code></p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>Unit]
+<span class="nv">Description</span><span class="o">=</span>clash service
+<span class="nv">After</span><span class="o">=</span>network.target
+
+<span class="o">[</span>Service]
+<span class="nv">Type</span><span class="o">=</span>simple
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/local/bin/clash <span class="nt">-d</span> /etc/clash/
+<span class="nv">Restart</span><span class="o">=</span>on-failure
+
+<span class="o">[</span>Install]
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start clash.service
+systemctl <span class="nb">enable </span>clash.service
+
+<span class="c"># 然后测试下 socks 代理是否可用</span>
+curl <span class="nt">--socks5</span> localhost:7891 google.com
+</code></pre></div></div>
+<p>clash 里面其实内置了 dns 服务器的，这个默认是关闭的（clash 配置文件的官方文档写的够细了，只是藏的比较隐蔽）</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">dns</span><span class="pi">:</span>
+  <span class="na">enable</span><span class="pi">:</span> <span class="no">true</span> <span class="c1"># set true to enable dns (default is false)</span>
+  <span class="na">ipv6</span><span class="pi">:</span> <span class="no">false</span> <span class="c1"># default is false</span>
+  <span class="na">listen</span><span class="pi">:</span> <span class="s">0.0.0.0:53</span>
+  <span class="c1"># default-nameserver: # resolve dns nameserver host, should fill pure IP</span>
+  <span class="c1">#   - 114.114.114.114</span>
+  <span class="c1">#   - 8.8.8.8</span>
+  <span class="na">enhanced-mode</span><span class="pi">:</span> <span class="s">redir-host</span> <span class="c1"># or fake-ip</span>
+  <span class="c1"># fake-ip-range: 198.18.0.1/16 # if you don't know what it is, don't change it</span>
+  <span class="na">fake-ip-filter</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.lan'</span>
+    <span class="pi">-</span> <span class="s">localhost.ptlogin2.qq.com</span>
+</code></pre></div></div>
+<p>关于 fake-ip 功能，请出门左转去 <a href="https://blog.skk.moe/post/alternate-surge-koolclash-as-gateway/">苏卡卡的 使用 KoolClash 作为代理网关</a></p>
+
+<p>然后我们再给 clash 加个 UI，这个 webUI 没有提供预编译版本，要自行编译</p>
+
+<p>其实我觉得这个 UI 没啥用</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/Dreamacro/clash-dashboard/archive/v0.3.0.tar.gz
+<span class="nb">tar</span> <span class="nt">-xzf</span> v0.3.0.tar.gz
+<span class="nb">cd </span>clash-dashboard-0.3.0/
+npm <span class="nb">install
+</span>npm run build
+
+<span class="c"># 把编译结果上传到你的 clash 服务端。。。。因为我是在自己电脑上编译的</span>
+<span class="nb">tar</span> <span class="nt">-cJf</span> - dist/ | ssh &lt;username&gt;@&lt;<span class="nb">hostname</span><span class="o">&gt;</span> <span class="s1">'tar -xJf -'</span>
+<span class="nb">cp</span> <span class="nt">-r</span> dist /etc/clash/dashboard
+</code></pre></div></div>
+
+<p>然后来修改 clash 配置，webUI 相关的有这几项</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># RESTful API for clash</span>
+<span class="na">external-controller</span><span class="pi">:</span> <span class="s">127.0.0.1:9090</span>
+
+<span class="c1"># 这个地方写编译成静态资源的路径，可以是相对路径或绝对路径 然后用扩展配置的地址 (`external-controller`) + /ui 访问</span>
+<span class="c1"># 例如：http://127.0.0.1:9090/ui</span>
+<span class="na">external-ui</span><span class="pi">:</span> <span class="s">dashboard</span>
+
+<span class="c1"># Secret for RESTful API (Optional)</span>
+<span class="c1"># secret: ""</span>
+</code></pre></div></div>
+
+<h3 id="我个人是不推荐旁路网关自身流量也走透明代理">我个人是不推荐旁路网关自身流量也走透明代理</h3>
+
+<p>使用 iptable 来转发流量</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables <span class="nt">-t</span> nat <span class="nt">-N</span> CLASH
+
+<span class="c"># 私有 ip 流量不转发，完整的在下面</span>
+<span class="c"># 设置的 fake-ip 请注意检查这里</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-d</span> 192.168.0.0/16 <span class="nt">-j</span> RETURN
+
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-p</span> tcp <span class="nt">-j</span> REDIRECT <span class="nt">--to-ports</span> 7892
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-p</span> tcp <span class="nt">-j</span> CLASH
+</code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 内部流量不转发给 CLASH 直通</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-d</span> 0.0.0.0/8 <span class="nt">-j</span> RETURN
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-d</span> 10.0.0.0/8 <span class="nt">-j</span> RETURN
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-d</span> 127.0.0.0/8 <span class="nt">-j</span> RETURN
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-d</span> 169.254.0.0/16 <span class="nt">-j</span> RETURN
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-d</span> 172.16.0.0/12 <span class="nt">-j</span> RETURN
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-d</span> 192.168.0.0/16 <span class="nt">-j</span> RETURN
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-d</span> 224.0.0.0/4 <span class="nt">-j</span> RETURN
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> CLASH <span class="nt">-d</span> 240.0.0.0/4 <span class="nt">-j</span> RETURN
+</code></pre></div></div>
+
+<p>我觉得只写 iptables 版，我会被人耻笑（这和网上随手一搜的垃圾教程有什么两样。对，其实我写的也是垃圾）</p>
+
+<p>来个 <code class="highlighter-rouge">nftables</code> 版的 （Raspbian buster 要先安装个 nft 的前端 <code class="highlighter-rouge">apt install nftables</code>）</p>
+
+<p>先创建一个私有地址的定义文件 <code class="highlighter-rouge">/etc/nftables/private.nft</code></p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>define private_list <span class="o">=</span> <span class="o">{</span>
+	0.0.0.0/8,
+	10.0.0.0/8,
+	127.0.0.0/8,
+	169.254.0.0/16,
+	172.16.0.0/12,
+	192.168.0.0/16,
+	224.0.0.0/4,
+	240.0.0.0/4
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>再来修改主配置文件 <code class="highlighter-rouge">/etc/nftables.conf</code></p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/sbin/nft -f</span>
+
+include <span class="s2">"/etc/nftables/private.nft"</span>
+
+table ip nat <span class="o">{</span>
+	chain proxy <span class="o">{</span>
+		ip daddr <span class="nv">$private_list</span> <span class="k">return
+			</span>ip protocol tcp redirect to :7892
+	<span class="o">}</span>
+	chain prerouting <span class="o">{</span>
+		<span class="nb">type </span>nat hook prerouting priority 0<span class="p">;</span> policy accept<span class="p">;</span>
+		jump proxy
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>然后执行清空设置 <code class="highlighter-rouge">nft flush ruleset</code>，让新的设置生效 <code class="highlighter-rouge">nft -f /etc/nftables.conf</code></p>
+
+<p>或者直接这样 <code class="highlighter-rouge">sudo sh -c "nft flush ruleset &amp;&amp; nft -f /etc/nftables.conf"</code></p>
+
+<p>然后通过这条命令来看当前 nftables 的状态 <code class="highlighter-rouge">sudo nft list ruleset</code></p>
+
+<p>最后再设置一下开机启动</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl <span class="nb">enable </span>nftables.service
+</code></pre></div></div>
+
+<h2 id="参考文章">参考文章</h2>
+<p><a href="https://blog.skk.moe/post/alternate-surge-koolclash-as-gateway/">使用 KoolClash 作为代理网关</a></p>
+
+<p><a href="https://breakertt.moe/2019/08/20/clash_gateway/index.html">在 Ubuntu18.04 上使用 clash 部署旁路代理网关（透明代理）</a></p>
+
+<p><a href="https://toutyrater.github.io/app/transparent_proxy.html">V2Ray 做透明代理</a></p>
+
+<p><a href="https://ghost.qinan.co/debian10_iptables_to_nftables/">debian10 使用 nftables 替换 iptables</a></p>
+
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html';
+      this.page.identifier = 'https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://a-wing-1.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+
+  <a class="u-url" href="/network/2020/02/22/bypass_gateway-1_clash.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hi! 上天不?</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hi! 上天不?
+            
+            </li>
+            
+        </ul>
+
+        <a href="https://www.upyun.com/">
+          <img src="https://a-wing.top/assets/upyun_logo.png"/>
+        </a>
+
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
+  
+  
+  
+  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
+  
+  
+  
+</ul>
+
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+        </a>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>新一的个人博客</p>
+        <p>Power by Jekyll && Theme by minima-改</p>
+        <p>Copyright © 2016-2019 Powered by a-wing</p>
+      </div>
+
+      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

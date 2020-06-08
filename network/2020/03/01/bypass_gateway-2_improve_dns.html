@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>自制旁路网关（二） ——用unbound和smartdns来优化dns服务 - Hi! 上天不?</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>自制旁路网关（二） ——用unbound和smartdns来优化dns服务 | Hi! 上天不?</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="自制旁路网关（二） ——用unbound和smartdns来优化dns服务" />
+<meta name="author" content="metal A-wing" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="今天是三月一日，我应该昨天更新，因为昨天是四年一度的二月二十九日。错过了了个好日子 T_T 。不过没关系，今天还是一年一次的三月一号那（" />
+<meta property="og:description" content="今天是三月一日，我应该昨天更新，因为昨天是四年一度的二月二十九日。错过了了个好日子 T_T 。不过没关系，今天还是一年一次的三月一号那（" />
+<link rel="canonical" href="https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html" />
+<meta property="og:url" content="https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html" />
+<meta property="og:site_name" content="Hi! 上天不?" />
+<meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-01T14:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"今天是三月一日，我应该昨天更新，因为昨天是四年一度的二月二十九日。错过了了个好日子 T_T 。不过没关系，今天还是一年一次的三月一号那（","@type":"BlogPosting","headline":"自制旁路网关（二） ——用unbound和smartdns来优化dns服务","dateModified":"2020-03-01T14:00:00+00:00","datePublished":"2020-03-01T14:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html"},"author":{"@type":"Person","name":"metal A-wing"},"url":"https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
+  
+    <script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-117419557-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+
+          <a href="https://travis-ci.org/a-wing/blog">
+            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
+          </a>
+
+            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
+
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">关于我</a>
+            
+          
+            
+            
+            <a class="page-link" href="/equipment/">硬件设备</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/links/">友情连接</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/projects/">个人项目</a>
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">自制旁路网关（二） ——用unbound和smartdns来优化dns服务</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-03-01T14:00:00+00:00" itemprop="datePublished">
+        
+        Mar 1, 2020
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>今天是三月一日，我应该昨天更新，因为昨天是四年一度的二月二十九日。错过了了个好日子 T_T 。不过没关系，今天还是一年一次的三月一号那（</p>
+
+<p>先来回顾一下 dns 查询会遇到那些问题</p>
+
+<ol>
+  <li>运营商 dns 基本上是最快的，但可能有污染</li>
+  <li>国内公共 dns ，国内地址准确，但未必最快，国外有污染</li>
+  <li>出口节点运营商 dns ，国外地址准确，速度基本最快</li>
+  <li>国外公共 dns ，国外地址准确，但未必快</li>
+  <li>国外网站可能有国内地址的 cdn ，cdn 最快</li>
+</ol>
+
+<p>我们先把国内外分开查询，然后再汇总</p>
+
+<p>使用 smartdns 来查询国内，只用公共 dns ，（smartdns 可以测速并返回你的位置最快的地址）</p>
+
+<p>国内外 dns 该如何进行分流？有一个很重要的问题是国外网站有国内 cdn</p>
+
+<p>基于 geo-ip 来分流查询，查到固定国家或特色网段的地址时，不使用这个结果（大陆白名单就是这种）</p>
+
+<p>基于域名 GFWlist 是把被墙掉的域名收集起来做成一个数据库</p>
+
+<h3 id="究极方案-icplist">究极方案 ICPlist:</h3>
+
+<p>我还没见过有这么干的，不过这才是一劳永逸的办法，用于大陆法律的问题 ICP 你懂的，不过这个数据库可以反过来利用（只要在 icp 清单可以认为在大陆一定有服务器）</p>
+
+<p>不过最大的问题是这个库过于庞大。。。绝大部分你都是永远都不会用的地址</p>
+
+<p>国外的可以分成两种情况</p>
+<ol>
+  <li>出口固定（比如你自建的服务）</li>
+  <li>出口不确定（比如使用机场）</li>
+</ol>
+
+<p>出口固定的情况很好解决，这里不做考虑（你自己在出口节点上建一个 dns 服务，然后加密传回来就行了）</p>
+
+<p>出口不确定，你不知道运营商 dns 只能把查询请求给代理，保佑能给你返回个快的地址</p>
+
+<h1 id="目前我用的方案">目前我用的方案</h1>
+
+<p>使用 <code class="highlighter-rouge">unbound</code> 来做主 dns 服务（其实用什么都无所谓 coredns 也可以）</p>
+
+<p><code class="highlighter-rouge">smartdns</code> 来查询国内的 dns （我设成 5351 端口）</p>
+
+<p><code class="highlighter-rouge">clash</code> 来查询国外的 dns （我设成 5352 端口）</p>
+
+<p><code class="highlighter-rouge">dnsmasq-china-list</code> 的规则来分流国内外</p>
+
+<h3 id="smartdns">smartdns</h3>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/pymumu/smartdns/releases/download/Release28/smartdns.1.2019.12.15-1028.arm-debian-all.deb
+dpkg <span class="nt">-i</span> smartdns.1.2019.12.15-1028.arm-debian-all.deb
+
+systemctl start smartdns.service
+systemctl <span class="nb">enable </span>smartdns.service
+</code></pre></div></div>
+
+<p>这个没啥说的，按官方文档的说法，就多些几个上游 dns 地址 <a href="https://dns.iui.im/">从这里挑几个看着顺眼的写上就行</a></p>
+
+<blockquote>
+  <p>smartdns有测速机制，在配置上游服务器时，建议配置多个上游DNS服务器，包含多个不同区域的服务器，但总数建议在10个左右</p>
+</blockquote>
+
+<h3 id="unbound">unbound</h3>
+<p>这个直接从源里安装就行 <code class="highlighter-rouge">apt install unbound</code></p>
+
+<p>不过这个源里的 <code class="highlighter-rouge">unbound</code>， DD (Debian Developer) 定制了一点东西</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">cat </span>unbound
+<span class="c"># /lib/systemd/system/unbound.service</span>
+<span class="o">[</span>Unit]
+<span class="nv">Description</span><span class="o">=</span>Unbound DNS server
+<span class="nv">Documentation</span><span class="o">=</span>man:unbound<span class="o">(</span>8<span class="o">)</span>
+<span class="nv">After</span><span class="o">=</span>network.target
+<span class="nv">Before</span><span class="o">=</span>nss-lookup.target
+<span class="nv">Wants</span><span class="o">=</span>nss-lookup.target
+
+<span class="o">[</span>Service]
+<span class="nv">Type</span><span class="o">=</span>notify
+<span class="nv">Restart</span><span class="o">=</span>on-failure
+<span class="nv">EnvironmentFile</span><span class="o">=</span>-/etc/default/unbound
+<span class="nv">ExecStartPre</span><span class="o">=</span>-/usr/lib/unbound/package-helper chroot_setup
+<span class="nv">ExecStartPre</span><span class="o">=</span>-/usr/lib/unbound/package-helper root_trust_anchor_update
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/sbin/unbound <span class="nt">-d</span> <span class="nv">$DAEMON_OPTS</span>
+<span class="nv">ExecReload</span><span class="o">=</span>/usr/sbin/unbound-control reload
+<span class="nv">PIDFile</span><span class="o">=</span>/run/unbound.pid
+
+<span class="o">[</span>Install]
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</code></pre></div></div>
+
+<p>这里有两个 hook 的脚本。Debian Developer 对这个定制了点东西，先把他禁用掉</p>
+
+<blockquote>
+  <p><strong>凡是DD (Debian Developer) 打包时自己定制的功能一律禁用掉</strong></p>
+</blockquote>
+
+<p>顺着那个 hook 去这个文件里 <code class="highlighter-rouge">/usr/lib/unbound/package-helper</code></p>
+
+<p>可以找到这样一段</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Override these variables by editing or creating /etc/default/unbound.</span>
+<span class="nv">RESOLVCONF</span><span class="o">=</span><span class="s2">"true"</span>
+<span class="nv">ROOT_TRUST_ANCHOR_UPDATE</span><span class="o">=</span><span class="s2">"true"</span>
+</code></pre></div></div>
+
+<p>之后自己建个 <code class="highlighter-rouge">/etc/default/unbound</code> 把那个功能关掉</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> /etc/default/unbound <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+# 这个默认会修改 /etc/resolv.conf 文件，设成 false 禁用掉
+RESOLVCONF="false"
+
+# 这个我也不知道具体是干什么的，反正是 DD (Debian Developer) 自己搞出来东西，直接禁用就行 ╮(￣▽￣)╭
+ROOT_TRUST_ANCHOR_UPDATE="false"
+</span><span class="no">EOF
+</span></code></pre></div></div>
+
+<p>然后去修改 <code class="highlighter-rouge">/etc/unbound/unbound.conf</code></p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server:
+    verbosity: 1
+    num-threads: 2
+    interface: 0.0.0.0@53
+    <span class="k">do</span><span class="nt">-ip4</span>: <span class="nb">yes
+    </span><span class="k">do</span><span class="nt">-udp</span>: <span class="nb">yes
+    </span><span class="k">do</span><span class="nt">-tcp</span>: no
+    <span class="k">do</span><span class="nt">-not-query-localhost</span>: no <span class="c"># 这句很关键，不把这个关掉上游 dns 不能用本地的 dns 服务</span>
+    access-control: 0.0.0.0/0 allow
+    local-data: <span class="s2">"test.com. A 192.168.1.1"</span>
+    include: <span class="s2">"/etc/unbound/unbound.conf.d/accelerated-domains.china.unbound.conf"</span>
+    include: <span class="s2">"/etc/unbound/unbound.conf.d/apple.china.unbound.conf"</span>
+    include: <span class="s2">"/etc/unbound/unbound.conf.d/google.china.unbound.conf"</span>
+    forward-zone:
+    	name: <span class="s2">"."</span>
+    	forward-addr: 127.0.0.1@5352
+</code></pre></div></div>
+<p>之后把 <code class="highlighter-rouge">include</code> 的文件放进去</p>
+
+<h3 id="dnsmasq-china-list">dnsmasq-china-list</h3>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/felixonmars/dnsmasq-china-list.git <span class="nt">--depth</span> 1
+<span class="nb">cd </span>dnsmasq-china-list
+make <span class="nv">SERVER</span><span class="o">=</span>127.0.0.1@5351 unbound
+<span class="nb">cp</span> <span class="k">*</span>unbound.conf /etc/unbound/unbound.conf.d/
+</code></pre></div></div>
+
+<h2 id="最后">最后</h2>
+<p><code class="highlighter-rouge">clash</code> 的配置去看我前几篇文章</p>
+
+<p>最好别忘了 <code class="highlighter-rouge">systemctl restart unbound</code></p>
+
+<p>排查文件直接用 <code class="highlighter-rouge">dig</code>, <code class="highlighter-rouge">nslookup</code> 这个软件 debian 是在 <code class="highlighter-rouge">dnsutils</code> 这个包里</p>
+
+<h2 id="参考文章">参考文章</h2>
+
+<p><a href="https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/">使用 Unbound 搭建更好用的 DNS 服务器</a></p>
+
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html';
+      this.page.identifier = 'https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://a-wing-1.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+
+  <a class="u-url" href="/network/2020/03/01/bypass_gateway-2_improve_dns.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hi! 上天不?</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hi! 上天不?
+            
+            </li>
+            
+        </ul>
+
+        <a href="https://www.upyun.com/">
+          <img src="https://a-wing.top/assets/upyun_logo.png"/>
+        </a>
+
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
+  
+  
+  
+  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
+  
+  
+  
+</ul>
+
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+        </a>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>新一的个人博客</p>
+        <p>Power by Jekyll && Theme by minima-改</p>
+        <p>Copyright © 2016-2019 Powered by a-wing</p>
+      </div>
+
+      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

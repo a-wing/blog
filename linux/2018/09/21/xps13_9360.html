@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XPS 9360 入手记 ——拆了换 Intel9260AC 网卡 - Hi! 上天不?</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>XPS 9360 入手记 ——拆了换 Intel9260AC 网卡 | Hi! 上天不?</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="XPS 9360 入手记 ——拆了换 Intel9260AC 网卡" />
+<meta name="author" content="metal A-wing" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="刚买了台电脑。。到手第三天就换了块网卡。。。心真大系列" />
+<meta property="og:description" content="刚买了台电脑。。到手第三天就换了块网卡。。。心真大系列" />
+<link rel="canonical" href="https://a-wing.top/linux/2018/09/21/xps13_9360.html" />
+<meta property="og:url" content="https://a-wing.top/linux/2018/09/21/xps13_9360.html" />
+<meta property="og:site_name" content="Hi! 上天不?" />
+<meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-09-21T13:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"刚买了台电脑。。到手第三天就换了块网卡。。。心真大系列","@type":"BlogPosting","headline":"XPS 9360 入手记 ——拆了换 Intel9260AC 网卡","dateModified":"2018-09-21T13:00:00+00:00","datePublished":"2018-09-21T13:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/linux/2018/09/21/xps13_9360.html"},"author":{"@type":"Person","name":"metal A-wing"},"url":"https://a-wing.top/linux/2018/09/21/xps13_9360.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
+  
+    <script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-117419557-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+
+          <a href="https://travis-ci.org/a-wing/blog">
+            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
+          </a>
+
+            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
+
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">关于我</a>
+            
+          
+            
+            
+            <a class="page-link" href="/equipment/">硬件设备</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/links/">友情连接</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/projects/">个人项目</a>
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">XPS 9360 入手记 ——拆了换 Intel9260AC 网卡</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-09-21T13:00:00+00:00" itemprop="datePublished">
+        
+        Sep 21, 2018
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>刚买了台电脑。。到手第三天就换了块网卡。。。心真大系列</p>
+
+<p>本来准备去美帝的 dell 官网买的。。。然后我就被砍单了。。。
+说下我别砍单的经历吧</p>
+
+<p>我用的是中信银行的 visa 信用卡。。美国的 paypal 。私有收货地址。。我猜测可能是由于帐单地址的问题被砍单</p>
+
+<p>美帝官网的是 9370 比国内高一代。。。但9360 除了顶配外。都是7代CPU</p>
+
+<p>我详细对比过国内版和国外版。。。9370 去掉了usb 全部换成 雷电接口了。然后更薄了</p>
+
+<p>主要配置上几乎没区别</p>
+
+<p>国内的 9370 请了明星代言。出来个中国专属定制韭菜版。。。。</p>
+
+<p>然后我就在狗东买了9360 一共10999。。。 9月9号 那天打折减了1000块。果断入手。我买的是xps13 9630 非触屏的顶配</p>
+
+<h4 id="开箱">开箱</h4>
+<p><img src="/assets/img/xps13_9360/photo_2018-09-12_15-11-01.jpg" alt="xps" /></p>
+
+<p>包装这么弱。我都感觉像二手的</p>
+
+<p><img src="/assets/img/xps13_9360/photo_2018-09-12_15-11-02.jpg" alt="xps" />
+<img src="/assets/img/xps13_9360/photo_2018-09-12_15-11-04.jpg" alt="xps" /></p>
+
+<p>只有电脑和充电器。。。</p>
+
+<p><img src="/assets/img/xps13_9360/photo_2018-09-12_15-11-05.jpg" alt="xps" />
+<img src="/assets/img/xps13_9360/photo_2018-09-12_15-11-06.jpg" alt="xps" /></p>
+
+<p>包装过于精简。。。必须要上电才能开机。。。这证明是新的</p>
+
+<p>开机是 win10 不过被我改成了 archlinux 。。进入bios 关掉 sb（security boot），然后把硬盘的RAID 改成 AHCI (不然检测不到硬盘)</p>
+
+<p>进入 archlinux live 然后联网开 ssh server 把 home 传过去</p>
+
+<p>就像这样</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tar</span> <span class="nt">-cJf</span> - /home | ssh root@archiso <span class="s2">"cd / &amp;&amp; tar -xJf -"</span>
+</code></pre></div></div>
+<h3 id="what-网断了再来一次又断了"><strong>What</strong> 网断了？？？再来一次。。又断了？？？</h3>
+
+<p>看看 wiki 找找买同款电脑装 linux 的人。。。。</p>
+
+<p><a href="https://wiki.archlinux.org/index.php/Dell_XPS_13_(9360)">https://wiki.archlinux.org/index.php/Dell_XPS_13_(9360)</a></p>
+
+<p>其实有很多人都有这种问题。。。按 wiki 方案试试。试毛线啊。直接换网卡。</p>
+
+<p>参照这篇：
+<a href="https://rocka.me/article/xps-13-9350-8260ac">https://rocka.me/article/xps-13-9350-8260ac</a></p>
+
+<p>不过他的 9350 。9360 的网卡变了，参考拆机部分</p>
+
+<p>不过值得说一下。拆后盖没那么难。。后盖很好拆。不过你要去买一个专门的拆机工具。觉得难拆是你姿势不对</p>
+
+<p><img src="/assets/img/xps13_9360/photo_2018-09-14_12-55-21.jpg" alt="xps" /></p>
+
+<p>淘宝买的 Intel9260AC 的网卡。。花了 88 大洋</p>
+
+<p><img src="/assets/img/xps13_9360/photo_2018-09-14_15-11-22.jpg" alt="xps" /></p>
+
+<p>拆了换网卡！换完网卡瞬间就好了</p>
+
+<h1 id="关于-killer-1535-网卡">关于 killer 1535 网卡</h1>
+<p>具体对比看这里：
+<a href="https://www.chiphell.com/thread-1699950-1-1.html">https://www.chiphell.com/thread-1699950-1-1.html</a></p>
+
+<p>这个网卡在 linux 上有高速断流的情况。。。貌似是网卡部分有</p>
+
+<h3 id="然后就是猜测本猜测纯属yy无可靠证据支撑">然后就是猜测：（本猜测纯属YY。。无可靠证据支撑）</h3>
+<p>这款在xps上的网卡有一批有硬件物理上的bug。。然后是靠官方给出的 firmware 来修复这个问题</p>
+
+<p>QCA6174 的 firmware 在2018年2月 是进入了 linux 内核。。。</p>
+
+<p>如果内核的 firmware 出现断流的情况。。那么恭喜你。（中彩票了）。。请直接申请换货</p>
+
+<p>自己也可以解决：换网卡或者换firmware</p>
+
+<p>参照Arch wiki 换其他版本的 firmware：
+<a href="https://wiki.archlinux.org/index.php/Dell_XPS_13_(9360)#Wireless">https://wiki.archlinux.org/index.php/Dell_XPS_13_(9360)#Wireless</a></p>
+
+<p>有个 00041 的是推荐的版本。。00042 也可以尝试。。。基本上就稳定了</p>
+
+<p>也可以像我一样，直接换网卡</p>
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://a-wing.top/linux/2018/09/21/xps13_9360.html';
+      this.page.identifier = 'https://a-wing.top/linux/2018/09/21/xps13_9360.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://a-wing-1.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+
+  <a class="u-url" href="/linux/2018/09/21/xps13_9360.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hi! 上天不?</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hi! 上天不?
+            
+            </li>
+            
+        </ul>
+
+        <a href="https://www.upyun.com/">
+          <img src="https://a-wing.top/assets/upyun_logo.png"/>
+        </a>
+
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
+  
+  
+  
+  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
+  
+  
+  
+</ul>
+
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+        </a>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>新一的个人博客</p>
+        <p>Power by Jekyll && Theme by minima-改</p>
+        <p>Copyright © 2016-2019 Powered by a-wing</p>
+      </div>
+
+      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

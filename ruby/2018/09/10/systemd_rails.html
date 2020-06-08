@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>使用 systemd 来管理你的 rails 应用 - Hi! 上天不?</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>使用 systemd 来管理你的 rails 应用 | Hi! 上天不?</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="使用 systemd 来管理你的 rails 应用" />
+<meta name="author" content="metal A-wing" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="这篇文章属于没什么卵用系列" />
+<meta property="og:description" content="这篇文章属于没什么卵用系列" />
+<link rel="canonical" href="https://a-wing.top/ruby/2018/09/10/systemd_rails.html" />
+<meta property="og:url" content="https://a-wing.top/ruby/2018/09/10/systemd_rails.html" />
+<meta property="og:site_name" content="Hi! 上天不?" />
+<meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-09-10T23:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"这篇文章属于没什么卵用系列","@type":"BlogPosting","headline":"使用 systemd 来管理你的 rails 应用","dateModified":"2018-09-10T23:00:00+00:00","datePublished":"2018-09-10T23:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/ruby/2018/09/10/systemd_rails.html"},"author":{"@type":"Person","name":"metal A-wing"},"url":"https://a-wing.top/ruby/2018/09/10/systemd_rails.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
+  
+    <script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-117419557-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+
+          <a href="https://travis-ci.org/a-wing/blog">
+            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
+          </a>
+
+            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
+
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">关于我</a>
+            
+          
+            
+            
+            <a class="page-link" href="/equipment/">硬件设备</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/links/">友情连接</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/projects/">个人项目</a>
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">使用 systemd 来管理你的 rails 应用</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-09-10T23:00:00+00:00" itemprop="datePublished">
+        
+        Sep 10, 2018
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>这篇文章属于没什么卵用系列</p>
+
+<p>我并不喜欢 <code class="highlighter-rouge">capistrano</code></p>
+
+<p>众所周知 rails 的项目启动用 <code class="highlighter-rouge">RAILS_ENV=production bundle exec rails server -p 3000 -d</code></p>
+
+<p>如果服务器经常重启。。最简单的办法：那我们就要把这条命令放在 /etc/rc.local 里(目前deb系的发行版是保留的。本质上是用 systemd 来执行这里的命令)。。。</p>
+
+<p>不过目前。大部分 Linux Distribution 都是 systemd 来启动的（gentoo 除外。gentoo 默认是 openrc，可以换成 systemd ）</p>
+
+<p>在改之前。我们先把 rails 监听的端口换成 unix sock</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s#port        ENV.fetch("PORT") { 3000 }#bind        "unix://\#{Rails.root}/tmp/sockets/puma.sock"#g'</span> config/puma.rb
+</code></pre></div></div>
+
+<p>例如我的项目叫kiss2u 大概是这样:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> ~/.config/systemd/user/kiss2u.service
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Unit]
+Description=KISS2U Puma application server
+After=network.target
+
+[Service]
+WorkingDirectory=/home/a-wing/.srv/KISS2U
+PIDFile=/home/a-wing/.srv/KISS2U/tmp/pids/puma.pid
+ExecStart=/usr/bin/sh /home/a-wing/.srv/KISS2U/run.sh
+
+[Install]
+WantedBy=default.target
+</code></pre></div></div>
+
+<p>没错。这个是用户级 systemd</p>
+
+<p>但由于 systemd 要写绝对路径。。但我可不想手动改 QAQ</p>
+
+<p>然后我们定义一个 template，就像这样。定义几个标签</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat config/kiss2u.service.template
+[Unit]
+Description=KISS2U Puma application server
+After=network.target
+
+[Service]
+WorkingDirectory=&lt;DIR&gt;
+Environment=RAILS_ENV=production
+PIDFile=&lt;DIR&gt;/tmp/pids/puma.pid
+ExecStart=&lt;BUNDLE&gt; exec rails server
+
+[Install]
+WantedBy=default.target
+</code></pre></div></div>
+
+<p>在 bin 目录下创建生成真正的systemd 的配置文件 bin/generate_service.sh</p>
+
+<p>当然我们是要新建一个用户来跑的。不然 generate_service.sh 就没意义了</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nv">SYSTEMD</span><span class="o">=</span>kiss2u.service
+
+<span class="nb">cp </span>config/<span class="k">${</span><span class="nv">SYSTEMD</span><span class="k">}</span>.template <span class="k">${</span><span class="nv">SYSTEMD</span><span class="k">}</span>
+<span class="nb">sed</span> <span class="nt">-i</span> s#<span class="se">\&lt;</span>DIR<span class="se">\&gt;</span><span class="c">#`pwd`#g ${SYSTEMD}</span>
+<span class="nb">sed</span> <span class="nt">-i</span> s#<span class="se">\&lt;</span>BUNDLE<span class="se">\&gt;</span><span class="c">#`which bundle`#g ${SYSTEMD}</span>
+
+
+<span class="nb">echo</span> <span class="s2">"Install ~/.config/systemd/user/</span><span class="k">${</span><span class="nv">SYSTEMD</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">"Please Run: systemctl --user start </span><span class="k">${</span><span class="nv">SYSTEMD</span><span class="k">}</span><span class="s2">"</span>
+
+<span class="nb">install</span> <span class="k">${</span><span class="nv">SYSTEMD</span><span class="k">}</span> <span class="nt">-D</span> ~/.config/systemd/user/<span class="k">${</span><span class="nv">SYSTEMD</span><span class="k">}</span>
+<span class="nb">rm</span> <span class="k">${</span><span class="nv">SYSTEMD</span><span class="k">}</span>
+</code></pre></div></div>
+
+<p>然后来使用 <code class="highlighter-rouge">systemctl --user start kiss2u</code> 就可以启动了</p>
+
+<p>要开机启动的话 <code class="highlighter-rouge">systemctl --user enable kiss2u</code> 就可以</p>
+
+<h3 id="不过这么做仍然有问题"><strong>不过。这么做仍然有问题</strong></h3>
+
+<p>我在 rbenv 下测试是好使的。。。在有些环境下就会出现启动不了的情况。我也不知道是为什么啊 QAQ</p>
+
+<p>如果你启动出问题请更改 <code class="highlighter-rouge">ExecStart=</code></p>
+
+<p>解决办法： 兼容性最好<code class="highlighter-rouge">ExecStart=</code> 来启动一段 shell 脚本。在 shell 脚本里加载必要的变量</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">source</span> ./config.sh
+
+<span class="nb">echo </span><span class="nv">RAILS_ENV</span><span class="o">=</span><span class="k">${</span><span class="nv">RAILS_ENV</span><span class="k">}</span>
+ruby <span class="nt">-v</span>
+
+<span class="k">if </span><span class="nb">test</span> <span class="nt">-e</span> tmp/pids/server.pid
+<span class="k">then
+  </span><span class="nb">echo</span> <span class="s1">'Restarting'</span>
+  <span class="nb">kill</span> <span class="sb">`</span><span class="nb">cat </span>tmp/pids/server.pid<span class="sb">`</span>
+<span class="k">else
+  </span><span class="nb">echo</span> <span class="s1">'Starting'</span>
+<span class="k">fi
+
+</span>bundle <span class="nb">install</span> <span class="nt">--path</span> vendor/bundle
+bundle <span class="nb">exec </span>rake db:migrate
+bundle <span class="nb">exec </span>rails server <span class="nt">-p</span> <span class="k">${</span><span class="nv">PORT</span><span class="k">}</span> <span class="nt">-d</span>
+</code></pre></div></div>
+<p>类似这样。。。好吧。我承认这很不优雅。。。不过兼容性最好。。</p>
+
+<h3 id="对了-kiss2u-是开源项目你可以直接去看源代码-自买自夸">对了 kiss2u 是开源项目，你可以直接去看源代码 &lt;—–自买自夸</h3>
+
+<p><a href="https://github.com/a-wing/KISS2U">https://github.com/a-wing/KISS2U</a></p>
+
+<p>参考文章：</p>
+<ul>
+  <li><a href="https://wiki.archlinux.org/index.php/Rails">Arch Linux wiki</a></li>
+  <li><a href="https://blog.lilydjwg.me/2014/2/2/systemd-user-daemons.42631.html">依云’s Blog: systemd 之用户级服务管理</a></li>
+</ul>
+
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://a-wing.top/ruby/2018/09/10/systemd_rails.html';
+      this.page.identifier = 'https://a-wing.top/ruby/2018/09/10/systemd_rails.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://a-wing-1.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+
+  <a class="u-url" href="/ruby/2018/09/10/systemd_rails.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hi! 上天不?</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hi! 上天不?
+            
+            </li>
+            
+        </ul>
+
+        <a href="https://www.upyun.com/">
+          <img src="https://a-wing.top/assets/upyun_logo.png"/>
+        </a>
+
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
+  
+  
+  
+  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
+  
+  
+  
+</ul>
+
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+        </a>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>新一的个人博客</p>
+        <p>Power by Jekyll && Theme by minima-改</p>
+        <p>Copyright © 2016-2019 Powered by a-wing</p>
+      </div>
+
+      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

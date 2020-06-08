@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>细说 Debian 的网络管理 network/interfaces - Hi! 上天不?</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>细说 Debian 的网络管理 network/interfaces | Hi! 上天不?</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="细说 Debian 的网络管理 network/interfaces" />
+<meta name="author" content="metal A-wing" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="最近在修一个复杂的多网卡问题，产生的玄学问题，趁机把 interfaces 文档都读了一边" />
+<meta property="og:description" content="最近在修一个复杂的多网卡问题，产生的玄学问题，趁机把 interfaces 文档都读了一边" />
+<link rel="canonical" href="https://a-wing.top/linux/2019/04/01/debian_network.html" />
+<meta property="og:url" content="https://a-wing.top/linux/2019/04/01/debian_network.html" />
+<meta property="og:site_name" content="Hi! 上天不?" />
+<meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-04-01T08:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"最近在修一个复杂的多网卡问题，产生的玄学问题，趁机把 interfaces 文档都读了一边","@type":"BlogPosting","headline":"细说 Debian 的网络管理 network/interfaces","dateModified":"2019-04-01T08:00:00+00:00","datePublished":"2019-04-01T08:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/linux/2019/04/01/debian_network.html"},"author":{"@type":"Person","name":"metal A-wing"},"url":"https://a-wing.top/linux/2019/04/01/debian_network.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
+  
+    <script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-117419557-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+
+          <a href="https://travis-ci.org/a-wing/blog">
+            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
+          </a>
+
+            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
+
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">关于我</a>
+            
+          
+            
+            
+            <a class="page-link" href="/equipment/">硬件设备</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/links/">友情连接</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/projects/">个人项目</a>
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">细说 Debian 的网络管理 network/interfaces</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-04-01T08:00:00+00:00" itemprop="datePublished">
+        
+        Apr 1, 2019
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>最近在修一个复杂的多网卡问题，产生的玄学问题，趁机把 interfaces 文档都读了一边</p>
+
+<blockquote>
+  <p>注：本文内容是在 <code class="highlighter-rouge">raspbian</code> 系统上验证的</p>
+</blockquote>
+
+<p>Debian 自带的网络管理的名字叫 <code class="highlighter-rouge">ifupdown</code></p>
+
+<p>权威的文档是 <code class="highlighter-rouge">man interfaces</code></p>
+
+<p>这个文件可以分成两部分，<code class="highlighter-rouge">INTERFACE SELECTION</code> 和 <code class="highlighter-rouge">ADDRESS FAMILY</code></p>
+
+<p><code class="highlighter-rouge">INTERFACE SELECTION</code> 是 这个物理设备（可能是虚拟的）怎么样怎么样，指： 自动启动，允许热拔插啊之类的…</p>
+
+<p><code class="highlighter-rouge">ADDRESS FAMILY</code> 是上层的网络，设置 ip 地址啊，子网掩码，网关之类的…</p>
+
+<p><strong>Lines starting with `#’ are ignored. Note that end-of-line comments are NOT supported, comments must be on a line of their own.</strong></p>
+<blockquote>
+  <p>注：network/interfaces 这个文件不支持行尾注释</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 自动使用 eth0, 相当于自动执行 ifup eth0
+auto eth0
+
+# 允许热拔插
+allow-hotplug eth0
+
+# ADDRESS FAMILY 配置
+iface eth0 inet static
+  address 192.168.1.2/24
+  gateway 192.168.1.1
+</code></pre></div></div>
+
+<p>有四个 hook 函数，根据启动关闭的运行顺序是：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pre-up
+post-up &amp;&amp; up
+
+pre-down &amp;&amp; down
+post-down
+</code></pre></div></div>
+<p>调用 hook 时会传递一些变量：
+比如 echo $IFACE 之类的</p>
+
+<p>这几个是全局的 hook 配置</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/etc/network/
+if-down.d  if-post-down.d  if-pre-up.d  if-up.d
+</code></pre></div></div>
+
+<p>dhcpcd (Dynamic Host Configuration Protocol Clinet Daemon)</p>
+<ul>
+  <li>isc-dhcp-client (这个包是默认就有的，也是一个dhcp 的客户端，这个是命令行接口 <code class="highlighter-rouge">ifupdown</code> 是调用的这个)</li>
+  <li>dhcpcd5 (这个只在树莓上才是默认的) 也是默认运行的(至于为什么要叫dhcpcd5，大概是从 v5 之后开始支持 ipv6 的，虽然现在的版本是 6.x)</li>
+</ul>
+
+<p><strong>只有 raspbian 这个地方很不清真，他同时是有两个网络管理 之后人如果你直接使用 <code class="highlighter-rouge">network/interfaces</code> 里面改，你就会发现 dhcp 是关不掉的！！！</strong></p>
+
+<blockquote>
+  <p>这个地方仅限于默认的 raspbian 系统，默认的 debian 是没有的</p>
+</blockquote>
+
+<p>关掉 dhcp 就是 <code class="highlighter-rouge">systemctl disable dhcpcd.service</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>dpkg <span class="nt">-L</span> dhcpcd5
+/.
+/etc
+/etc/dhcpcd.conf
+/etc/init.d
+/etc/init.d/dhcpcd
+/lib
+/lib/arm-linux-gnueabihf
+/lib/arm-linux-gnueabihf/dhcpcd
+/lib/arm-linux-gnueabihf/dhcpcd/dev
+/lib/arm-linux-gnueabihf/dhcpcd/dev/udev.so
+/lib/dhcpcd
+/lib/dhcpcd/dhcpcd-hooks
+/lib/dhcpcd/dhcpcd-hooks/01-test
+/lib/dhcpcd/dhcpcd-hooks/02-dump
+/lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant
+/lib/dhcpcd/dhcpcd-hooks/20-resolv.conf
+/lib/dhcpcd/dhcpcd-hooks/30-hostname
+/lib/dhcpcd/dhcpcd-hooks/50-ntp.conf
+/lib/dhcpcd/dhcpcd-run-hooks
+/lib/systemd
+/lib/systemd/system
+/lib/systemd/system/dhcpcd.service
+/sbin
+/sbin/dhcpcd5
+/usr
+/usr/lib
+/usr/lib/dhcpcd5
+/usr/lib/dhcpcd5/dhcpcd
+/usr/share
+/usr/share/dhcpcd
+/usr/share/dhcpcd/hooks
+/usr/share/dhcpcd/hooks/10-wpa_supplicant
+/usr/share/dhcpcd/hooks/15-timezone
+/usr/share/dhcpcd/hooks/29-lookup-hostname
+/usr/share/doc
+/usr/share/doc/dhcpcd5
+/usr/share/doc/dhcpcd5/changelog.Debian.gz
+/usr/share/doc/dhcpcd5/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/dhcpcd5
+/usr/share/man
+/usr/share/man/man5
+/usr/share/man/man5/dhcpcd.conf.5.gz
+/usr/share/man/man8
+/usr/share/man/man8/dhcpcd-run-hooks.8.gz
+/usr/share/man/man8/dhcpcd5.8.gz
+/var
+/var/lib
+/var/lib/dhcpcd5
+
+</code></pre></div></div>
+<h3 id="我们熟知的etcwpa_supplicantwpa_supplicantconf是什么时候运行的">我们熟知的<code class="highlighter-rouge">/etc/wpa_supplicant/wpa_supplicant.conf</code>是什么时候运行的？</h3>
+
+<p><code class="highlighter-rouge">/lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant</code> 是这里，只要启动了 dhcpcd 服务就会运行</p>
+
+<p>wpa_supplicant 的用法</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> /etc/wpa_supplicant/wpa_supplicant.conf <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+country=CN
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+  ssid="&lt;You SSID&gt;"
+
+  # hide ssid
+  scan_ssid=1
+
+  psk="&lt;You Pass&gt;"
+}
+</span><span class="no">
+EOF
+
+
+</span><span class="c"># 启动</span>
+systemctl start wpa_supplicant.service
+
+<span class="c"># 开机自启动</span>
+systemctl <span class="nb">enable </span>wpa_supplicant.service
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">man wpa_supplicant.conf</code> 其实已经讲的很清楚了</p>
+
+<h1 id="现在你们已经看到了那一堆稀奇古怪的shell实现简直不能再糟糕了"><strong>现在你们已经看到了那一堆稀奇古怪的shell实现，简直不能再糟糕了</strong></h1>
+
+<blockquote>
+  <p>对的，这是两套网络管理器，搅在一起了。然后同时使用。。。</p>
+</blockquote>
+
+<h1 id="以下内容为-20200213-更新">以下内容为 2020.02.13 更新</h1>
+
+<p>我们来看个好点的实现：<code class="highlighter-rouge">systemd 大法好</code>。。。聊聊 <code class="highlighter-rouge">systemd-networkd</code></p>
+
+<p>本来想新开一篇文章，后来想想还是算了，还是在这片上接着写吧</p>
+
+<p>以下内容在 <code class="highlighter-rouge">Raspbian 10 (buster)</code> 上验证</p>
+
+<p>最简单的 dhcp eth0 文件放这里 <code class="highlighter-rouge">/etc/systemd/network/eth0.network</code> 这样写</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Match]
+Name=eth0
+
+[Network]
+DHCP=ipv4
+</code></pre></div></div>
+
+<p>静态 IP 的话，这样写</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Match]
+Name=eth0
+
+[Network]
+Address=192.168.123.10/24
+Gateway=192.168.123.1
+</code></pre></div></div>
+
+<h2 id="systemd-networkd">systemd-networkd</h2>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 禁用掉 `ifupdown`</span>
+<span class="nb">mv</span> /etc/network/interfaces /etc/network/interfaces.save
+
+<span class="c"># 关闭 dhcpcd 客户端。这个好像只有树莓需要，原版 debian 我没测试</span>
+systemctl disable dhcpcd.service
+
+<span class="c"># 启用 systemd-networkd</span>
+systemctl <span class="nb">enable </span>systemd-networkd
+</code></pre></div></div>
+
+<h3 id="wpa_supplicant-的-debian-systemd-这里有个坑"><strong><code class="highlighter-rouge">wpa_supplicant</code> 的 debian systemd 这里有个坑</strong></h3>
+
+<p>先来看一下这个：<code class="highlighter-rouge">systemctl cat wpa_supplicant</code></p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /lib/systemd/system/wpa_supplicant.service</span>
+<span class="o">[</span>Unit]
+<span class="nv">Description</span><span class="o">=</span>WPA supplicant
+<span class="nv">Before</span><span class="o">=</span>network.target
+<span class="nv">After</span><span class="o">=</span>dbus.service
+<span class="nv">Wants</span><span class="o">=</span>network.target
+
+<span class="o">[</span>Service]
+<span class="nv">Type</span><span class="o">=</span>dbus
+<span class="nv">BusName</span><span class="o">=</span><span class="k">fi</span>.w1.wpa_supplicant1
+<span class="nv">ExecStart</span><span class="o">=</span>/sbin/wpa_supplicant <span class="nt">-u</span> <span class="nt">-s</span> <span class="nt">-O</span> /run/wpa_supplicant
+
+<span class="o">[</span>Install]
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+<span class="nv">Alias</span><span class="o">=</span>dbus-fi.w1.wpa_supplicant1.service
+</code></pre></div></div>
+
+<p>再看一下这个：<code class="highlighter-rouge">systemctl cat wpa_supplicant@</code></p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /lib/systemd/system/wpa_supplicant@.service</span>
+<span class="o">[</span>Unit]
+<span class="nv">Description</span><span class="o">=</span>WPA supplicant daemon <span class="o">(</span>interface-specific version<span class="o">)</span>
+<span class="nv">Requires</span><span class="o">=</span>sys-subsystem-net-devices-%i.device
+<span class="nv">After</span><span class="o">=</span>sys-subsystem-net-devices-%i.device
+<span class="nv">Before</span><span class="o">=</span>network.target
+<span class="nv">Wants</span><span class="o">=</span>network.target
+
+<span class="c"># NetworkManager users will probably want the dbus version instead.</span>
+
+<span class="o">[</span>Service]
+<span class="nv">Type</span><span class="o">=</span>simple
+<span class="nv">ExecStart</span><span class="o">=</span>/sbin/wpa_supplicant <span class="nt">-c</span>/etc/wpa_supplicant/wpa_supplicant-%I.conf <span class="nt">-Dnl80211</span>,wext <span class="nt">-i</span>%I
+
+<span class="o">[</span>Install]
+<span class="nv">Alias</span><span class="o">=</span>multi-user.target.wants/wpa_supplicant@%i.service
+</code></pre></div></div>
+
+<p>我们看到那两个文件是不一样的，不仅仅是一个加个模版变量</p>
+
+<p>如果你使用 <code class="highlighter-rouge">systemd-networkd</code>，<code class="highlighter-rouge">wpa_supplicant</code> 服务请使用带模版变量那个（别问我为什么）</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 新建个无线连接的配置文件</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> /etc/wpa_supplicant/wpa_supplicant-wlan0.conf <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+country=CN
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+  ssid="&lt;You SSID&gt;"
+  psk="&lt;You Pass&gt;"
+}
+</span><span class="no">
+EOF
+
+</span><span class="c"># 禁用掉 wpa_supplicant 服务</span>
+systemctl disable wpa_supplicant.service
+
+<span class="c"># 用这个服务运行</span>
+systemctl <span class="nb">enable </span>wpa_supplicant@wlan0.service
+</code></pre></div></div>
+
+<p>这个地方 Debian 的官方文档讲的很清楚： <a href="https://wiki.debian.org/SystemdNetworkd">SystemdNetworkd</a></p>
+
+<p>详细参数可以用<code class="highlighter-rouge">man systemd.network</code> 来看，也可以看这里：<a href="https://manpages.debian.org/buster/systemd/systemd.network.5.en.html">man systemd.network</a></p>
+
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://a-wing.top/linux/2019/04/01/debian_network.html';
+      this.page.identifier = 'https://a-wing.top/linux/2019/04/01/debian_network.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://a-wing-1.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+
+  <a class="u-url" href="/linux/2019/04/01/debian_network.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hi! 上天不?</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hi! 上天不?
+            
+            </li>
+            
+        </ul>
+
+        <a href="https://www.upyun.com/">
+          <img src="https://a-wing.top/assets/upyun_logo.png"/>
+        </a>
+
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
+  
+  
+  
+  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
+  
+  
+  
+</ul>
+
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+        </a>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>新一的个人博客</p>
+        <p>Power by Jekyll && Theme by minima-改</p>
+        <p>Copyright © 2016-2019 Powered by a-wing</p>
+      </div>
+
+      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

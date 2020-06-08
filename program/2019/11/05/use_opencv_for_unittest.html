@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>使用 OpenCV 来做单元测试 - Hi! 上天不?</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>使用 OpenCV 来做单元测试 | Hi! 上天不?</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="使用 OpenCV 来做单元测试" />
+<meta name="author" content="metal A-wing" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="最近一直都在搞图像传输，webrtc 可以检测网络状况来调整码率。为了探究图像传输中损失了多少数据，用 opencv 来计算输入视频流和输出视频流的相似性" />
+<meta property="og:description" content="最近一直都在搞图像传输，webrtc 可以检测网络状况来调整码率。为了探究图像传输中损失了多少数据，用 opencv 来计算输入视频流和输出视频流的相似性" />
+<link rel="canonical" href="https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html" />
+<meta property="og:url" content="https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html" />
+<meta property="og:site_name" content="Hi! 上天不?" />
+<meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-11-05T09:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"最近一直都在搞图像传输，webrtc 可以检测网络状况来调整码率。为了探究图像传输中损失了多少数据，用 opencv 来计算输入视频流和输出视频流的相似性","@type":"BlogPosting","headline":"使用 OpenCV 来做单元测试","dateModified":"2019-11-05T09:00:00+00:00","datePublished":"2019-11-05T09:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html"},"author":{"@type":"Person","name":"metal A-wing"},"url":"https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
+  
+    <script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-117419557-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+
+          <a href="https://travis-ci.org/a-wing/blog">
+            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
+          </a>
+
+            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
+
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">关于我</a>
+            
+          
+            
+            
+            <a class="page-link" href="/equipment/">硬件设备</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/links/">友情连接</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/projects/">个人项目</a>
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">使用 OpenCV 来做单元测试</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-11-05T09:00:00+00:00" itemprop="datePublished">
+        
+        Nov 5, 2019
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>最近一直都在搞图像传输，webrtc 可以检测网络状况来调整码率。为了探究图像传输中损失了多少数据，用 opencv 来计算输入视频流和输出视频流的相似性</p>
+
+<p>不过本人作为一个不懂算法，不懂C++， 不懂openCV 的菜鸡。（我还真把这个东西给做出来了</p>
+
+<h3 id="如何检测视频视频的相似性">如何检测视频视频的相似性</h3>
+<p>先来科普两个概念：</p>
+<ol>
+  <li>
+    <p>峰值信噪比 PSNR (Peak signal-to-noise ratio)
+https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio</p>
+  </li>
+  <li>
+    <p>结构相似性 SSIM (Structural similarity)
+https://en.wikipedia.org/wiki/Structural_similarity</p>
+  </li>
+</ol>
+
+<p>这个处理本身是把视频拆成图像帧，然回分成 RGB 分辨对比</p>
+
+<p>然回把这个代码直接拿过来用就行（好敷衍。。。</p>
+
+<p>代码来源：https://docs.opencv.org/master/d5/dc4/tutorial_video_input_psnr_ssim.html</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt; // for standard I/O
+#include &lt;string&gt;   // for strings
+#include &lt;iomanip&gt;  // for controlling float print precision
+#include &lt;sstream&gt;  // string to number conversion
+#include &lt;opencv2/core.hpp&gt;     // Basic OpenCV structures (cv::Mat, Scalar)
+#include &lt;opencv2/imgproc.hpp&gt;  // Gaussian Blur
+#include &lt;opencv2/videoio.hpp&gt;
+#include &lt;opencv2/highgui.hpp&gt;  // OpenCV window I/O
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+<span class="kt">double</span> <span class="nf">getPSNR</span> <span class="p">(</span> <span class="k">const</span> <span class="n">Mat</span><span class="o">&amp;</span> <span class="n">I1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Mat</span><span class="o">&amp;</span> <span class="n">I2</span><span class="p">);</span>
+<span class="n">Scalar</span> <span class="nf">getMSSIM</span><span class="p">(</span> <span class="k">const</span> <span class="n">Mat</span><span class="o">&amp;</span> <span class="n">I1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Mat</span><span class="o">&amp;</span> <span class="n">I2</span><span class="p">);</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">help</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">cout</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"------------------------------------------------------------------------------"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"This program shows how to read a video file with OpenCV. In addition, it "</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"tests the similarity of two input videos first with PSNR, and for the frames "</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"below a PSNR trigger value, also with MSSIM."</span>                                   <span class="o">&lt;&lt;</span> <span class="n">endl</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"Usage:"</span>                                                                         <span class="o">&lt;&lt;</span> <span class="n">endl</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"./video-input-psnr-ssim &lt;referenceVideo&gt; &lt;useCaseTestVideo&gt; &lt;PSNR_Trigger_Value&gt; &lt;Wait_Between_Frames&gt; "</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"--------------------------------------------------------------------------"</span>     <span class="o">&lt;&lt;</span> <span class="n">endl</span>
+        <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">help</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Not enough parameters"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">stringstream</span> <span class="n">conv</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">string</span> <span class="n">sourceReference</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sourceCompareWith</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">psnrTriggerValue</span><span class="p">,</span> <span class="n">delay</span><span class="p">;</span>
+    <span class="n">conv</span> <span class="o">&lt;&lt;</span> <span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>       <span class="c1">// put in the strings</span>
+    <span class="n">conv</span> <span class="o">&gt;&gt;</span> <span class="n">psnrTriggerValue</span> <span class="o">&gt;&gt;</span> <span class="n">delay</span><span class="p">;</span>        <span class="c1">// take out the numbers</span>
+    <span class="kt">int</span> <span class="n">frameNum</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>          <span class="c1">// Frame counter</span>
+    <span class="n">VideoCapture</span> <span class="n">captRefrnc</span><span class="p">(</span><span class="n">sourceReference</span><span class="p">),</span> <span class="n">captUndTst</span><span class="p">(</span><span class="n">sourceCompareWith</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">captRefrnc</span><span class="p">.</span><span class="n">isOpened</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">cout</span>  <span class="o">&lt;&lt;</span> <span class="s">"Could not open reference "</span> <span class="o">&lt;&lt;</span> <span class="n">sourceReference</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">captUndTst</span><span class="p">.</span><span class="n">isOpened</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">cout</span>  <span class="o">&lt;&lt;</span> <span class="s">"Could not open case test "</span> <span class="o">&lt;&lt;</span> <span class="n">sourceCompareWith</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Size</span> <span class="n">refS</span> <span class="o">=</span> <span class="n">Size</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span> <span class="n">captRefrnc</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">),</span>
+                     <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">captRefrnc</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">)),</span>
+         <span class="n">uTSi</span> <span class="o">=</span> <span class="n">Size</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span> <span class="n">captUndTst</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">),</span>
+                     <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">captUndTst</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">refS</span> <span class="o">!=</span> <span class="n">uTSi</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Inputs have different size!!! Closing."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">WIN_UT</span> <span class="o">=</span> <span class="s">"Under Test"</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">WIN_RF</span> <span class="o">=</span> <span class="s">"Reference"</span><span class="p">;</span>
+    <span class="c1">// Windows</span>
+    <span class="n">namedWindow</span><span class="p">(</span><span class="n">WIN_RF</span><span class="p">,</span> <span class="n">WINDOW_AUTOSIZE</span><span class="p">);</span>
+    <span class="n">namedWindow</span><span class="p">(</span><span class="n">WIN_UT</span><span class="p">,</span> <span class="n">WINDOW_AUTOSIZE</span><span class="p">);</span>
+    <span class="n">moveWindow</span><span class="p">(</span><span class="n">WIN_RF</span><span class="p">,</span> <span class="mi">400</span>       <span class="p">,</span> <span class="mi">0</span><span class="p">);</span>         <span class="c1">//750,  2 (bernat =0)</span>
+    <span class="n">moveWindow</span><span class="p">(</span><span class="n">WIN_UT</span><span class="p">,</span> <span class="n">refS</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>         <span class="c1">//1500, 2</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Reference frame resolution: Width="</span> <span class="o">&lt;&lt;</span> <span class="n">refS</span><span class="p">.</span><span class="n">width</span> <span class="o">&lt;&lt;</span> <span class="s">"  Height="</span> <span class="o">&lt;&lt;</span> <span class="n">refS</span><span class="p">.</span><span class="n">height</span>
+         <span class="o">&lt;&lt;</span> <span class="s">" of nr#: "</span> <span class="o">&lt;&lt;</span> <span class="n">captRefrnc</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">CAP_PROP_FRAME_COUNT</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"PSNR trigger value "</span> <span class="o">&lt;&lt;</span> <span class="n">setiosflags</span><span class="p">(</span><span class="n">ios</span><span class="o">::</span><span class="n">fixed</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+         <span class="o">&lt;&lt;</span> <span class="n">psnrTriggerValue</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">Mat</span> <span class="n">frameReference</span><span class="p">,</span> <span class="n">frameUnderTest</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">psnrV</span><span class="p">;</span>
+    <span class="n">Scalar</span> <span class="n">mssimV</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(;;)</span> <span class="c1">//Show the image captured in the window and repeat</span>
+    <span class="p">{</span>
+        <span class="n">captRefrnc</span> <span class="o">&gt;&gt;</span> <span class="n">frameReference</span><span class="p">;</span>
+        <span class="n">captUndTst</span> <span class="o">&gt;&gt;</span> <span class="n">frameUnderTest</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">frameReference</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">||</span> <span class="n">frameUnderTest</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">" &lt; &lt; &lt;  Game over!  &gt; &gt; &gt; "</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="o">++</span><span class="n">frameNum</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Frame: "</span> <span class="o">&lt;&lt;</span> <span class="n">frameNum</span> <span class="o">&lt;&lt;</span> <span class="s">"# "</span><span class="p">;</span>
+        <span class="n">psnrV</span> <span class="o">=</span> <span class="n">getPSNR</span><span class="p">(</span><span class="n">frameReference</span><span class="p">,</span><span class="n">frameUnderTest</span><span class="p">);</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">setiosflags</span><span class="p">(</span><span class="n">ios</span><span class="o">::</span><span class="n">fixed</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">psnrV</span> <span class="o">&lt;&lt;</span> <span class="s">"dB"</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">psnrV</span> <span class="o">&lt;</span> <span class="n">psnrTriggerValue</span> <span class="o">&amp;&amp;</span> <span class="n">psnrV</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">mssimV</span> <span class="o">=</span> <span class="n">getMSSIM</span><span class="p">(</span><span class="n">frameReference</span><span class="p">,</span> <span class="n">frameUnderTest</span><span class="p">);</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">" MSSIM: "</span>
+                <span class="o">&lt;&lt;</span> <span class="s">" R "</span> <span class="o">&lt;&lt;</span> <span class="n">setiosflags</span><span class="p">(</span><span class="n">ios</span><span class="o">::</span><span class="n">fixed</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">mssimV</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">&lt;&lt;</span> <span class="s">"%"</span>
+                <span class="o">&lt;&lt;</span> <span class="s">" G "</span> <span class="o">&lt;&lt;</span> <span class="n">setiosflags</span><span class="p">(</span><span class="n">ios</span><span class="o">::</span><span class="n">fixed</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">mssimV</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">&lt;&lt;</span> <span class="s">"%"</span>
+                <span class="o">&lt;&lt;</span> <span class="s">" B "</span> <span class="o">&lt;&lt;</span> <span class="n">setiosflags</span><span class="p">(</span><span class="n">ios</span><span class="o">::</span><span class="n">fixed</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">mssimV</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">&lt;&lt;</span> <span class="s">"%"</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">imshow</span><span class="p">(</span><span class="n">WIN_RF</span><span class="p">,</span> <span class="n">frameReference</span><span class="p">);</span>
+        <span class="n">imshow</span><span class="p">(</span><span class="n">WIN_UT</span><span class="p">,</span> <span class="n">frameUnderTest</span><span class="p">);</span>
+        <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="n">waitKey</span><span class="p">(</span><span class="n">delay</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="mi">27</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">double</span> <span class="nf">getPSNR</span><span class="p">(</span><span class="k">const</span> <span class="n">Mat</span><span class="o">&amp;</span> <span class="n">I1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Mat</span><span class="o">&amp;</span> <span class="n">I2</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Mat</span> <span class="n">s1</span><span class="p">;</span>
+    <span class="n">absdiff</span><span class="p">(</span><span class="n">I1</span><span class="p">,</span> <span class="n">I2</span><span class="p">,</span> <span class="n">s1</span><span class="p">);</span>       <span class="c1">// |I1 - I2|</span>
+    <span class="n">s1</span><span class="p">.</span><span class="n">convertTo</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">CV_32F</span><span class="p">);</span>  <span class="c1">// cannot make a square on 8 bits</span>
+    <span class="n">s1</span> <span class="o">=</span> <span class="n">s1</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">s1</span><span class="p">);</span>           <span class="c1">// |I1 - I2|^2</span>
+    <span class="n">Scalar</span> <span class="n">s</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">s1</span><span class="p">);</span>        <span class="c1">// sum elements per channel</span>
+    <span class="kt">double</span> <span class="n">sse</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="c1">// sum channels</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">sse</span> <span class="o">&lt;=</span> <span class="mf">1e-10</span><span class="p">)</span> <span class="c1">// for small values return zero</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">mse</span>  <span class="o">=</span> <span class="n">sse</span> <span class="o">/</span> <span class="p">(</span><span class="kt">double</span><span class="p">)(</span><span class="n">I1</span><span class="p">.</span><span class="n">channels</span><span class="p">()</span> <span class="o">*</span> <span class="n">I1</span><span class="p">.</span><span class="n">total</span><span class="p">());</span>
+        <span class="kt">double</span> <span class="n">psnr</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">log10</span><span class="p">((</span><span class="mi">255</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span> <span class="o">/</span> <span class="n">mse</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">psnr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">Scalar</span> <span class="nf">getMSSIM</span><span class="p">(</span> <span class="k">const</span> <span class="n">Mat</span><span class="o">&amp;</span> <span class="n">i1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Mat</span><span class="o">&amp;</span> <span class="n">i2</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">C1</span> <span class="o">=</span> <span class="mf">6.5025</span><span class="p">,</span> <span class="n">C2</span> <span class="o">=</span> <span class="mf">58.5225</span><span class="p">;</span>
+    <span class="cm">/***************************** INITS **********************************/</span>
+    <span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="n">CV_32F</span><span class="p">;</span>
+    <span class="n">Mat</span> <span class="n">I1</span><span class="p">,</span> <span class="n">I2</span><span class="p">;</span>
+    <span class="n">i1</span><span class="p">.</span><span class="n">convertTo</span><span class="p">(</span><span class="n">I1</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>            <span class="c1">// cannot calculate on one byte large values</span>
+    <span class="n">i2</span><span class="p">.</span><span class="n">convertTo</span><span class="p">(</span><span class="n">I2</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
+    <span class="n">Mat</span> <span class="n">I2_2</span>   <span class="o">=</span> <span class="n">I2</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">I2</span><span class="p">);</span>        <span class="c1">// I2^2</span>
+    <span class="n">Mat</span> <span class="n">I1_2</span>   <span class="o">=</span> <span class="n">I1</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">I1</span><span class="p">);</span>        <span class="c1">// I1^2</span>
+    <span class="n">Mat</span> <span class="n">I1_I2</span>  <span class="o">=</span> <span class="n">I1</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">I2</span><span class="p">);</span>        <span class="c1">// I1 * I2</span>
+    <span class="cm">/*************************** END INITS **********************************/</span>
+    <span class="n">Mat</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">;</span>                   <span class="c1">// PRELIMINARY COMPUTING</span>
+    <span class="n">GaussianBlur</span><span class="p">(</span><span class="n">I1</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">Size</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="mf">1.5</span><span class="p">);</span>
+    <span class="n">GaussianBlur</span><span class="p">(</span><span class="n">I2</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">Size</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="mf">1.5</span><span class="p">);</span>
+    <span class="n">Mat</span> <span class="n">mu1_2</span>   <span class="o">=</span>   <span class="n">mu1</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">mu1</span><span class="p">);</span>
+    <span class="n">Mat</span> <span class="n">mu2_2</span>   <span class="o">=</span>   <span class="n">mu2</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">mu2</span><span class="p">);</span>
+    <span class="n">Mat</span> <span class="n">mu1_mu2</span> <span class="o">=</span>   <span class="n">mu1</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">mu2</span><span class="p">);</span>
+    <span class="n">Mat</span> <span class="n">sigma1_2</span><span class="p">,</span> <span class="n">sigma2_2</span><span class="p">,</span> <span class="n">sigma12</span><span class="p">;</span>
+    <span class="n">GaussianBlur</span><span class="p">(</span><span class="n">I1_2</span><span class="p">,</span> <span class="n">sigma1_2</span><span class="p">,</span> <span class="n">Size</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="mf">1.5</span><span class="p">);</span>
+    <span class="n">sigma1_2</span> <span class="o">-=</span> <span class="n">mu1_2</span><span class="p">;</span>
+    <span class="n">GaussianBlur</span><span class="p">(</span><span class="n">I2_2</span><span class="p">,</span> <span class="n">sigma2_2</span><span class="p">,</span> <span class="n">Size</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="mf">1.5</span><span class="p">);</span>
+    <span class="n">sigma2_2</span> <span class="o">-=</span> <span class="n">mu2_2</span><span class="p">;</span>
+    <span class="n">GaussianBlur</span><span class="p">(</span><span class="n">I1_I2</span><span class="p">,</span> <span class="n">sigma12</span><span class="p">,</span> <span class="n">Size</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="mf">1.5</span><span class="p">);</span>
+    <span class="n">sigma12</span> <span class="o">-=</span> <span class="n">mu1_mu2</span><span class="p">;</span>
+    <span class="n">Mat</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">t3</span><span class="p">;</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">mu1_mu2</span> <span class="o">+</span> <span class="n">C1</span><span class="p">;</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma12</span> <span class="o">+</span> <span class="n">C2</span><span class="p">;</span>
+    <span class="n">t3</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">t2</span><span class="p">);</span>                 <span class="c1">// t3 = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">mu1_2</span> <span class="o">+</span> <span class="n">mu2_2</span> <span class="o">+</span> <span class="n">C1</span><span class="p">;</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">sigma1_2</span> <span class="o">+</span> <span class="n">sigma2_2</span> <span class="o">+</span> <span class="n">C2</span><span class="p">;</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">t2</span><span class="p">);</span>                 <span class="c1">// t1 =((mu1_2 + mu2_2 + C1).*(sigma1_2 + sigma2_2 + C2))</span>
+    <span class="n">Mat</span> <span class="n">ssim_map</span><span class="p">;</span>
+    <span class="n">divide</span><span class="p">(</span><span class="n">t3</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">ssim_map</span><span class="p">);</span>        <span class="c1">// ssim_map =  t3./t1;</span>
+    <span class="n">Scalar</span> <span class="n">mssim</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">ssim_map</span><span class="p">);</span>   <span class="c1">// mssim = average of ssim map</span>
+    <span class="k">return</span> <span class="n">mssim</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>嗯？ 不想看英文。这里有个中文版（不过不建议看这个中文版）https://www.w3cschool.cn/opencv/opencv-v4na2dr6.html</p>
+
+<p>之后编译源码</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装依赖 我在 debian:buster 上测试运行的</span>
+apt-get update <span class="nt">-y</span> <span class="o">&amp;&amp;</span> apt-get <span class="nb">install</span> <span class="nt">-y</span> libopencv-dev g++ wget
+
+g++ video-input-psnr-ssim.cpp <span class="nt">-o</span> video-input-psnr-ssim <span class="nt">-I</span> /usr/include/opencv4 <span class="nt">-L</span> /usr/lib <span class="nt">-lopencv_core</span> <span class="nt">-lopencv_highgui</span> <span class="nt">-lopencv_imgproc</span> <span class="nt">-lopencv_videoio</span>
+</code></pre></div></div>
+
+<p>这样来运行：</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/opencv/opencv/raw/master/samples/data/Megamind.avi
+wget https://github.com/opencv/opencv/raw/master/samples/data/Megamind_bugy.avi
+./video-input-psnr-ssim Megamind.avi Megamind_bugy.avi 35 10
+</code></pre></div></div>
+
+<h3 id="之后就是把这个流程自动化">之后就是把这个流程自动化</h3>
+
+<p>这个要跑在 ci 里自动输出结果的。显示窗口可不行，还要改造一下。直接去掉窗口。很容易，C++ 的基础</p>
+
+<p>把结果算平均值已经有人写好了 https://github.com/yeokm1/ssim</p>
+
+<p>直接把那段代码拿过来就能用</p>
+
+<p>我们用 gstreamer videotestsrc 来做视频源</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gst-launch-1.0 videotestsrc <span class="o">!</span> videoconvert <span class="o">!</span> autovideosink
+</code></pre></div></div>
+
+<p>然回用 webrtc 去发送这段视频</p>
+
+<p>可以用这个项目来发送视频 https://github.com/pion/webrtc/tree/master/examples/play-from-disk</p>
+
+<p>当然是可以使用 cgo 的。用go 去调用 gstreamer 。这样可以少一步图像转换
+https://github.com/pion/example-webrtc-applications/tree/master/gstreamer-send</p>
+
+<p>然回另一端接收图像。保存成文件
+https://github.com/pion/webrtc/tree/master/examples/save-to-disk</p>
+
+<p>之后把这个坨都放在 gitlab ci 里</p>
+
+<p>我最终输出的结果长这样：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt; &lt; &lt; === END === &gt; &gt; &gt;
+Final Results
+R 96.10% G 95.99% B 92.14%
+Similarity = 94.74%
+</code></pre></div></div>
+
+<p>然回在 <code class="highlighter-rouge">Setting</code> &gt; <code class="highlighter-rouge">CI / CD</code> &gt; <code class="highlighter-rouge">General pipelines</code> &gt; <code class="highlighter-rouge">Test coverage parsing</code> 里这样写：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Similarity = \d+.\d+%
+</code></pre></div></div>
+
+<p>这样就把视频相识度结果输出到代码覆盖率上了（对于这种图像传输算相似度才有意义 （（（大雾</p>
+
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html';
+      this.page.identifier = 'https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://a-wing-1.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+
+  <a class="u-url" href="/program/2019/11/05/use_opencv_for_unittest.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hi! 上天不?</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hi! 上天不?
+            
+            </li>
+            
+        </ul>
+
+        <a href="https://www.upyun.com/">
+          <img src="https://a-wing.top/assets/upyun_logo.png"/>
+        </a>
+
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
+  
+  
+  
+  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
+  
+  
+  
+</ul>
+
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+        </a>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>新一的个人博客</p>
+        <p>Power by Jekyll && Theme by minima-改</p>
+        <p>Copyright © 2016-2019 Powered by a-wing</p>
+      </div>
+
+      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

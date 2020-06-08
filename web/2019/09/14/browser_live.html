@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>浅谈浏览器实时流媒体 - Hi! 上天不?</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>浅谈浏览器实时流媒体 | Hi! 上天不?</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="浅谈浏览器实时流媒体" />
+<meta name="author" content="metal A-wing" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="我觉得应改把浏览器实时流媒体分成三层（传输，容器，编解码），这样更容易理解，不过他们并不能任意组合" />
+<meta property="og:description" content="我觉得应改把浏览器实时流媒体分成三层（传输，容器，编解码），这样更容易理解，不过他们并不能任意组合" />
+<link rel="canonical" href="https://a-wing.top/web/2019/09/14/browser_live.html" />
+<meta property="og:url" content="https://a-wing.top/web/2019/09/14/browser_live.html" />
+<meta property="og:site_name" content="Hi! 上天不?" />
+<meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-09-14T12:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"我觉得应改把浏览器实时流媒体分成三层（传输，容器，编解码），这样更容易理解，不过他们并不能任意组合","@type":"BlogPosting","headline":"浅谈浏览器实时流媒体","dateModified":"2019-09-14T12:00:00+00:00","datePublished":"2019-09-14T12:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/web/2019/09/14/browser_live.html"},"author":{"@type":"Person","name":"metal A-wing"},"url":"https://a-wing.top/web/2019/09/14/browser_live.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
+  
+    <script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-117419557-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+
+          <a href="https://travis-ci.org/a-wing/blog">
+            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
+          </a>
+
+            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
+
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">关于我</a>
+            
+          
+            
+            
+            <a class="page-link" href="/equipment/">硬件设备</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/links/">友情连接</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/projects/">个人项目</a>
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">浅谈浏览器实时流媒体</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-09-14T12:00:00+00:00" itemprop="datePublished">
+        
+        Sep 14, 2019
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>我觉得应改把浏览器实时流媒体分成三层（传输，容器，编解码），这样更容易理解，不过他们并不能任意组合</p>
+
+<h2 id="分层结构">分层结构</h2>
+<h4 id="数据传输层底层传输层浏览器原生支持">数据传输层（底层传输层，浏览器原生支持）</h4>
+<ul>
+  <li>http</li>
+  <li>websocket</li>
+  <li>webrtc</li>
+  <li>rtmp (这个浏览器本身不支持，要靠外置插件)</li>
+</ul>
+
+<h4 id="实时流传输层中间传输层">实时流传输层（中间传输层）</h4>
+<ul>
+  <li>rtp</li>
+  <li>rtsp</li>
+</ul>
+
+<h4 id="容器层">容器层</h4>
+<ul>
+  <li>浏览器原生支持</li>
+  <li>Media Source Extensions
+    <ul>
+      <li>flv</li>
+      <li>ts</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="编解-码">编/解 码</h4>
+<ul>
+  <li>vp8</li>
+  <li>vp9</li>
+  <li>h264</li>
+  <li>h265</li>
+</ul>
+
+<h4 id="编解码-信息交换">编解码 信息交换</h4>
+<ul>
+  <li>sdp</li>
+  <li>m3u8</li>
+  <li>mpd</li>
+  <li>webrtc sdp</li>
+</ul>
+
+<p>我这里分了四层（<code class="highlighter-rouge">编解码 信息交换</code> 和 <code class="highlighter-rouge">编/解 码</code> 不会同时运行，先信息交换再编解码）。。因为浏览器容器层是由原生支持的，只有播放原本浏览器不支持的容器是才需要 MSE</p>
+
+<p><code class="highlighter-rouge">实时流传输层（中间传输层）</code> 这个其实是可有可无的，大部分情况都是没有的</p>
+
+<p>由于浏览器实现的编解码都不同，一般都要交换一下支持的<code class="highlighter-rouge">编解码</code>的信息 一般都用 sdp</p>
+
+<h2 id="实时流方案">实时流方案</h2>
+<h3 id="hls">HLS</h3>
+<blockquote>
+  <p>HTTP Live Streaming（缩写是HLS）是一个由苹果公司提出的基于HTTP的流媒体网络传输协议。是苹果公司QuickTime X和iPhone软件系统的一部分。它的工作原理是把整个流分成一个个小的基于HTTP的文件来下载，每次只下载一些。当媒体流正在播放时，客户端可以选择从许多不同的备用源中以不同的速率下载同样的资源，允许流媒体会话适应不同的数据速率。在开始一个流媒体会话时，客户端会下载一个包含元数据的extended M3U (m3u8) playlist文件，用于寻找可用的媒体流。</p>
+</blockquote>
+
+<p>将视频分成5-10秒的视频小分片，然后用m3u8索引表进行管理，由于客户端下载到的视频都是5-10秒的完整数据，故视频的流畅性很好，但也同样引入了很大的延迟(HLS的一般延迟在10-30s左右)。实际上还是纯“文本协议”相比于FLV，HLS在iPhone和大部分android手机浏览器上的支持非常给力。HLS协议客户端支持简单, 只需要支持 HTTP 请求即可, HTTP 协议无状态, 只需要按顺序下载媒体片段即可，而且网络兼容性好, HTTP 数据包也可以方便地通过防火墙或者代理服务器。但是相比RTMP 这类长连接协议, 用到互动直播场景延时较高。 对于点播服务来说, 由于 TS 切片通常较小, 海量碎片在文件分发, 一致性缓存, 存储等方面都有较大挑战，小文件碎片化严重</p>
+
+<p>这东西是苹果设备上独有的。但浏览器的兼容可以用 hls.js</p>
+
+<h3 id="mpeg-dash">MPEG-DASH</h3>
+<blockquote>
+  <p>MEPG 推出 MEPG-DASH 标准，旨在为动态自适应流媒体技术创造一种同一的协议标准。DASH 也得到了许多公司的支持，Apple、Adobe、Microsoft、Netflix、Qualcomm 表示只要 DASH 完成，就会支持这个标准。</p>
+</blockquote>
+
+<p>这个和 HLS 类似。只是把 m3u8 换成了 mpd，加了动态自适应</p>
+
+<h3 id="flash">Flash</h3>
+<p>这东西用的是 rtmp 。浏览器本身不支持。要靠外置插件来实现（chrome 有一段很长的时间内置了 flash 插件）</p>
+
+<h3 id="http-flv--websocket-flv">HTTP-FLV &amp;&amp; WebSocket-FLV</h3>
+<p>只是把 flv 容器用 http 或 webSocket 形式传输过来。但要播放 flv 容器的数据还是要用 flash ，或者用基于 MSE 的方案。典型就是使用 <code class="highlighter-rouge">flv.js</code></p>
+
+<h3 id="rtsp">rtsp</h3>
+<p>rtsp 底层是 rtp 或 tcp 。rtp 底层是 udp</p>
+
+<p>是可以把 rtsp 以 websocket 的形式传输过来。再使用 MSE 扩展</p>
+
+<p>https://github.com/Streamedian/html5_rtsp_player</p>
+
+<p><strong>注：这个方案我没试过，rtsp 实现也很复杂</strong></p>
+
+<h3 id="webrtc">webrtc</h3>
+<p>webrtc 里有一堆黑科技。原理很复杂，展开来说实在东西太多，其实只记在几件事就可以了</p>
+
+<ol>
+  <li>webrtc 是 p2p 传的是 udp</li>
+  <li>stun 和 turn 只是为了实现 p2p 连接，直连模式和中继模式</li>
+  <li>webrtc 是使用 rtp 来传流媒体的，也有 rtcp 的数据，这点和 rtsp 类似。可以当成一种特殊的 rtsp 实现</li>
+</ol>
+
+<p>一般用于视频会议，占资源很高，可以一对多，但不适合一对很多用户来直播</p>
+
+<h2 id="一个简单对比">一个简单对比</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>方案</th>
+      <th>传输方式</th>
+      <th>视频封装格式</th>
+      <th>延时</th>
+      <th>浏览器支持</th>
+      <th>应用场景</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>HLS</td>
+      <td>http</td>
+      <td>ts</td>
+      <td>10~30s</td>
+      <td>apple 原生支持，其他的要用 MSE 扩展</td>
+      <td>直播</td>
+    </tr>
+    <tr>
+      <td>DASH</td>
+      <td>http</td>
+      <td>mp4 ts</td>
+      <td>10~30s</td>
+      <td>未来的标准，MSE dash.js</td>
+      <td>直播</td>
+    </tr>
+    <tr>
+      <td>Flash</td>
+      <td>tcp流</td>
+      <td>flv</td>
+      <td>2s~5s</td>
+      <td>Flash插件</td>
+      <td>直播</td>
+    </tr>
+    <tr>
+      <td>http-flv</td>
+      <td>HTTP</td>
+      <td>flv</td>
+      <td>2s~5s</td>
+      <td>通过 flv.js</td>
+      <td>直播</td>
+    </tr>
+    <tr>
+      <td>websocket-flv</td>
+      <td>websocket</td>
+      <td>flv</td>
+      <td>1s~3s</td>
+      <td>通过 flv.js</td>
+      <td>直播</td>
+    </tr>
+    <tr>
+      <td>rtsp</td>
+      <td>websocket</td>
+      <td>mp4 flv</td>
+      <td>500ms</td>
+      <td>不支持，通过 MSE</td>
+      <td>低延时直播，视频会议</td>
+    </tr>
+    <tr>
+      <td>webrtc</td>
+      <td>rtp</td>
+      <td>mp4</td>
+      <td>200ms</td>
+      <td>支持，未来浏览器标准</td>
+      <td>视频会议</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="参考文章">参考文章</h3>
+<p>直播协议对比：
+https://www.jianshu.com/p/cf02eb8080ec</p>
+
+<p>HLS，RTSP，RTMP的区别：
+https://www.jianshu.com/p/70c9a2fd918b</p>
+
+<p>HLS与DASH流媒体协议对比：
+https://wiki.zohead.com/%E6%8A%80%E6%9C%AF/%E9%9F%B3%E8%A7%86%E9%A2%91/HLS%E4%B8%8EDASH%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE%E5%AF%B9%E6%AF%94.md</p>
+
+<p>使用flv.js做直播：
+https://wuhaolin.cn/2017/05/17/%E4%BD%BF%E7%94%A8flv.js%E5%81%9A%E7%9B%B4%E6%92%AD/</p>
+
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://a-wing.top/web/2019/09/14/browser_live.html';
+      this.page.identifier = 'https://a-wing.top/web/2019/09/14/browser_live.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://a-wing-1.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+
+  <a class="u-url" href="/web/2019/09/14/browser_live.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hi! 上天不?</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hi! 上天不?
+            
+            </li>
+            
+        </ul>
+
+        <a href="https://www.upyun.com/">
+          <img src="https://a-wing.top/assets/upyun_logo.png"/>
+        </a>
+
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
+  
+  
+  
+  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
+  
+  
+  
+</ul>
+
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+        </a>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>新一的个人博客</p>
+        <p>Power by Jekyll && Theme by minima-改</p>
+        <p>Copyright © 2016-2019 Powered by a-wing</p>
+      </div>
+
+      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
