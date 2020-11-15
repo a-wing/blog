@@ -25,4 +25,5 @@ permalink: /links/
 * [谭枫 `_{:3 」∠}_`](https://keyin.now.sh/)
 * [IO 酱](https://iovxw.net/)
 * [是稀释](https://blog.stdin.in/)
+* [卡夫酱](https://frantic1048.com/)
 
