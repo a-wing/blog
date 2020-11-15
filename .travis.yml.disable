@@ -1,14 +1,9 @@
 language: ruby
 rvm:
-  - 2.6
-
-install:
-  #  - gem install jekyll
-  - gem install bundler
-  - bundler install
+  - 2.5
 
 script:
-  - JEKYLL_ENV=production bundler exec jekyll build
+  - JEKYLL_ENV=production bundle exec jekyll build
 
 before_deploy:
   - wget http://collection.b0.upaiyun.com/softwares/upx/upx-linux-amd64-v0.2.3 && mv upx-linux-amd64-v0.2.3 upx
