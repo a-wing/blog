@@ -1,4 +1,290 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN"><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="https://a-wing.top/feed.xml" rel="self" type="application/atom+xml" /><link href="https://a-wing.top/" rel="alternate" type="text/html" hreflang="zh_CN" /><updated>2020-11-15T17:58:47+00:00</updated><id>https://a-wing.top/feed.xml</id><title type="html">Hi! 上天不?</title><subtitle>新一的个人博客</subtitle><entry><title type="html">从零开始的学游泳</title><link href="https://a-wing.top/sport/2020/11/07/learn_to_swim.html" rel="alternate" type="text/html" title="从零开始的学游泳" /><published>2020-11-07T10:00:00+00:00</published><updated>2020-11-07T10:00:00+00:00</updated><id>https://a-wing.top/sport/2020/11/07/learn_to_swim</id><content type="html" xml:base="https://a-wing.top/sport/2020/11/07/learn_to_swim.html">&lt;p&gt;这天我参加了我人生中第一场游泳比赛 100M 蛙泳和 100M 自由泳，分别取得了第三名和第五名的成绩（小型比赛缺席的人太多，我运气比较好）。本文就分享一下我从旱鸭子，从头开始学习游泳的过程：
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN"><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="https://a-wing.top/feed.xml" rel="self" type="application/atom+xml" /><link href="https://a-wing.top/" rel="alternate" type="text/html" hreflang="zh_CN" /><updated>2020-12-05T09:10:04+00:00</updated><id>https://a-wing.top/feed.xml</id><title type="html">Hi! 上天不?</title><subtitle>新一的个人博客</subtitle><entry><title type="html">MQTT 踩坑指南</title><link href="https://a-wing.top/iot/2020/12/05/mqtt.html" rel="alternate" type="text/html" title="MQTT 踩坑指南" /><published>2020-12-05T09:00:00+00:00</published><updated>2020-12-05T09:00:00+00:00</updated><id>https://a-wing.top/iot/2020/12/05/mqtt</id><content type="html" xml:base="https://a-wing.top/iot/2020/12/05/mqtt.html">&lt;p&gt;MQTT（Message Queuing Telemetry Transport 消息队列遥测传输协议）
+是一种基于发布/订阅（publish/subscribe）模式的 “轻量级” 通讯协议，该协议构建于 TCP/IP 协议上，最早由 IBM 在 1999 年发布。
+目前由 OASIS 维护 &lt;a href=&quot;https://mqtt.org&quot;&gt;MQTT&lt;/a&gt; 标准&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;h3 id=&quot;oasis-这个组织维护的标准大部分人应该都没听说过&quot;&gt;OASIS 这个组织维护的标准大部分人应该都没听说过&lt;/h3&gt;
+
+  &lt;p&gt;不过 AMQP — Advanced Message Queuing Protocol 大概不用多说 。。。大名鼎鼎的 RabbitMQ 就是实现的这个协议&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;MQTT 最大优点在于，可以以极少的代码和有限的带宽，为连接远程设备提供实时可靠的消息服务。作为一种低开销、低带宽占用的即时通讯协议，使其在物联网、小型设备、移动应用等方面有较广泛的应用。&lt;/p&gt;
+
+&lt;p&gt;实现MQTT协议需要客户端和服务器端通讯完成，在通讯过程中，MQTT协议中有三种身份：发布者（Publish）、代理（Broker）（服务器）、订阅者（Subscribe）。其中，消息的发布者和订阅者都是客户端，消息代理是服务器，消息发布者可以同时是订阅者。&lt;/p&gt;
+
+&lt;p&gt;MQTT传输的消息分为：主题（Topic）和负载（payload）两部分&lt;/p&gt;
+
+&lt;p&gt;由于物联网的环境是非常特别的，所以MQTT遵循以下设计原则：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;精简，不添加可有可无的功能；&lt;/li&gt;
+  &lt;li&gt;发布/订阅（Pub/Sub）模式，方便消息在传感器之间传递；&lt;/li&gt;
+  &lt;li&gt;允许用户动态创建主题，零运维成本；&lt;/li&gt;
+  &lt;li&gt;把传输量降到最低以提高传输效率；&lt;/li&gt;
+  &lt;li&gt;把低带宽、高延迟、不稳定的网络等因素考虑在内；&lt;/li&gt;
+  &lt;li&gt;支持连续的会话控制；&lt;/li&gt;
+  &lt;li&gt;理解客户端计算能力可能很低；&lt;/li&gt;
+  &lt;li&gt;提供服务质量管理；&lt;/li&gt;
+  &lt;li&gt;假设数据不可知，不强求传输数据的类型与格式，保持灵活性。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;clientid&quot;&gt;ClientID&lt;/h3&gt;
+
+&lt;p&gt;这个必须是唯一的。如果没有设置就会随机生成一个&lt;/p&gt;
+
+&lt;p&gt;如果有 &lt;code class=&quot;highlighter-rouge&quot;&gt;ClientID&lt;/code&gt; 相同的就会把之前的挤掉&lt;/p&gt;
+
+&lt;h3 id=&quot;last-will-遗愿消息&quot;&gt;Last Will （遗愿消息）&lt;/h3&gt;
+
+&lt;p&gt;MQTT 客户端向服务器端 &lt;code class=&quot;highlighter-rouge&quot;&gt;CONNECT&lt;/code&gt; 请求时，可以设置是否发送遗愿消息(Will Message)标志，和遗愿消息主题(Topic)与内容(Payload)。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注：&lt;/p&gt;
+
+  &lt;p&gt;遗愿消息只有 &lt;code class=&quot;highlighter-rouge&quot;&gt;CONNECT&lt;/code&gt; 才能设置&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;MQTT 客户端异常下线时(客户端断开前未向服务器发送 DISCONNECT 消息)，MQTT 消息服务器会发布遗愿消息。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;如果你想区分连接状态（网络错误和主动关闭）的话
+应该自定义一个状态的 topic 配合 Last Will 来使用&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;retain驻留&quot;&gt;Retain（驻留）&lt;/h3&gt;
+
+&lt;p&gt;MQTT 客户端向服务器发布(PUBLISH)消息时，可以设置驻留消息(Retained Message)标志。
+驻留消息(Retained Message)会驻留在消息服务器，后来的订阅者订阅主题时仍可以接收该消息。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;同一 Topic 下的 Retain 消息有且只能有一条，后来的驻留消息会取代前一条驻留消息&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;qos-质量控制&quot;&gt;QoS （质量控制）&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;qos&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;无任何保证&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;1&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;一定会到达&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;2&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;一定会到达并且只会到达一次&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;MQTT 发布消息 QoS 保证不是全部的，是客户端与 Broker 之间的&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;QOS 是针对与和 Broker 通信，因此 publish 了一条消息并不能保证 subscriber 一定会收到，比如：发消息时订阅还没有完成&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;mqttv5 新特性：&lt;a href=&quot;https://www.emqx.io/cn/blog/mqtt5-request-response&quot;&gt;请求响应&lt;/a&gt; 可以解决这个问题&lt;/p&gt;
+
+&lt;p&gt;不过 mqttv5 这也有问题。。我有要是多个订阅者那（按照你业务具体需求来实现吧，返回个 &lt;code class=&quot;highlighter-rouge&quot;&gt;${ClientID} ACK&lt;/code&gt; 之类的）&lt;/p&gt;
+
+&lt;h3 id=&quot;topic-主题消息路由&quot;&gt;Topic (主题：消息路由）&lt;/h3&gt;
+
+&lt;p&gt;主题 (Topic) 通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt; 分割层级，支持 &lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;#&lt;/code&gt; 通配符:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/a&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; 是两个完全不同的 topic&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;: 表示通配一个层级，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;a/+&lt;/code&gt;，匹配 &lt;code class=&quot;highlighter-rouge&quot;&gt;a/x&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;a/y&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;#&lt;/code&gt;: 表示通配多个层级，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;a/#&lt;/code&gt;，匹配 &lt;code class=&quot;highlighter-rouge&quot;&gt;a/x&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;a/b/c/d&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;可以这样写：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;chat/room/1
+
+chat/#
+
+sensor/10/temperature
+
+sensor/+/temperature
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注:&lt;/p&gt;
+
+  &lt;p&gt;订阅者可以订阅含通配符主题，但发布者不允许向含通配符主题发布消息。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;mqtt 5 vs mqtt 3.1.1&lt;/p&gt;
+
+&lt;p&gt;目前有这两个主要的版本。。mqttv5 的改变巨大&lt;/p&gt;
+
+&lt;h2 id=&quot;网络波动引起的丢消息问题&quot;&gt;网络波动引起的丢消息问题&lt;/h2&gt;
+
+&lt;h3 id=&quot;mqttv311-cleansession&quot;&gt;mqttv3.1.1 CleanSession&lt;/h3&gt;
+
+&lt;p&gt;网络波动引起的 Subscribe 状态的丢失&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;RabbitMQ 收到消息回执（Message acknowledgment）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这点和 RabbitMQ 不同（抱歉，我没有实际使用过 RabbitMQ。如果这个地方说错了，请务必指出）&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Reconnect&lt;/code&gt; 之后虽然恢复。但 &lt;code class=&quot;highlighter-rouge&quot;&gt;Disconnect&lt;/code&gt; 到 &lt;code class=&quot;highlighter-rouge&quot;&gt;Reconnect&lt;/code&gt; 之间的信息会丢失&lt;/p&gt;
+
+&lt;p&gt;用这个选项是可以解决的 &lt;a href=&quot;https://sourcegraph.com/github.com/eclipse/paho.mqtt.golang/-/blob/options.go#L104:3&quot;&gt;CleanSession 的默认设置是开启的，要关掉这个&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;还应该把检测掉线延时设置大一点，这样对抗网络波动的能力就更好些&lt;/p&gt;
+
+&lt;p&gt;不过这里还有其他问题。。。如果长时间没有恢复（这个看各 broker 是如何实现的）
+不过 mqttv5 加入了&lt;code class=&quot;highlighter-rouge&quot;&gt;session-expiry-interval&lt;/code&gt; 这个地方更完善了&lt;/p&gt;
+
+&lt;h3 id=&quot;eclipse-paho-项目&quot;&gt;eclipse Paho 项目&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;pāho (verb) to broadcast, make widely known, announce, disseminate, transmit (via the Maori dictionary)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://wiki.eclipse.org/Paho&quot;&gt;paho 是毛利语中的广播的意思&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这个项目里有几乎所有语言的 mqtt 库的实现（有钱真好）&lt;/p&gt;
+
+&lt;h2 id=&quot;broker&quot;&gt;Broker&lt;/h2&gt;
+
+&lt;h3 id=&quot;eclipse-mosquitto&quot;&gt;Eclipse Mosquitto&lt;/h3&gt;
+
+&lt;p&gt;可以把这个当作标准工具来开发，测试，和使用&lt;/p&gt;
+
+&lt;p&gt;Mosquitto 提个了非常好用的命令行工具可以用来开发调试&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;mosquitto_sub&lt;/li&gt;
+  &lt;li&gt;mosquitto_pub&lt;/li&gt;
+  &lt;li&gt;mosquitto_rr&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;直接用&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 开启起一个 mqtt broker，默认端口为 1883&lt;/span&gt;
+mosquitto
+
+&lt;span class=&quot;c&quot;&gt;# 订阅一个名为 test 的 topic&lt;/span&gt;
+mosquitto_sub &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; mqtt://localhost:1883/test
+
+&lt;span class=&quot;c&quot;&gt;# 推送一条内容为 `233` 的消息到 test&lt;/span&gt;
+mosquitto_pub &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; mqtt://localhost:1883/test &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;233&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 也可以这样订阅 topic 再推送消息&lt;/span&gt;
+mosquitto_rr &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; mqtt://localhost:1883/test &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;233&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;volantmq&quot;&gt;volantmq&lt;/h3&gt;
+
+&lt;p&gt;用 golang 写的。看起来还不错，不过我没用过&lt;/p&gt;
+
+&lt;h3 id=&quot;emqx&quot;&gt;emqx&lt;/h3&gt;
+
+&lt;p&gt;这个是国人用 &lt;code class=&quot;highlighter-rouge&quot;&gt;erlang&lt;/code&gt; 写的，还不错&lt;/p&gt;
+
+&lt;h3 id=&quot;mqtt-over-websocket&quot;&gt;MQTT Over Websocket&lt;/h3&gt;
+
+&lt;p&gt;MQTT 协议的 WebSocket 连接，必须采用 binary 模式，并携带子协议 Header:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Sec-WebSocket-Protocol:&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;mqttv5&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;mqttv3.1.1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这个是有标准文档的：&lt;a href=&quot;https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Using_WebSocket_as&quot;&gt;Using WebSocket as a network transport&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;jsonrpc-20-over-mqtt&quot;&gt;jsonrpc 2.0 Over MQTT&lt;/h3&gt;
+
+&lt;p&gt;这个好像是我原创的。不建议这样用，虽然我们在生产环境里用的这个。&lt;/p&gt;
+
+&lt;p&gt;有些异常情况的处理方案还不够完善。（极端恶劣的现实情况下表现比较骨感）&lt;/p&gt;
+
+&lt;p&gt;这个要把 Last Will 消息 和传输考虑进去。要依赖 &lt;code class=&quot;highlighter-rouge&quot;&gt;qos 2&lt;/code&gt; 和 Disable &lt;code class=&quot;highlighter-rouge&quot;&gt;CleanSession&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;topic 虽然是全双工的可以当 tcp 用。状态用另一个 topic 里提供&lt;/p&gt;
+
+&lt;p&gt;这里判断 rpc 消息是否到达是有问题的。（办法是有，不过我目前没有找到很优雅的方案）&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/eclipse/paho.golang/blob/master/paho/extensions/rpc/rpc.go&quot;&gt;另一种 mqtt rpc 的方案 （这个使用了 mqttv5 的特性）&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;mqtt rpc 这个仅供参考&lt;/p&gt;
+
+&lt;h3 id=&quot;事故和反思&quot;&gt;事故和反思&lt;/h3&gt;
+
+&lt;h4 id=&quot;broker-挂了&quot;&gt;Broker 挂了&lt;/h4&gt;
+
+&lt;p&gt;曾经有同事从硬件里读数据然后就以这个速率发送给 broker 。。。然后整个 Broker 都被拖垮了&lt;/p&gt;
+
+&lt;p&gt;发送速率还是要限制一下。这样高频的数据的意义在哪？（通过云端处理来实时控制不适合使用 mqtt 。。DDS 协议请（这货甚至有 21 种 QoS ））&lt;/p&gt;
+
+&lt;p&gt;发送速率建议不要太高。每秒一条，差不多（频率那么高的意义在那？）&lt;/p&gt;
+
+&lt;h4 id=&quot;为了快速响应设备断网&quot;&gt;为了快速响应设备断网&lt;/h4&gt;
+
+&lt;p&gt;如果要求快速响应有 &lt;code class=&quot;highlighter-rouge&quot;&gt;keep alive&lt;/code&gt; 的（默认 60s ），可以设置很低。&lt;/p&gt;
+
+&lt;p&gt;不过个人建议不要设置在 3s 以下（网络延时和时间差（ntp服务）可能会导致问题）&lt;/p&gt;
+
+&lt;p&gt;快速响应 &lt;code class=&quot;highlighter-rouge&quot;&gt;keep alive&lt;/code&gt; 10-15s 大概可以适配绝大部分情况了。&lt;/p&gt;
+
+&lt;p&gt;主动关闭时最好发送关闭的信息。&lt;/p&gt;
+
+&lt;p&gt;如果有人非要超级快的快速检测网络状态，你可以这样怼过去：你看 ssh 检测网络掉线也不是立刻能检测到&lt;/p&gt;
+
+&lt;h2 id=&quot;关于-mqtt-的客户端库我觉得好多库都有各种各样的问题&quot;&gt;关于 MQTT 的客户端库：我觉得好多库都有各种各样的问题&lt;/h2&gt;
+
+&lt;h3 id=&quot;mqttjs&quot;&gt;MQTT.js&lt;/h3&gt;
+
+&lt;p&gt;我每次都想吐嘈这个地方&lt;/p&gt;
+
+&lt;p&gt;这个库可是支持 &lt;code class=&quot;highlighter-rouge&quot;&gt;alis&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;wxs&lt;/code&gt; 协议的哟～&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/mqttjs/MQTT.js/blob/master/lib/connect/ali.js&quot;&gt;带你了解 ali 协议&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/mqttjs/MQTT.js/blob/master/lib/connect/wx.js&quot;&gt;带你了解 wx 协议&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/mqttjs/MQTT.js/issues/944&quot;&gt;没看明白？ 可以看这个中文的&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;eclipsepahomqttgolang&quot;&gt;eclipse/paho.mqtt.golang&lt;/h3&gt;
+
+&lt;p&gt;这个库只支持 mqttv3.1.1 你敢信？&lt;/p&gt;
+
+&lt;p&gt;你在看实现 &lt;a href=&quot;https://godoc.org/github.com/eclipse/paho.mqtt.golang&quot;&gt;API&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;一堆 interface 接口???&lt;/p&gt;
+
+&lt;h3 id=&quot;eclipsepahogolang&quot;&gt;eclipse/paho.golang&lt;/h3&gt;
+
+&lt;p&gt;eclipse 是有 mqttv5 的库的&lt;/p&gt;
+
+&lt;p&gt;大概是 &lt;code class=&quot;highlighter-rouge&quot;&gt;paho.mqtt.golang&lt;/code&gt; 实现过于魔幻。所以作者重新开了一个新坑（只是这个 API 看起来正常多了）&lt;/p&gt;
+
+&lt;h3 id=&quot;ruby-mqtt&quot;&gt;ruby-mqtt&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/njh/ruby-mqtt&quot;&gt;njh/ruby-mqtt&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这个不支持 &lt;code class=&quot;highlighter-rouge&quot;&gt;QoS 2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;类似 mqtt 特性支持不全的库还有很多。。这大概也是一大坑点&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;reference&quot;&gt;Reference:&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://mqtt.org/&quot;&gt;MQTT: The Standard for IoT Messaging&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://wiki.eclipse.org/Paho&quot;&gt;Paho Wiki&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.emqx.io/cn/blog/mqtt5-new-feature-clean-start-and-session-expiry-interval&quot;&gt;Clean Start 与 Session Expiry Interval - MQTT 5.0 新特性&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/emqx/emqx&quot;&gt;EMQ X&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/VolantMQ/volantmq&quot;&gt;volantmq&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">MQTT（Message Queuing Telemetry Transport 消息队列遥测传输协议） 是一种基于发布/订阅（publish/subscribe）模式的 “轻量级” 通讯协议，该协议构建于 TCP/IP 协议上，最早由 IBM 在 1999 年发布。 目前由 OASIS 维护 MQTT 标准</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">从零开始的学游泳</title><link href="https://a-wing.top/sport/2020/11/07/learn_to_swim.html" rel="alternate" type="text/html" title="从零开始的学游泳" /><published>2020-11-07T10:00:00+00:00</published><updated>2020-11-07T10:00:00+00:00</updated><id>https://a-wing.top/sport/2020/11/07/learn_to_swim</id><content type="html" xml:base="https://a-wing.top/sport/2020/11/07/learn_to_swim.html">&lt;p&gt;这天我参加了我人生中第一场游泳比赛 100M 蛙泳和 100M 自由泳，分别取得了第三名和第五名的成绩（小型比赛缺席的人太多，我运气比较好）。本文就分享一下我从旱鸭子，从头开始学习游泳的过程：
 &lt;strong&gt;学习游泳运动这件事和学习一种新的编程语言一样，都只不过是学了一项新技能&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;注本人并非游泳教练也不是专业人士这只是业余个人学习游泳的一点心得&quot;&gt;&lt;strong&gt;注：本人并非游泳教练，也不是专业人士，这只是业余个人学习游泳的一点心得&lt;/strong&gt;&lt;/h4&gt;
@@ -1278,181 +1564,4 @@ Similarity = 94.74%
 
 &lt;p&gt;&lt;strong&gt;最后总结一下就是，还真不能小瞧发月饼这件事，这里面学问还挺多&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;以上想法纯属个人YY，如有不同见解，请务必指出&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">这篇本来不想发出来，不过想了想还是发出来吧，毕竟我的想法也不一定是对的。</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">浅谈浏览器实时流媒体</title><link href="https://a-wing.top/web/2019/09/14/browser_live.html" rel="alternate" type="text/html" title="浅谈浏览器实时流媒体" /><published>2019-09-14T12:00:00+00:00</published><updated>2019-09-14T12:00:00+00:00</updated><id>https://a-wing.top/web/2019/09/14/browser_live</id><content type="html" xml:base="https://a-wing.top/web/2019/09/14/browser_live.html">&lt;p&gt;我觉得应改把浏览器实时流媒体分成三层（传输，容器，编解码），这样更容易理解，不过他们并不能任意组合&lt;/p&gt;
-
-&lt;h2 id=&quot;分层结构&quot;&gt;分层结构&lt;/h2&gt;
-&lt;h4 id=&quot;数据传输层底层传输层浏览器原生支持&quot;&gt;数据传输层（底层传输层，浏览器原生支持）&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;http&lt;/li&gt;
-  &lt;li&gt;websocket&lt;/li&gt;
-  &lt;li&gt;webrtc&lt;/li&gt;
-  &lt;li&gt;rtmp (这个浏览器本身不支持，要靠外置插件)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;实时流传输层中间传输层&quot;&gt;实时流传输层（中间传输层）&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;rtp&lt;/li&gt;
-  &lt;li&gt;rtsp&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;容器层&quot;&gt;容器层&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;浏览器原生支持&lt;/li&gt;
-  &lt;li&gt;Media Source Extensions
-    &lt;ul&gt;
-      &lt;li&gt;flv&lt;/li&gt;
-      &lt;li&gt;ts&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;编解-码&quot;&gt;编/解 码&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;vp8&lt;/li&gt;
-  &lt;li&gt;vp9&lt;/li&gt;
-  &lt;li&gt;h264&lt;/li&gt;
-  &lt;li&gt;h265&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;编解码-信息交换&quot;&gt;编解码 信息交换&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;sdp&lt;/li&gt;
-  &lt;li&gt;m3u8&lt;/li&gt;
-  &lt;li&gt;mpd&lt;/li&gt;
-  &lt;li&gt;webrtc sdp&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;我这里分了四层（&lt;code class=&quot;highlighter-rouge&quot;&gt;编解码 信息交换&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;编/解 码&lt;/code&gt; 不会同时运行，先信息交换再编解码）。。因为浏览器容器层是由原生支持的，只有播放原本浏览器不支持的容器是才需要 MSE&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;实时流传输层（中间传输层）&lt;/code&gt; 这个其实是可有可无的，大部分情况都是没有的&lt;/p&gt;
-
-&lt;p&gt;由于浏览器实现的编解码都不同，一般都要交换一下支持的&lt;code class=&quot;highlighter-rouge&quot;&gt;编解码&lt;/code&gt;的信息 一般都用 sdp&lt;/p&gt;
-
-&lt;h2 id=&quot;实时流方案&quot;&gt;实时流方案&lt;/h2&gt;
-&lt;h3 id=&quot;hls&quot;&gt;HLS&lt;/h3&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;HTTP Live Streaming（缩写是HLS）是一个由苹果公司提出的基于HTTP的流媒体网络传输协议。是苹果公司QuickTime X和iPhone软件系统的一部分。它的工作原理是把整个流分成一个个小的基于HTTP的文件来下载，每次只下载一些。当媒体流正在播放时，客户端可以选择从许多不同的备用源中以不同的速率下载同样的资源，允许流媒体会话适应不同的数据速率。在开始一个流媒体会话时，客户端会下载一个包含元数据的extended M3U (m3u8) playlist文件，用于寻找可用的媒体流。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;将视频分成5-10秒的视频小分片，然后用m3u8索引表进行管理，由于客户端下载到的视频都是5-10秒的完整数据，故视频的流畅性很好，但也同样引入了很大的延迟(HLS的一般延迟在10-30s左右)。实际上还是纯“文本协议”相比于FLV，HLS在iPhone和大部分android手机浏览器上的支持非常给力。HLS协议客户端支持简单, 只需要支持 HTTP 请求即可, HTTP 协议无状态, 只需要按顺序下载媒体片段即可，而且网络兼容性好, HTTP 数据包也可以方便地通过防火墙或者代理服务器。但是相比RTMP 这类长连接协议, 用到互动直播场景延时较高。 对于点播服务来说, 由于 TS 切片通常较小, 海量碎片在文件分发, 一致性缓存, 存储等方面都有较大挑战，小文件碎片化严重&lt;/p&gt;
-
-&lt;p&gt;这东西是苹果设备上独有的。但浏览器的兼容可以用 hls.js&lt;/p&gt;
-
-&lt;h3 id=&quot;mpeg-dash&quot;&gt;MPEG-DASH&lt;/h3&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;MEPG 推出 MEPG-DASH 标准，旨在为动态自适应流媒体技术创造一种同一的协议标准。DASH 也得到了许多公司的支持，Apple、Adobe、Microsoft、Netflix、Qualcomm 表示只要 DASH 完成，就会支持这个标准。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;这个和 HLS 类似。只是把 m3u8 换成了 mpd，加了动态自适应&lt;/p&gt;
-
-&lt;h3 id=&quot;flash&quot;&gt;Flash&lt;/h3&gt;
-&lt;p&gt;这东西用的是 rtmp 。浏览器本身不支持。要靠外置插件来实现（chrome 有一段很长的时间内置了 flash 插件）&lt;/p&gt;
-
-&lt;h3 id=&quot;http-flv--websocket-flv&quot;&gt;HTTP-FLV &amp;amp;&amp;amp; WebSocket-FLV&lt;/h3&gt;
-&lt;p&gt;只是把 flv 容器用 http 或 webSocket 形式传输过来。但要播放 flv 容器的数据还是要用 flash ，或者用基于 MSE 的方案。典型就是使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;flv.js&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;rtsp&quot;&gt;rtsp&lt;/h3&gt;
-&lt;p&gt;rtsp 底层是 rtp 或 tcp 。rtp 底层是 udp&lt;/p&gt;
-
-&lt;p&gt;是可以把 rtsp 以 websocket 的形式传输过来。再使用 MSE 扩展&lt;/p&gt;
-
-&lt;p&gt;https://github.com/Streamedian/html5_rtsp_player&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;注：这个方案我没试过，rtsp 实现也很复杂&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;webrtc&quot;&gt;webrtc&lt;/h3&gt;
-&lt;p&gt;webrtc 里有一堆黑科技。原理很复杂，展开来说实在东西太多，其实只记在几件事就可以了&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;webrtc 是 p2p 传的是 udp&lt;/li&gt;
-  &lt;li&gt;stun 和 turn 只是为了实现 p2p 连接，直连模式和中继模式&lt;/li&gt;
-  &lt;li&gt;webrtc 是使用 rtp 来传流媒体的，也有 rtcp 的数据，这点和 rtsp 类似。可以当成一种特殊的 rtsp 实现&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;一般用于视频会议，占资源很高，可以一对多，但不适合一对很多用户来直播&lt;/p&gt;
-
-&lt;h2 id=&quot;一个简单对比&quot;&gt;一个简单对比&lt;/h2&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;方案&lt;/th&gt;
-      &lt;th&gt;传输方式&lt;/th&gt;
-      &lt;th&gt;视频封装格式&lt;/th&gt;
-      &lt;th&gt;延时&lt;/th&gt;
-      &lt;th&gt;浏览器支持&lt;/th&gt;
-      &lt;th&gt;应用场景&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;HLS&lt;/td&gt;
-      &lt;td&gt;http&lt;/td&gt;
-      &lt;td&gt;ts&lt;/td&gt;
-      &lt;td&gt;10~30s&lt;/td&gt;
-      &lt;td&gt;apple 原生支持，其他的要用 MSE 扩展&lt;/td&gt;
-      &lt;td&gt;直播&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;DASH&lt;/td&gt;
-      &lt;td&gt;http&lt;/td&gt;
-      &lt;td&gt;mp4 ts&lt;/td&gt;
-      &lt;td&gt;10~30s&lt;/td&gt;
-      &lt;td&gt;未来的标准，MSE dash.js&lt;/td&gt;
-      &lt;td&gt;直播&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Flash&lt;/td&gt;
-      &lt;td&gt;tcp流&lt;/td&gt;
-      &lt;td&gt;flv&lt;/td&gt;
-      &lt;td&gt;2s~5s&lt;/td&gt;
-      &lt;td&gt;Flash插件&lt;/td&gt;
-      &lt;td&gt;直播&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;http-flv&lt;/td&gt;
-      &lt;td&gt;HTTP&lt;/td&gt;
-      &lt;td&gt;flv&lt;/td&gt;
-      &lt;td&gt;2s~5s&lt;/td&gt;
-      &lt;td&gt;通过 flv.js&lt;/td&gt;
-      &lt;td&gt;直播&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;websocket-flv&lt;/td&gt;
-      &lt;td&gt;websocket&lt;/td&gt;
-      &lt;td&gt;flv&lt;/td&gt;
-      &lt;td&gt;1s~3s&lt;/td&gt;
-      &lt;td&gt;通过 flv.js&lt;/td&gt;
-      &lt;td&gt;直播&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;rtsp&lt;/td&gt;
-      &lt;td&gt;websocket&lt;/td&gt;
-      &lt;td&gt;mp4 flv&lt;/td&gt;
-      &lt;td&gt;500ms&lt;/td&gt;
-      &lt;td&gt;不支持，通过 MSE&lt;/td&gt;
-      &lt;td&gt;低延时直播，视频会议&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;webrtc&lt;/td&gt;
-      &lt;td&gt;rtp&lt;/td&gt;
-      &lt;td&gt;mp4&lt;/td&gt;
-      &lt;td&gt;200ms&lt;/td&gt;
-      &lt;td&gt;支持，未来浏览器标准&lt;/td&gt;
-      &lt;td&gt;视频会议&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;参考文章&quot;&gt;参考文章&lt;/h3&gt;
-&lt;p&gt;直播协议对比：
-https://www.jianshu.com/p/cf02eb8080ec&lt;/p&gt;
-
-&lt;p&gt;HLS，RTSP，RTMP的区别：
-https://www.jianshu.com/p/70c9a2fd918b&lt;/p&gt;
-
-&lt;p&gt;HLS与DASH流媒体协议对比：
-https://wiki.zohead.com/%E6%8A%80%E6%9C%AF/%E9%9F%B3%E8%A7%86%E9%A2%91/HLS%E4%B8%8EDASH%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE%E5%AF%B9%E6%AF%94.md&lt;/p&gt;
-
-&lt;p&gt;使用flv.js做直播：
-https://wuhaolin.cn/2017/05/17/%E4%BD%BF%E7%94%A8flv.js%E5%81%9A%E7%9B%B4%E6%92%AD/&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">我觉得应改把浏览器实时流媒体分成三层（传输，容器，编解码），这样更容易理解，不过他们并不能任意组合</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+&lt;p&gt;以上想法纯属个人YY，如有不同见解，请务必指出&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">这篇本来不想发出来，不过想了想还是发出来吧，毕竟我的想法也不一定是对的。</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
