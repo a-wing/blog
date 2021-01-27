@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PingCAP 面试：Jenkins 和 Kubernetes - Hi! 上天不?</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>PingCAP 面试：Jenkins 和 Kubernetes | Hi! 上天不?</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="PingCAP 面试：Jenkins 和 Kubernetes" />
+<meta name="author" content="metal A-wing" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="看我给你表演一个绝活，12 个小时之内完成" />
+<meta property="og:description" content="看我给你表演一个绝活，12 个小时之内完成" />
+<link rel="canonical" href="https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html" />
+<meta property="og:url" content="https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html" />
+<meta property="og:site_name" content="Hi! 上天不?" />
+<meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-27T09:00:00+00:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html","headline":"PingCAP 面试：Jenkins 和 Kubernetes","dateModified":"2021-01-27T09:00:00+00:00","datePublished":"2021-01-27T09:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","author":{"@type":"Person","name":"metal A-wing"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html"},"description":"看我给你表演一个绝活，12 个小时之内完成","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
+  
+    <script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-117419557-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+
+          <a href="https://travis-ci.org/a-wing/blog">
+            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
+          </a>
+
+            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
+
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">关于我</a>
+            
+          
+            
+            
+            <a class="page-link" href="/equipment/">硬件设备</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/links/">友情连接</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/projects/">个人项目</a>
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">PingCAP 面试：Jenkins 和 Kubernetes</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2021-01-27T09:00:00+00:00" itemprop="datePublished">
+        
+        Jan 27, 2021
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>看我给你表演一个绝活，12 个小时之内完成</p>
+
+<blockquote>
+  <p>题目：给定三台香港的机器（4C8G），搭建一个单 master 节点的 k8s 集群，并搭建 Jenkins ，
+并且使用 k8s 作为 Jenkins 的 Work Node 自动调度，完成 Nginx/TiDB 的自动化发布（通过一个 Job）</p>
+
+  <p>时间是一周，机器我们可以提供，你什么时候开始小作业可以提前跟我说，我让同事把机器给你开了</p>
+</blockquote>
+
+<h2 id="本篇是以面试者的第一视角来纪录可以当小说看本文超长建议闲着无聊时看">本篇是以面试者的第一视角来纪录，可以当小说看，本文超长，建议闲着无聊时看～</h2>
+
+<p>作为一个开发码农，kubernetes 我是一点也不了解，看到题目一堆未知都东西。
+jenkins 倒是玩过一点，jenkins  可以调 shell，写个脚本检测一下进城和 cpu 使用率，把 docker 塞给固定的机器。
+ok，完美。先看一下 kubernetes 文档，看看 kubernetes 都能干啥</p>
+
+<p><a href="https://pingcap.com/meetup/meetup-84-20181220/">找到了这篇</a></p>
+
+<p>哦，kubernetes 可以实现自动调度，连脚本都不用写了，然后发现还有这个插件<a href="https://plugins.jenkins.io/kubernetes/">Kubernetes plugin for Jenkins</a></p>
+
+<p>这不一会就搞定！然后我就去和 HR 小姐姐说：</p>
+
+<blockquote>
+  <p>看我给你表演一个绝活，12 个小时之内完成</p>
+</blockquote>
+
+<p>然后她竟然要我表演一个 2h 的</p>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/sticker_cao.jpg" alt="草" /></p>
+
+<p>看到这里你肯定想问我面的是那个职位，管他那，干就完了（其实我也不知道我面的是啥）</p>
+
+<p>之后我就在第二天提前下了个班，开始了我的地狱 12 小时之旅（</p>
+
+<p>解释一下：我为什么不在当天就开始，原因是，我昨天晚上去打包 iredis 了，一晚上没睡</p>
+
+<blockquote class="twitter-tweet"><p lang="zh" dir="ltr">为了学习 redis 我把 iredis 打包到 archlinuxcn 仓库。然后看到原来 aur 上的是 bin 包。研究了一晚上 iredis 的构建流程。顺便也把用的打包工具 pyoxidizer 也打包了。。最后把体积减少了一半多，让它走了系统库<br /><br />好了，我现在可以愉快的使用 redis 的命令行了。。折腾一晚上，redis 还一点没学（ <a href="https://t.co/VTkjd47t6N">pic.twitter.com/VTkjd47t6N</a></p>&mdash; 新一 (@_a_wing) <a href="https://twitter.com/_a_wing/status/1350937185957113857?ref_src=twsrc%5Etfw">January 17, 2021</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="奥利给真正的全栈可以解决任何问题">奥利给：真正的全栈可以解决任何问题</h2>
+
+<h3 id="准备工作">准备工作</h3>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/screenshot_2021-01-19_19-59-38.png" alt="Start time" /></p>
+
+<p>养成习惯，第一件事，看一下是哪个版本系统</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /etc/os-release
+<span class="nv">NAME</span><span class="o">=</span><span class="s2">"CentOS Linux"</span>
+<span class="nv">VERSION</span><span class="o">=</span><span class="s2">"7 (Core)"</span>
+<span class="nv">ID</span><span class="o">=</span><span class="s2">"centos"</span>
+<span class="nv">ID_LIKE</span><span class="o">=</span><span class="s2">"rhel fedora"</span>
+<span class="nv">VERSION_ID</span><span class="o">=</span><span class="s2">"7"</span>
+<span class="nv">PRETTY_NAME</span><span class="o">=</span><span class="s2">"CentOS Linux 7 (Core)"</span>
+<span class="nv">ANSI_COLOR</span><span class="o">=</span><span class="s2">"0;31"</span>
+<span class="nv">CPE_NAME</span><span class="o">=</span><span class="s2">"cpe:/o:centos:centos:7"</span>
+<span class="nv">HOME_URL</span><span class="o">=</span><span class="s2">"https://www.centos.org/"</span>
+<span class="nv">BUG_REPORT_URL</span><span class="o">=</span><span class="s2">"https://bugs.centos.org/"</span>
+
+<span class="nv">CENTOS_MANTISBT_PROJECT</span><span class="o">=</span><span class="s2">"CentOS-7"</span>
+<span class="nv">CENTOS_MANTISBT_PROJECT_VERSION</span><span class="o">=</span><span class="s2">"7"</span>
+<span class="nv">REDHAT_SUPPORT_PRODUCT</span><span class="o">=</span><span class="s2">"centos"</span>
+<span class="nv">REDHAT_SUPPORT_PRODUCT_VERSION</span><span class="o">=</span><span class="s2">"7"</span>
+</code></pre></div></div>
+
+<p>完蛋了，我没用过 CentOS 系统，不过问题不大，记住这三个字母就行了 <code class="highlighter-rouge">yum</code></p>
+
+<p>查看基本信息备忘:</p>
+
+<ul>
+  <li>版本 <code class="highlighter-rouge">cat /etc/os-release</code></li>
+  <li>时间 时区 <code class="highlighter-rouge">timedatectl status</code> （这个不同发行版可能不同）</li>
+  <li>语言 <code class="highlighter-rouge">echo $LANG</code></li>
+  <li>网络 <code class="highlighter-rouge">ip addr</code></li>
+  <li>镜像站 <code class="highlighter-rouge">cat /etc/yum.repos.d/CentOS-Base.repo</code></li>
+  <li>cpu <code class="highlighter-rouge">cat /proc/cpuinfo</code></li>
+  <li>内存 <code class="highlighter-rouge">cat /proc/meminfo &amp;&amp; free -h</code></li>
+</ul>
+
+<p>然后在 <code class="highlighter-rouge">/etc/motd</code> 留下笔记的链接（我就默认你们知道 <code class="highlighter-rouge">motd</code>（message of the day） 是干啥用的了）</p>
+
+<p>更新：<code class="highlighter-rouge">yum upgrade</code></p>
+
+<hr />
+
+<p><br /></p>
+
+<p><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">首选看 kubernetes 文档，这篇是最关键的</a></p>
+
+<p>了解了这三个模块</p>
+
+<ul>
+  <li><code class="highlighter-rouge">kubeadm</code>: 这是一个启动器</li>
+  <li><code class="highlighter-rouge">kubelet</code>: 这玩意就是 kubernetes 的本体</li>
+  <li><code class="highlighter-rouge">kubectl</code>: 命令行控制程序</li>
+</ul>
+
+<p><code class="highlighter-rouge">kubelet</code> 每个都要有，但是 kubernetes 是个集群，启动的过程有些复杂，所以需要 <code class="highlighter-rouge">kubeadm</code> 来帮助我们来启动的集群</p>
+
+<p><code class="highlighter-rouge">kubectl</code> 就是仅仅只是一个命令行客户端，在不在服务器上无所谓</p>
+
+<p>kubernetes 的运行时 CRI （Container Runtimes Interface）</p>
+
+<p><a href="https://kubernetes.io/docs/setup/production-environment/container-runtimes/">官方文档指定了三个</a></p>
+
+<ul>
+  <li>containerd</li>
+  <li>CRI-O</li>
+  <li>Docker</li>
+</ul>
+
+<p>鉴于 <code class="highlighter-rouge">containerd</code> 和 <code class="highlighter-rouge">CRI-O</code> 完全没听说过，我们直接从 <code class="highlighter-rouge">Docker</code> 开始</p>
+
+<h3 id="设置网桥">设置网桥</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | sudo tee /etc/modules-load.d/k8s.conf
+br_netfilter
+</span><span class="no">EOF
+
+</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+</span><span class="no">EOF
+</span><span class="nb">sudo </span>sysctl <span class="nt">--system</span>
+</code></pre></div></div>
+
+<h3 id="docker">Docker</h3>
+
+<p>安装 Docker ，没什么值得注意的，直接照着官方文档复制粘贴就行</p>
+
+<p>唯一值得注意的是</p>
+
+<pre><code class="language-base">mkdir -p /etc/systemd/system/docker.service.d
+</code></pre>
+
+<p>不设置 Docker 参数，这个是没用的。可以参照这两篇：</p>
+
+<p><a href="https://docs.docker.com/config/daemon/systemd/">Docker daemon/systemd</a></p>
+
+<p><a href="https://wiki.archlinux.org/index.php/Systemd#Drop-in_files">wiki.archlinux Systemd</a></p>
+
+<h3 id="准备工作都做完了安装-kubernetes">准备工作都做完了：安装 kubernetes</h3>
+
+<p>直接照着官方文档来：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-</span><span class="se">\$</span><span class="sh">basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
+</span><span class="no">EOF
+
+</span><span class="c"># Set SELinux in permissive mode (effectively disabling it)</span>
+<span class="nb">sudo </span>setenforce 0
+<span class="nb">sudo sed</span> <span class="nt">-i</span> <span class="s1">'s/^SELINUX=enforcing$/SELINUX=permissive/'</span> /etc/selinux/config
+
+<span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> kubelet kubeadm kubectl <span class="nt">--disableexcludes</span><span class="o">=</span>kubernetes
+
+<span class="nb">sudo </span>systemctl <span class="nb">enable</span> <span class="nt">--now</span> kubelet
+</code></pre></div></div>
+
+<p>由于对版本有要求，所以那个软件源禁用了那三个包（防止 <code class="highlighter-rouge">upgrade</code> 时挂掉）</p>
+
+<p>不要在意 <code class="highlighter-rouge">systemctl status kubelet</code> 的错误，因为：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@10-8-19-173 ~]# systemctl <span class="nb">cat </span>kubelet
+<span class="c"># /usr/lib/systemd/system/kubelet.service</span>
+<span class="o">[</span>Unit]
+<span class="nv">Description</span><span class="o">=</span>kubelet: The Kubernetes Node Agent
+<span class="nv">Documentation</span><span class="o">=</span>https://kubernetes.io/docs/
+<span class="nv">Wants</span><span class="o">=</span>network-online.target
+<span class="nv">After</span><span class="o">=</span>network-online.target
+
+<span class="o">[</span>Service]
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/kubelet
+<span class="nv">Restart</span><span class="o">=</span>always
+<span class="nv">StartLimitInterval</span><span class="o">=</span>0
+<span class="nv">RestartSec</span><span class="o">=</span>10
+
+<span class="o">[</span>Install]
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+
+<span class="c"># /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf</span>
+<span class="c"># Note: This dropin only works with kubeadm and kubelet v1.11+</span>
+<span class="o">[</span>Service]
+<span class="nv">Environment</span><span class="o">=</span><span class="s2">"KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"</span>
+<span class="nv">Environment</span><span class="o">=</span><span class="s2">"KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"</span>
+<span class="c"># This is a file that "kubeadm init" and "kubeadm join" generates at runtime, populating the KUBELET_KUBEADM_ARGS variable dynamically</span>
+<span class="nv">EnvironmentFile</span><span class="o">=</span>-/var/lib/kubelet/kubeadm-flags.env
+<span class="c"># This is a file that the user can use for overrides of the kubelet args as a last resort. Preferably, the user should use</span>
+<span class="c"># the .NodeRegistration.KubeletExtraArgs object in the configuration files instead. KUBELET_EXTRA_ARGS should be sourced from this file.</span>
+<span class="nv">EnvironmentFile</span><span class="o">=</span>-/etc/sysconfig/kubelet
+<span class="nv">ExecStart</span><span class="o">=</span>
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/kubelet <span class="nv">$KUBELET_KUBECONFIG_ARGS</span> <span class="nv">$KUBELET_CONFIG_ARGS</span> <span class="nv">$KUBELET_KUBEADM_ARGS</span> <span class="nv">$KUBELET_EXTRA_ARGS</span>
+</code></pre></div></div>
+
+<p>在 master 上执行</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init
+</code></pre></div></div>
+
+<p>根据提示在两个 slave 上都执行</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm <span class="nb">join </span>10.8.19.173:6443 <span class="nt">--token</span> yv1ecz.8g7j4d1hztx3cnf6 <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:dc1778180a75dbf321463dd17897d2357fde5c69756342671cef5048eaf01249
+</code></pre></div></div>
+
+<p>然后按照提示在 master 配置 <code class="highlighter-rouge">kubectl</code> 都配置文件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
+<span class="nb">cp</span> <span class="nt">-i</span> /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+<span class="nb">chown</span> <span class="si">$(</span><span class="nb">id</span> <span class="nt">-u</span><span class="si">)</span>:<span class="si">$(</span><span class="nb">id</span> <span class="nt">-g</span><span class="si">)</span> <span class="nv">$HOME</span>/.kube/config
+</code></pre></div></div>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_00-07-57.png" alt="Uptime" /></p>
+
+<h4 id="跑起来了跑起来了此时已经是到了凌晨了"><strong>跑起来了，跑起来了！！！此时已经是到了凌晨了</strong></h4>
+
+<p>现在可以看到状态是 <code class="highlighter-rouge">NotReady</code></p>
+
+<p>是因为缺少 CNI （Container Network Interface）</p>
+
+<p>网络使用这个，因为可以不用设置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+</code></pre></div></div>
+
+<p>虽然官方使用 <code class="highlighter-rouge">Calico</code> 来测试的</p>
+
+<p><a href="https://docs.projectcalico.org/getting-started/kubernetes/flannel/migration-from-flannel">有迁移办法方法问题不大</a></p>
+
+<p><code class="highlighter-rouge">kubeadm init</code> 设置参数有问题，忘记设置网络了</p>
+
+<p>在全部的机器上执行 <code class="highlighter-rouge">kubeadm reset</code>，关闭集群</p>
+
+<p>人生重来，重新开始</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init <span class="nt">--pod-network-cidr</span> 192.168.0.0/16
+</code></pre></div></div>
+
+<p>每次生成的 <code class="highlighter-rouge">/etc/kubernetes/admin.conf</code> 里面的内容都是不同的，reset 之后要重新设置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># To start using your cluster, you need to run the following as a regular user:</span>
+
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
+<span class="nb">sudo cp</span> <span class="nt">-i</span> /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+<span class="nb">sudo chown</span> <span class="si">$(</span><span class="nb">id</span> <span class="nt">-u</span><span class="si">)</span>:<span class="si">$(</span><span class="nb">id</span> <span class="nt">-g</span><span class="si">)</span> <span class="nv">$HOME</span>/.kube/config
+</code></pre></div></div>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_02-06-02.png" alt="Ready" /></p>
+
+<p>看集群状态：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">--all-namespaces</span>
+</code></pre></div></div>
+
+<h2 id="jenkins">Jenkins</h2>
+
+<p><a href="https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos">安装 Jenkins，直接照着官方文档</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>wget <span class="nt">-O</span> /etc/yum.repos.d/jenkins.repo <span class="se">\</span>
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+<span class="nb">sudo </span>rpm <span class="nt">--import</span> https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+<span class="nb">sudo </span>yum upgrade
+<span class="nb">sudo </span>yum <span class="nb">install </span>jenkins java-1.8.0-openjdk-devel
+<span class="nb">sudo </span>systemctl daemon-reload
+<span class="nb">sudo </span>systemctl start jenkins
+</code></pre></div></div>
+
+<p>之后初始化 Jenkins，填入初始密码，然后一路下一步</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /var/lib/jenkins/secrets/initialAdminPassword
+</code></pre></div></div>
+
+<p>新建的管理员用户的密码可以使用随机生成的密码</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hexdump <span class="nt">-v</span> <span class="nt">-n</span> 16 <span class="nt">-e</span> <span class="s1">'1/1 "%02x"'</span> /dev/urandom
+</code></pre></div></div>
+
+<h3 id="kubernetes-plugin-for-jenkins">Kubernetes plugin for Jenkins</h3>
+
+<p>安装 Jenkins 的插件</p>
+
+<p>使用 Secret File (kubeconfig file)</p>
+
+<p>配置 Kubernetes 地址 <code class="highlighter-rouge">localhost:6443</code></p>
+
+<h2 id="好build-开始">好，build 开始</h2>
+
+<p>发现问题：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@10-8-19-173 ~]# kubectl logs <span class="nt">-f</span> pods/tidb2-6-0132h-p44wx-86k7l jnlp
+Jan 19, 2021 9:06:17 PM hudson.remoting.jnlp.Main createEngine
+INFO: Setting up agent: tidb2-6-0132h-p44wx-86k7l
+Jan 19, 2021 9:06:17 PM hudson.remoting.jnlp.Main<span class="nv">$CuiListener</span> &lt;init&gt;
+INFO: Jenkins agent is running <span class="k">in </span>headless mode.
+Jan 19, 2021 9:06:17 PM hudson.remoting.Engine startEngine
+INFO: Using Remoting version: 4.3
+Jan 19, 2021 9:06:17 PM org.jenkinsci.remoting.engine.WorkDirManager initializeWorkDir
+INFO: Using /home/jenkins/agent/remoting as a remoting work directory
+Jan 19, 2021 9:06:17 PM org.jenkinsci.remoting.engine.WorkDirManager setupLogging
+INFO: Both error and output logs will be printed to /home/jenkins/agent/remoting
+Jan 19, 2021 9:06:17 PM hudson.remoting.jnlp.Main<span class="nv">$CuiListener</span> status
+INFO: Locating server among <span class="o">[</span>http://152.32.240.177:8080/]
+Jan 19, 2021 9:06:47 PM hudson.remoting.jnlp.Main<span class="nv">$CuiListener</span> error
+SEVERE: Failed to connect to http://152.32.240.177:8080/tcpSlaveAgentListener/: connect timed out
+java.io.IOException: Failed to connect to http://152.32.240.177:8080/tcpSlaveAgentListener/: connect timed out
+        at org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.resolve<span class="o">(</span>JnlpAgentEndpointResolver.java:217<span class="o">)</span>
+        at hudson.remoting.Engine.innerRun<span class="o">(</span>Engine.java:693<span class="o">)</span>
+        at hudson.remoting.Engine.run<span class="o">(</span>Engine.java:518<span class="o">)</span>
+Caused by: java.net.SocketTimeoutException: connect timed out
+        at java.net.PlainSocketImpl.socketConnect<span class="o">(</span>Native Method<span class="o">)</span>
+        at java.net.AbstractPlainSocketImpl.doConnect<span class="o">(</span>AbstractPlainSocketImpl.java:350<span class="o">)</span>
+        at java.net.AbstractPlainSocketImpl.connectToAddress<span class="o">(</span>AbstractPlainSocketImpl.java:206<span class="o">)</span>
+        at java.net.AbstractPlainSocketImpl.connect<span class="o">(</span>AbstractPlainSocketImpl.java:188<span class="o">)</span>
+        at java.net.SocksSocketImpl.connect<span class="o">(</span>SocksSocketImpl.java:392<span class="o">)</span>
+        at java.net.Socket.connect<span class="o">(</span>Socket.java:607<span class="o">)</span>
+        at sun.net.NetworkClient.doConnect<span class="o">(</span>NetworkClient.java:175<span class="o">)</span>
+        at sun.net.www.http.HttpClient.openServer<span class="o">(</span>HttpClient.java:463<span class="o">)</span>
+        at sun.net.www.http.HttpClient.openServer<span class="o">(</span>HttpClient.java:558<span class="o">)</span>
+        at sun.net.www.http.HttpClient.&lt;init&gt;<span class="o">(</span>HttpClient.java:242<span class="o">)</span>
+        at sun.net.www.http.HttpClient.New<span class="o">(</span>HttpClient.java:339<span class="o">)</span>
+        at sun.net.www.http.HttpClient.New<span class="o">(</span>HttpClient.java:357<span class="o">)</span>
+        at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient<span class="o">(</span>HttpURLConnection.java:1226<span class="o">)</span>
+        at sun.net.www.protocol.http.HttpURLConnection.plainConnect0<span class="o">(</span>HttpURLConnection.java:1162<span class="o">)</span>
+        at sun.net.www.protocol.http.HttpURLConnection.plainConnect<span class="o">(</span>HttpURLConnection.java:1056<span class="o">)</span>
+        at sun.net.www.protocol.http.HttpURLConnection.connect<span class="o">(</span>HttpURLConnection.java:990<span class="o">)</span>
+        at org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.resolve<span class="o">(</span>JnlpAgentEndpointResolver.java:214<span class="o">)</span>
+        ... 2 more
+</code></pre></div></div>
+
+<p>目前产生了一个问题：</p>
+
+<ul>
+  <li>Jenkins → Kubernetes （正常）</li>
+  <li>Kubernetes → Jenkins（迷之 connect timed out）</li>
+</ul>
+
+<p>改变 Jenkins 设置</p>
+
+<p>这个插件的工作原理是这样的：</p>
+
+<p>在 Kubernetes 创建一个 pods，这个 pods 里面有两个容器。
+一个是构建用的，另一个是负责收集构建容器输出的日志传回 Jenkins 主程序</p>
+
+<p>收集日志的容器会主动链接主程序，可以使用 <code class="highlighter-rouge">http</code>, <code class="highlighter-rouge">websocket</code>, <code class="highlighter-rouge">tcp</code> 来通信</p>
+
+<p>这几种方式我都测试过了，然后也把 Jenkins 都权限一路开到最大，仍然无法通信</p>
+
+<p>一路把权限开到最大还是不行。。。我真的怀疑这个容器的网有问题</p>
+
+<h2 id="验证-kubernetes-的内部网络">验证 Kubernetes 的内部网络</h2>
+
+<p>先在宿主机上安装 nc 工具。（<code class="highlighter-rouge">netcat</code>）</p>
+
+<p>随便起一个 Tcp server</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc <span class="nt">-l</span> 8877
+</code></pre></div></div>
+
+<p>把 jenkins kubernetes 的插件设置改到刚开到那个端口（ 8877 那个 ），要用 http 的方式（当然 websocket 也可以）</p>
+
+<p>根据 http 1.x 的原理，http 是明文传输，是可以在 nc 起的 server 里面看到 http 头的
+<code class="highlighter-rouge">websocket</code> 也是先发个 http 包，之后 Upgrade</p>
+
+<p>你可以用这两条来验证我说的：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc <span class="nt">-l</span> 8877
+curl localhost:8877
+</code></pre></div></div>
+
+<p>测试结果</p>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_06-27-35.png" alt="netcat" /></p>
+
+<p>收集日志的容器网不通</p>
+
+<p>根据这个插件原理：</p>
+
+<p>这个是日志收集容器 <a href="https://hub.docker.com/r/jenkins/inbound-agent">Docker Hub</a></p>
+
+<p>照着这个文件画瓢 <a href="https://k8s.io/examples/application/shell-demo.yaml"><code class="highlighter-rouge">https://k8s.io/examples/application/shell-demo.yaml</code></a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> jenkins.yaml <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins-demo
+spec:
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+  containers:
+  - name: agent
+    image: jenkins/inbound-agent
+  hostNetwork: true
+  dnsPolicy: Default
+</span><span class="no">EOF
+</span></code></pre></div></div>
+
+<p>起个容器</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> jenkins.yaml
+
+<span class="c"># 然后就挂了</span>
+<span class="o">[</span>root@10-8-19-173 ~]# kubectl get pods
+NAME                         READY   STATUS             RESTARTS   AGE
+jenkins-demo                 0/1     CrashLoopBackOff   7          13m
+shell-demo                   1/1     Running            0          98m
+tidb2-13-dn3zw-tsdqp-6l0z6   1/2     Terminating        0          43s
+tidb2-13-dn3zw-tsdqp-qmrjn   2/2     Running            0          3s
+tidb2-13-dn3zw-tsdqp-vtmxg   0/2     Terminating        0          2m3s
+<span class="o">[</span>root@10-8-19-173 ~]#
+</code></pre></div></div>
+
+<p>这个东西有四个变量。。。啊，不知道该怎么传变量啊。。。</p>
+
+<p>找到这篇文档</p>
+
+<p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/">https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/</a></p>
+
+<p><a href="https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/">Define Environment Variables for a Container</a></p>
+
+<p>看日志。。。这该死的容器好像不听我的。。。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl logs <span class="nt">-f</span> pods/jenkins-demo agent
+</code></pre></div></div>
+
+<p>查看 Jenkins 起动的 pods 的环境变量</p>
+
+<p><code class="highlighter-rouge">kubectl describe pods/tidb2-13-dn3zw-tsdqp-ms1l</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Environment:
+      JENKINS_SECRET:         fe2e12708ad3b3daa74f5c7e253ab1e8620901255927238ad7444aba650a3e3e
+      JENKINS_AGENT_NAME:     tidb2-13-dn3zw-tsdqp-ms1ls
+      JENKINS_NAME:           tidb2-13-dn3zw-tsdqp-ms1ls
+      JENKINS_AGENT_WORKDIR:  /home/jenkins/agent
+      JENKINS_URL:            http://152.32.240.177:8877/
+</code></pre></div></div>
+
+<p>加上变量，故技重施</p>
+
+<p>改成一样的参数也是可以好使的。。。。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@10-8-19-173 ~]# <span class="nb">cat </span>jenkins.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins-demo
+spec:
+  volumes:
+  - name: shared-data
+    emptyDir: <span class="o">{}</span>
+  containers:
+  - name: agent
+    image: jenkins/inbound-agent
+    <span class="nb">env</span>:
+    - name:  JENKINS_SECRET
+      value: fe2e12708ad3b3daa74f5c7e253ab1e8620901255927238ad7444aba650a3e3e
+    - name:  JENKINS_AGENT_NAME
+      value: tidb2-13-dn3zw-tsdqp-ms1ls
+    - name:  JENKINS_NAME
+      value: tidb2-13-dn3zw-tsdqp-ms1ls
+    - name:  JENKINS_AGENT_WORKDIR
+      value: /home/jenkins/agent
+    - name:  JENKINS_URL
+      value: http://152.32.240.177:8877/
+  hostNetwork: <span class="nb">true
+  </span>dnsPolicy: Default
+</code></pre></div></div>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_07-23-51.png" alt="jenkins network" /></p>
+
+<p>这个是好用的。我人傻了。。。</p>
+
+<p>对比环境变量，完全一致</p>
+
+<p><code class="highlighter-rouge">kubectl describe pods/jenkins-demo</code></p>
+
+<p><code class="highlighter-rouge">kubectl describe pods/tidb2-13-dn3zw-tsdqp-ms1l</code></p>
+
+<h2 id="然后我该怎么处理没思路了"><strong>然后我该怎么处理。。。。没思路了</strong></h2>
+
+<p>我好菜啊，还剩最后一步，不知道该怎么解决了。。。</p>
+
+<ul>
+  <li>搭建 Kubernetes 花了四个小时</li>
+  <li>在 Jenkins 那个接口上花了尽五个小时</li>
+  <li>加上剩下的总计花费了十二个小时</li>
+</ul>
+
+<p>此时已经是早上八点了，不搞了，去睡觉</p>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_07-52-08.png" alt="current" /></p>
+
+<hr />
+<p><br /></p>
+<hr />
+<p><br /></p>
+<hr />
+<p><br /></p>
+
+<p>睡了一觉，一觉醒来</p>
+
+<p>仔细看了配置，发现</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">hostNetwork</span><span class="pi">:</span> <span class="no">true</span>
+<span class="na">dnsPolicy</span><span class="pi">:</span> <span class="s">Default</span>
+</code></pre></div></div>
+
+<p>Jenkins 的 manifest 和我拉下来测试的 manifest 网络部分有不一样的地方</p>
+
+<p>经过测试是 <code class="highlighter-rouge">hostNetwork: true</code> 的影响</p>
+
+<p><code class="highlighter-rouge">hostNetwork</code> 这个参数是 <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces">使用本机的网络</a></p>
+
+<p>这说明我 Kubernetes 目前是没法联网的</p>
+
+<h3 id="写构建过程">写构建过程</h3>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">podTemplate</span><span class="o">(</span><span class="nl">yaml:</span> <span class="s1">'''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: golang
+    image: golang:1.13.0
+    command:
+    - sleep
+    args:
+    - infinity
+  hostNetwork: true
+  dnsPolicy: Default
+'''</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">node</span><span class="o">(</span><span class="n">POD_LABEL</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Build TiDB'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">git</span> <span class="nl">url:</span> <span class="s1">'https://github.com/pingcap/tidb.git'</span>
+            <span class="n">container</span><span class="o">(</span><span class="s1">'golang'</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">stage</span><span class="o">(</span><span class="s1">'Build a TiDB'</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">sh</span> <span class="s2">"""
+                    make server
+
+                    cd bin
+                    sha1sum tidb-server &gt; tidb-server.sha1sum
+                    sha512sum tidb-server &gt; tidb-server.sha512sum
+                    """</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">archiveArtifacts</span> <span class="s1">'bin/*'</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-51-20.png" alt="Kubernetes" /></p>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-48-15.png" alt="Jenkins" /></p>
+
+<p>如果重点是：</p>
+
+<blockquote>
+  <p>k8s 作为 Jenkins 的 Work Node 自动调度</p>
+</blockquote>
+
+<p>我觉得我已经完成了（作为一个 demo 来说），虽然 Jenkins 还需要手动点 build （重点不在这吧），构建结果只提供了 linux x86_64 的 bin 包</p>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/sticker_power.png" alt="power" /></p>
+
+<ul>
+  <li>预计花费时间 12h</li>
+  <li>总计花费时间 14h</li>
+</ul>
+
+<p>完成时间 <code class="highlighter-rouge">Wed Jan 20 13:49:15 CST 2021</code></p>
+
+<h1 id="之后的思考">之后的思考</h1>
+
+<h3 id="尝试在自己笔记本上远程控制">尝试在自己笔记本上远程控制</h3>
+
+<p>启动时要指定连接 ip 。vps 是 basic nat 转换的，拿到的 ip  是私有地址</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 在自己的笔记本安装 kubectl</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
+scp root@152.32.240.177:/etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+
+kubectl get nodes
+Unable to connect to the server: x509: certificate is valid <span class="k">for </span>10.96.0.1, 10.8.19.173, not 152.32.240.177
+
+<span class="c"># 可以跳过证书。（逃</span>
+kubectl <span class="nt">--insecure-skip-tls-verify</span> get nodes
+</code></pre></div></div>
+
+<p>发动技能，“人生重来“，<code class="highlighter-rouge">reset</code> 之后再 <code class="highlighter-rouge">init</code> 加上这个参数</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init <span class="nt">--apiserver-advertise-address</span> 152.32.240.177 <span class="nt">--pod-network-cidr</span> 192.168.0.0/16
+</code></pre></div></div>
+
+<p><a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#options">kubeadm init</a></p>
+
+<p>问题来了。。。我能不能不 <code class="highlighter-rouge">reset</code> 再 <code class="highlighter-rouge">init</code></p>
+
+<p><a href="https://stackoverflow.com/questions/52915110/unable-to-connect-to-the-server-x509-certificate-is-valid-for">Unable to connect to the server: x509: certificate is valid for</a></p>
+
+<p>不过大体思路是有的：自己生成一个 tls 证书，把公共的 ip 写进去</p>
+
+<p>这个地方是由 <code class="highlighter-rouge">/etc/kubernetes/manifests/kube-apiserver.yaml</code> 文件起的 pod</p>
+
+<p>修改这个，然后再 apply ，应该可行</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> /etc/kubernetes/manifests/kube-apiserver.yaml
+</code></pre></div></div>
+
+<p><a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/">不过 <code class="highlighter-rouge">apiserver</code> 似乎并不生成证书</a></p>
+
+<p>后来又翻到了这篇：</p>
+
+<p><a href="https://stackoverflow.com/questions/46360361/invalid-x509-certificate-for-kubernetes-master">Invalid x509 certificate for kubernetes master</a></p>
+
+<p>直接两行解决</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rm</span> /etc/kubernetes/pki/apiserver.<span class="k">*</span>
+kubeadm init phase certs all <span class="nt">--apiserver-advertise-address</span> 152.32.240.177
+</code></pre></div></div>
+
+<p>肯定会有人有疑问。。。<code class="highlighter-rouge">/etc/kubernetes/admin.conf</code> 更新了吗？</p>
+
+<p>没有，那里面写的是根证书</p>
+
+<p>根证书在这里：<code class="highlighter-rouge">/etc/kubernetes/pki/ca.crt</code></p>
+
+<p><code class="highlighter-rouge">/etc/kubernetes/admin.conf</code> 里的 clusters <code class="highlighter-rouge">certificate-authority-data</code> 可以通过这条命令生成</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># certificate-authority-data</span>
+<span class="nb">cat</span> /etc/kubernetes/pki/ca.crt | <span class="nb">base64</span> <span class="nt">-w</span> 0
+</code></pre></div></div>
+
+<p>当然，用 <code class="highlighter-rouge">openssl x509</code> 去生成一个证书应该也是可行的</p>
+
+<h2 id="面试">面试</h2>
+
+<p>之后就是和面试官聊了</p>
+
+<p>我专门找 HR 确认了，面试官不是出题人，应该不会谈面试题</p>
+
+<p>我很慌，万一考了 <code class="highlighter-rouge">动态规划</code> 和 <code class="highlighter-rouge">图论</code> 我估计就挂了</p>
+
+<p>然后，倒是没聊什么技术，就聊了聊产品和原来做的东西。。。。</p>
+
+<p>然后我就挂了</p>
+
+<blockquote>
+  <p>面试官内心 OS：这家伙说话声音难听，语速又贼快，随便编个理由把它挂了吧</p>
+
+  <p>理由就叫：就叫没讲清楚你干了啥吧</p>
+</blockquote>
+
+<p>我：？？？？？？？</p>
+
+<p><img src="/assets/img/jenkins_and_kubernetes/sticker_think.jpg" alt="太奇怪了，准备用脑子想" /></p>
+
+<p>等着，这就去学伪声（x</p>
+
+<blockquote>
+  <p>这就和面试进门先迈哪只脚一样，反正看你不爽，你先迈哪只脚都不对（</p>
+</blockquote>
+
+<h2 id="总结">总结</h2>
+
+<p>我觉得我被莫名其妙拉过去面试，然后又莫名其妙挂掉了</p>
+
+<p>可能是我不够 Match 。我也觉得我不 Match，毕竟我原来做的东西和 PingCAP 做的东西基本上没啥相关性</p>
+
+<p>不过，没啥相关性别拉我过去做题啊。（我每天忙的要死</p>
+
+<p>啊，对了。我还不知道我面的是啥岗位那（</p>
+
+<p>挂掉这一面没有问技术是我最出乎意料掉一点，昨天晚上我还在研究会问什么题那（x</p>
+
+<p>还有就是所属行业不同，我没有交代清楚背景，和为什么要这么做。</p>
+
+<p><del>最后的总结就是：<strong>PingCAP 这家不按套路出牌</strong> 和 <strong>我的吹牛技术还不够资深</strong></del></p>
+
+<p>面试题我和 HR 确认过了，是可以发 blog 的</p>
+
+<h2 id="反省">反省</h2>
+
+<p>我挂掉是我的问题，我不应该假定别人有相应的基础知识。</p>
+
+<p>上次去分享 WebRTC 的时候也是，我假定大家都懂 NAT （我不该这么假定）</p>
+
+<p>一上来就讲原理，大家甚至都不知道这个东西是什么，也不知这东西有什么用</p>
+
+<p>讲的内容又过于硬核，语速又超快
+（之后被朋友批评了一顿，又在同一个地方栽跟头了）</p>
+
+<p>还有这篇文章，我又双叒叕的假定了大家都知道 <code class="highlighter-rouge">/etc/motd</code> 是干什么用的</p>
+
+<blockquote>
+  <p><code class="highlighter-rouge">/etc/motd</code> 内容的会在用户成功登录后由 Unix 登录命令显示，</p>
+
+  <p>整个过程发生在 shell 登录之前。</p>
+</blockquote>
+
+<p>立个 Flag 吧：我要让你们都知道，我这几年干了啥！</p>
+
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html';
+      this.page.identifier = 'https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://a-wing-1.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+
+  <a class="u-url" href="/kubernetes/2021/01/27/jenkins_and_kubernetes.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hi! 上天不?</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hi! 上天不?
+            
+            </li>
+            
+        </ul>
+
+        <a href="https://www.upyun.com/">
+          <img src="https://a-wing.top/assets/upyun_logo.png"/>
+        </a>
+
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
+  
+  
+  
+  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
+  
+  
+  
+</ul>
+
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+        </a>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>新一的个人博客</p>
+        <p>Power by Jekyll && Theme by minima-改</p>
+        <p>Copyright © 2016-2021 Powered by a-wing</p>
+      </div>
+
+      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

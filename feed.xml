@@ -1,4 +1,715 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN"><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="https://a-wing.top/feed.xml" rel="self" type="application/atom+xml" /><link href="https://a-wing.top/" rel="alternate" type="text/html" hreflang="zh_CN" /><updated>2020-12-05T09:10:04+00:00</updated><id>https://a-wing.top/feed.xml</id><title type="html">Hi! 上天不?</title><subtitle>新一的个人博客</subtitle><entry><title type="html">MQTT 踩坑指南</title><link href="https://a-wing.top/iot/2020/12/05/mqtt.html" rel="alternate" type="text/html" title="MQTT 踩坑指南" /><published>2020-12-05T09:00:00+00:00</published><updated>2020-12-05T09:00:00+00:00</updated><id>https://a-wing.top/iot/2020/12/05/mqtt</id><content type="html" xml:base="https://a-wing.top/iot/2020/12/05/mqtt.html">&lt;p&gt;MQTT（Message Queuing Telemetry Transport 消息队列遥测传输协议）
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN"><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="https://a-wing.top/feed.xml" rel="self" type="application/atom+xml" /><link href="https://a-wing.top/" rel="alternate" type="text/html" hreflang="zh_CN" /><updated>2021-01-27T13:39:50+00:00</updated><id>https://a-wing.top/feed.xml</id><title type="html">Hi! 上天不?</title><subtitle>新一的个人博客</subtitle><entry><title type="html">PingCAP 面试：Jenkins 和 Kubernetes</title><link href="https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html" rel="alternate" type="text/html" title="PingCAP 面试：Jenkins 和 Kubernetes" /><published>2021-01-27T09:00:00+00:00</published><updated>2021-01-27T09:00:00+00:00</updated><id>https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes</id><content type="html" xml:base="https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html">&lt;p&gt;看我给你表演一个绝活，12 个小时之内完成&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;题目：给定三台香港的机器（4C8G），搭建一个单 master 节点的 k8s 集群，并搭建 Jenkins ，
+并且使用 k8s 作为 Jenkins 的 Work Node 自动调度，完成 Nginx/TiDB 的自动化发布（通过一个 Job）&lt;/p&gt;
+
+  &lt;p&gt;时间是一周，机器我们可以提供，你什么时候开始小作业可以提前跟我说，我让同事把机器给你开了&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;本篇是以面试者的第一视角来纪录可以当小说看本文超长建议闲着无聊时看&quot;&gt;本篇是以面试者的第一视角来纪录，可以当小说看，本文超长，建议闲着无聊时看～&lt;/h2&gt;
+
+&lt;p&gt;作为一个开发码农，kubernetes 我是一点也不了解，看到题目一堆未知都东西。
+jenkins 倒是玩过一点，jenkins  可以调 shell，写个脚本检测一下进城和 cpu 使用率，把 docker 塞给固定的机器。
+ok，完美。先看一下 kubernetes 文档，看看 kubernetes 都能干啥&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://pingcap.com/meetup/meetup-84-20181220/&quot;&gt;找到了这篇&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;哦，kubernetes 可以实现自动调度，连脚本都不用写了，然后发现还有这个插件&lt;a href=&quot;https://plugins.jenkins.io/kubernetes/&quot;&gt;Kubernetes plugin for Jenkins&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这不一会就搞定！然后我就去和 HR 小姐姐说：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;看我给你表演一个绝活，12 个小时之内完成&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;然后她竟然要我表演一个 2h 的&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/sticker_cao.jpg&quot; alt=&quot;草&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;看到这里你肯定想问我面的是那个职位，管他那，干就完了（其实我也不知道我面的是啥）&lt;/p&gt;
+
+&lt;p&gt;之后我就在第二天提前下了个班，开始了我的地狱 12 小时之旅（&lt;/p&gt;
+
+&lt;p&gt;解释一下：我为什么不在当天就开始，原因是，我昨天晚上去打包 iredis 了，一晚上没睡&lt;/p&gt;
+
+&lt;blockquote class=&quot;twitter-tweet&quot;&gt;&lt;p lang=&quot;zh&quot; dir=&quot;ltr&quot;&gt;为了学习 redis 我把 iredis 打包到 archlinuxcn 仓库。然后看到原来 aur 上的是 bin 包。研究了一晚上 iredis 的构建流程。顺便也把用的打包工具 pyoxidizer 也打包了。。最后把体积减少了一半多，让它走了系统库&lt;br /&gt;&lt;br /&gt;好了，我现在可以愉快的使用 redis 的命令行了。。折腾一晚上，redis 还一点没学（ &lt;a href=&quot;https://t.co/VTkjd47t6N&quot;&gt;pic.twitter.com/VTkjd47t6N&lt;/a&gt;&lt;/p&gt;&amp;mdash; 新一 (@_a_wing) &lt;a href=&quot;https://twitter.com/_a_wing/status/1350937185957113857?ref_src=twsrc%5Etfw&quot;&gt;January 17, 2021&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;奥利给真正的全栈可以解决任何问题&quot;&gt;奥利给：真正的全栈可以解决任何问题&lt;/h2&gt;
+
+&lt;h3 id=&quot;准备工作&quot;&gt;准备工作&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/screenshot_2021-01-19_19-59-38.png&quot; alt=&quot;Start time&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;养成习惯，第一件事，看一下是哪个版本系统&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/os-release
+&lt;span class=&quot;nv&quot;&gt;NAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CentOS Linux&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;7 (Core)&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;centos&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ID_LIKE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;rhel fedora&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;VERSION_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;7&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;PRETTY_NAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CentOS Linux 7 (Core)&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ANSI_COLOR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0;31&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;CPE_NAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cpe:/o:centos:centos:7&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;HOME_URL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://www.centos.org/&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BUG_REPORT_URL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://bugs.centos.org/&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;CENTOS_MANTISBT_PROJECT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CentOS-7&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;CENTOS_MANTISBT_PROJECT_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;7&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;REDHAT_SUPPORT_PRODUCT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;centos&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;REDHAT_SUPPORT_PRODUCT_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;7&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;完蛋了，我没用过 CentOS 系统，不过问题不大，记住这三个字母就行了 &lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;查看基本信息备忘:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;版本 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /etc/os-release&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;时间 时区 &lt;code class=&quot;highlighter-rouge&quot;&gt;timedatectl status&lt;/code&gt; （这个不同发行版可能不同）&lt;/li&gt;
+  &lt;li&gt;语言 &lt;code class=&quot;highlighter-rouge&quot;&gt;echo $LANG&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;网络 &lt;code class=&quot;highlighter-rouge&quot;&gt;ip addr&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;镜像站 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /etc/yum.repos.d/CentOS-Base.repo&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;cpu &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /proc/cpuinfo&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;内存 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /proc/meminfo &amp;amp;&amp;amp; free -h&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;然后在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/motd&lt;/code&gt; 留下笔记的链接（我就默认你们知道 &lt;code class=&quot;highlighter-rouge&quot;&gt;motd&lt;/code&gt;（message of the day） 是干啥用的了）&lt;/p&gt;
+
+&lt;p&gt;更新：&lt;code class=&quot;highlighter-rouge&quot;&gt;yum upgrade&lt;/code&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/&quot;&gt;首选看 kubernetes 文档，这篇是最关键的&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;了解了这三个模块&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubeadm&lt;/code&gt;: 这是一个启动器&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubelet&lt;/code&gt;: 这玩意就是 kubernetes 的本体&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt;: 命令行控制程序&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubelet&lt;/code&gt; 每个都要有，但是 kubernetes 是个集群，启动的过程有些复杂，所以需要 &lt;code class=&quot;highlighter-rouge&quot;&gt;kubeadm&lt;/code&gt; 来帮助我们来启动的集群&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; 就是仅仅只是一个命令行客户端，在不在服务器上无所谓&lt;/p&gt;
+
+&lt;p&gt;kubernetes 的运行时 CRI （Container Runtimes Interface）&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/setup/production-environment/container-runtimes/&quot;&gt;官方文档指定了三个&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;containerd&lt;/li&gt;
+  &lt;li&gt;CRI-O&lt;/li&gt;
+  &lt;li&gt;Docker&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;鉴于 &lt;code class=&quot;highlighter-rouge&quot;&gt;containerd&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;CRI-O&lt;/code&gt; 完全没听说过，我们直接从 &lt;code class=&quot;highlighter-rouge&quot;&gt;Docker&lt;/code&gt; 开始&lt;/p&gt;
+
+&lt;h3 id=&quot;设置网桥&quot;&gt;设置网桥&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt; | sudo tee /etc/modules-load.d/k8s.conf
+br_netfilter
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+
+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt; | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;sysctl &lt;span class=&quot;nt&quot;&gt;--system&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;docker&quot;&gt;Docker&lt;/h3&gt;
+
+&lt;p&gt;安装 Docker ，没什么值得注意的，直接照着官方文档复制粘贴就行&lt;/p&gt;
+
+&lt;p&gt;唯一值得注意的是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-base&quot;&gt;mkdir -p /etc/systemd/system/docker.service.d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不设置 Docker 参数，这个是没用的。可以参照这两篇：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/config/daemon/systemd/&quot;&gt;Docker daemon/systemd&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://wiki.archlinux.org/index.php/Systemd#Drop-in_files&quot;&gt;wiki.archlinux Systemd&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;准备工作都做完了安装-kubernetes&quot;&gt;准备工作都做完了：安装 kubernetes&lt;/h3&gt;
+
+&lt;p&gt;直接照着官方文档来：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt; | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# Set SELinux in permissive mode (effectively disabling it)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;setenforce 0
+&lt;span class=&quot;nb&quot;&gt;sudo sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'s/^SELINUX=enforcing$/SELINUX=permissive/'&lt;/span&gt; /etc/selinux/config
+
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; kubelet kubeadm kubectl &lt;span class=&quot;nt&quot;&gt;--disableexcludes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kubernetes
+
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--now&lt;/span&gt; kubelet
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;由于对版本有要求，所以那个软件源禁用了那三个包（防止 &lt;code class=&quot;highlighter-rouge&quot;&gt;upgrade&lt;/code&gt; 时挂掉）&lt;/p&gt;
+
+&lt;p&gt;不要在意 &lt;code class=&quot;highlighter-rouge&quot;&gt;systemctl status kubelet&lt;/code&gt; 的错误，因为：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@10-8-19-173 ~]# systemctl &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;kubelet
+&lt;span class=&quot;c&quot;&gt;# /usr/lib/systemd/system/kubelet.service&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Unit]
+&lt;span class=&quot;nv&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kubelet: The Kubernetes Node Agent
+&lt;span class=&quot;nv&quot;&gt;Documentation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;https://kubernetes.io/docs/
+&lt;span class=&quot;nv&quot;&gt;Wants&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;network-online.target
+&lt;span class=&quot;nv&quot;&gt;After&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;network-online.target
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Service]
+&lt;span class=&quot;nv&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/bin/kubelet
+&lt;span class=&quot;nv&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;always
+&lt;span class=&quot;nv&quot;&gt;StartLimitInterval&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0
+&lt;span class=&quot;nv&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Install]
+&lt;span class=&quot;nv&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;multi-user.target
+
+&lt;span class=&quot;c&quot;&gt;# /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Note: This dropin only works with kubeadm and kubelet v1.11+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Service]
+&lt;span class=&quot;nv&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# This is a file that &quot;kubeadm init&quot; and &quot;kubeadm join&quot; generates at runtime, populating the KUBELET_KUBEADM_ARGS variable dynamically&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;EnvironmentFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;-/var/lib/kubelet/kubeadm-flags.env
+&lt;span class=&quot;c&quot;&gt;# This is a file that the user can use for overrides of the kubelet args as a last resort. Preferably, the user should use&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# the .NodeRegistration.KubeletExtraArgs object in the configuration files instead. KUBELET_EXTRA_ARGS should be sourced from this file.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;EnvironmentFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;-/etc/sysconfig/kubelet
+&lt;span class=&quot;nv&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/bin/kubelet &lt;span class=&quot;nv&quot;&gt;$KUBELET_KUBECONFIG_ARGS&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$KUBELET_CONFIG_ARGS&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$KUBELET_KUBEADM_ARGS&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$KUBELET_EXTRA_ARGS&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在 master 上执行&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubeadm init
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;根据提示在两个 slave 上都执行&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubeadm &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;10.8.19.173:6443 &lt;span class=&quot;nt&quot;&gt;--token&lt;/span&gt; yv1ecz.8g7j4d1hztx3cnf6 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--discovery-token-ca-cert-hash&lt;/span&gt; sha256:dc1778180a75dbf321463dd17897d2357fde5c69756342671cef5048eaf01249
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;然后按照提示在 master 配置 &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; 都配置文件&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; /etc/kubernetes/admin.conf &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+&lt;span class=&quot;nb&quot;&gt;chown&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;:&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_00-07-57.png&quot; alt=&quot;Uptime&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;跑起来了跑起来了此时已经是到了凌晨了&quot;&gt;&lt;strong&gt;跑起来了，跑起来了！！！此时已经是到了凌晨了&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;现在可以看到状态是 &lt;code class=&quot;highlighter-rouge&quot;&gt;NotReady&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;是因为缺少 CNI （Container Network Interface）&lt;/p&gt;
+
+&lt;p&gt;网络使用这个，因为可以不用设置&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl apply &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;虽然官方使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;Calico&lt;/code&gt; 来测试的&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.projectcalico.org/getting-started/kubernetes/flannel/migration-from-flannel&quot;&gt;有迁移办法方法问题不大&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubeadm init&lt;/code&gt; 设置参数有问题，忘记设置网络了&lt;/p&gt;
+
+&lt;p&gt;在全部的机器上执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;kubeadm reset&lt;/code&gt;，关闭集群&lt;/p&gt;
+
+&lt;p&gt;人生重来，重新开始&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubeadm init &lt;span class=&quot;nt&quot;&gt;--pod-network-cidr&lt;/span&gt; 192.168.0.0/16
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;每次生成的 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/admin.conf&lt;/code&gt; 里面的内容都是不同的，reset 之后要重新设置&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# To start using your cluster, you need to run the following as a regular user:&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube
+&lt;span class=&quot;nb&quot;&gt;sudo cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; /etc/kubernetes/admin.conf &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+&lt;span class=&quot;nb&quot;&gt;sudo chown&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;:&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_02-06-02.png&quot; alt=&quot;Ready&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;看集群状态：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl get pods &lt;span class=&quot;nt&quot;&gt;--all-namespaces&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;jenkins&quot;&gt;Jenkins&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos&quot;&gt;安装 Jenkins，直接照着官方文档&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;wget &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; /etc/yum.repos.d/jenkins.repo &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;rpm &lt;span class=&quot;nt&quot;&gt;--import&lt;/span&gt; https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;yum upgrade
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;jenkins java-1.8.0-openjdk-devel
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl daemon-reload
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start jenkins
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;之后初始化 Jenkins，填入初始密码，然后一路下一步&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /var/lib/jenkins/secrets/initialAdminPassword
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;新建的管理员用户的密码可以使用随机生成的密码&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hexdump &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 16 &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'1/1 &quot;%02x&quot;'&lt;/span&gt; /dev/urandom
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;kubernetes-plugin-for-jenkins&quot;&gt;Kubernetes plugin for Jenkins&lt;/h3&gt;
+
+&lt;p&gt;安装 Jenkins 的插件&lt;/p&gt;
+
+&lt;p&gt;使用 Secret File (kubeconfig file)&lt;/p&gt;
+
+&lt;p&gt;配置 Kubernetes 地址 &lt;code class=&quot;highlighter-rouge&quot;&gt;localhost:6443&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;好build-开始&quot;&gt;好，build 开始&lt;/h2&gt;
+
+&lt;p&gt;发现问题：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@10-8-19-173 ~]# kubectl logs &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; pods/tidb2-6-0132h-p44wx-86k7l jnlp
+Jan 19, 2021 9:06:17 PM hudson.remoting.jnlp.Main createEngine
+INFO: Setting up agent: tidb2-6-0132h-p44wx-86k7l
+Jan 19, 2021 9:06:17 PM hudson.remoting.jnlp.Main&lt;span class=&quot;nv&quot;&gt;$CuiListener&lt;/span&gt; &amp;lt;init&amp;gt;
+INFO: Jenkins agent is running &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;headless mode.
+Jan 19, 2021 9:06:17 PM hudson.remoting.Engine startEngine
+INFO: Using Remoting version: 4.3
+Jan 19, 2021 9:06:17 PM org.jenkinsci.remoting.engine.WorkDirManager initializeWorkDir
+INFO: Using /home/jenkins/agent/remoting as a remoting work directory
+Jan 19, 2021 9:06:17 PM org.jenkinsci.remoting.engine.WorkDirManager setupLogging
+INFO: Both error and output logs will be printed to /home/jenkins/agent/remoting
+Jan 19, 2021 9:06:17 PM hudson.remoting.jnlp.Main&lt;span class=&quot;nv&quot;&gt;$CuiListener&lt;/span&gt; status
+INFO: Locating server among &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;http://152.32.240.177:8080/]
+Jan 19, 2021 9:06:47 PM hudson.remoting.jnlp.Main&lt;span class=&quot;nv&quot;&gt;$CuiListener&lt;/span&gt; error
+SEVERE: Failed to connect to http://152.32.240.177:8080/tcpSlaveAgentListener/: connect timed out
+java.io.IOException: Failed to connect to http://152.32.240.177:8080/tcpSlaveAgentListener/: connect timed out
+        at org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.resolve&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;JnlpAgentEndpointResolver.java:217&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at hudson.remoting.Engine.innerRun&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Engine.java:693&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at hudson.remoting.Engine.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Engine.java:518&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Caused by: java.net.SocketTimeoutException: connect timed out
+        at java.net.PlainSocketImpl.socketConnect&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Native Method&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at java.net.AbstractPlainSocketImpl.doConnect&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;AbstractPlainSocketImpl.java:350&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at java.net.AbstractPlainSocketImpl.connectToAddress&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;AbstractPlainSocketImpl.java:206&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at java.net.AbstractPlainSocketImpl.connect&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;AbstractPlainSocketImpl.java:188&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at java.net.SocksSocketImpl.connect&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SocksSocketImpl.java:392&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at java.net.Socket.connect&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Socket.java:607&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.NetworkClient.doConnect&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NetworkClient.java:175&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.www.http.HttpClient.openServer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HttpClient.java:463&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.www.http.HttpClient.openServer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HttpClient.java:558&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.www.http.HttpClient.&amp;lt;init&amp;gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HttpClient.java:242&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.www.http.HttpClient.New&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HttpClient.java:339&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.www.http.HttpClient.New&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HttpClient.java:357&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HttpURLConnection.java:1226&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.www.protocol.http.HttpURLConnection.plainConnect0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HttpURLConnection.java:1162&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.www.protocol.http.HttpURLConnection.plainConnect&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HttpURLConnection.java:1056&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at sun.net.www.protocol.http.HttpURLConnection.connect&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HttpURLConnection.java:990&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        at org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.resolve&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;JnlpAgentEndpointResolver.java:214&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        ... 2 more
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;目前产生了一个问题：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Jenkins → Kubernetes （正常）&lt;/li&gt;
+  &lt;li&gt;Kubernetes → Jenkins（迷之 connect timed out）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;改变 Jenkins 设置&lt;/p&gt;
+
+&lt;p&gt;这个插件的工作原理是这样的：&lt;/p&gt;
+
+&lt;p&gt;在 Kubernetes 创建一个 pods，这个 pods 里面有两个容器。
+一个是构建用的，另一个是负责收集构建容器输出的日志传回 Jenkins 主程序&lt;/p&gt;
+
+&lt;p&gt;收集日志的容器会主动链接主程序，可以使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;http&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;websocket&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;tcp&lt;/code&gt; 来通信&lt;/p&gt;
+
+&lt;p&gt;这几种方式我都测试过了，然后也把 Jenkins 都权限一路开到最大，仍然无法通信&lt;/p&gt;
+
+&lt;p&gt;一路把权限开到最大还是不行。。。我真的怀疑这个容器的网有问题&lt;/p&gt;
+
+&lt;h2 id=&quot;验证-kubernetes-的内部网络&quot;&gt;验证 Kubernetes 的内部网络&lt;/h2&gt;
+
+&lt;p&gt;先在宿主机上安装 nc 工具。（&lt;code class=&quot;highlighter-rouge&quot;&gt;netcat&lt;/code&gt;）&lt;/p&gt;
+
+&lt;p&gt;随便起一个 Tcp server&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nc &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 8877
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;把 jenkins kubernetes 的插件设置改到刚开到那个端口（ 8877 那个 ），要用 http 的方式（当然 websocket 也可以）&lt;/p&gt;
+
+&lt;p&gt;根据 http 1.x 的原理，http 是明文传输，是可以在 nc 起的 server 里面看到 http 头的
+&lt;code class=&quot;highlighter-rouge&quot;&gt;websocket&lt;/code&gt; 也是先发个 http 包，之后 Upgrade&lt;/p&gt;
+
+&lt;p&gt;你可以用这两条来验证我说的：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nc &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 8877
+curl localhost:8877
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;测试结果&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_06-27-35.png&quot; alt=&quot;netcat&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;收集日志的容器网不通&lt;/p&gt;
+
+&lt;p&gt;根据这个插件原理：&lt;/p&gt;
+
+&lt;p&gt;这个是日志收集容器 &lt;a href=&quot;https://hub.docker.com/r/jenkins/inbound-agent&quot;&gt;Docker Hub&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;照着这个文件画瓢 &lt;a href=&quot;https://k8s.io/examples/application/shell-demo.yaml&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;https://k8s.io/examples/application/shell-demo.yaml&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; jenkins.yaml &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins-demo
+spec:
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+  containers:
+  - name: agent
+    image: jenkins/inbound-agent
+  hostNetwork: true
+  dnsPolicy: Default
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;起个容器&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl create &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; jenkins.yaml
+
+&lt;span class=&quot;c&quot;&gt;# 然后就挂了&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@10-8-19-173 ~]# kubectl get pods
+NAME                         READY   STATUS             RESTARTS   AGE
+jenkins-demo                 0/1     CrashLoopBackOff   7          13m
+shell-demo                   1/1     Running            0          98m
+tidb2-13-dn3zw-tsdqp-6l0z6   1/2     Terminating        0          43s
+tidb2-13-dn3zw-tsdqp-qmrjn   2/2     Running            0          3s
+tidb2-13-dn3zw-tsdqp-vtmxg   0/2     Terminating        0          2m3s
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@10-8-19-173 ~]#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个东西有四个变量。。。啊，不知道该怎么传变量啊。。。&lt;/p&gt;
+
+&lt;p&gt;找到这篇文档&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/&quot;&gt;https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/&quot;&gt;Define Environment Variables for a Container&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;看日志。。。这该死的容器好像不听我的。。。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl logs &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; pods/jenkins-demo agent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看 Jenkins 起动的 pods 的环境变量&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl describe pods/tidb2-13-dn3zw-tsdqp-ms1l&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Environment:
+      JENKINS_SECRET:         fe2e12708ad3b3daa74f5c7e253ab1e8620901255927238ad7444aba650a3e3e
+      JENKINS_AGENT_NAME:     tidb2-13-dn3zw-tsdqp-ms1ls
+      JENKINS_NAME:           tidb2-13-dn3zw-tsdqp-ms1ls
+      JENKINS_AGENT_WORKDIR:  /home/jenkins/agent
+      JENKINS_URL:            http://152.32.240.177:8877/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;加上变量，故技重施&lt;/p&gt;
+
+&lt;p&gt;改成一样的参数也是可以好使的。。。。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@10-8-19-173 ~]# &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;jenkins.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins-demo
+spec:
+  volumes:
+  - name: shared-data
+    emptyDir: &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+  containers:
+  - name: agent
+    image: jenkins/inbound-agent
+    &lt;span class=&quot;nb&quot;&gt;env&lt;/span&gt;:
+    - name:  JENKINS_SECRET
+      value: fe2e12708ad3b3daa74f5c7e253ab1e8620901255927238ad7444aba650a3e3e
+    - name:  JENKINS_AGENT_NAME
+      value: tidb2-13-dn3zw-tsdqp-ms1ls
+    - name:  JENKINS_NAME
+      value: tidb2-13-dn3zw-tsdqp-ms1ls
+    - name:  JENKINS_AGENT_WORKDIR
+      value: /home/jenkins/agent
+    - name:  JENKINS_URL
+      value: http://152.32.240.177:8877/
+  hostNetwork: &lt;span class=&quot;nb&quot;&gt;true
+  &lt;/span&gt;dnsPolicy: Default
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_07-23-51.png&quot; alt=&quot;jenkins network&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这个是好用的。我人傻了。。。&lt;/p&gt;
+
+&lt;p&gt;对比环境变量，完全一致&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl describe pods/jenkins-demo&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl describe pods/tidb2-13-dn3zw-tsdqp-ms1l&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;然后我该怎么处理没思路了&quot;&gt;&lt;strong&gt;然后我该怎么处理。。。。没思路了&lt;/strong&gt;&lt;/h2&gt;
+
+&lt;p&gt;我好菜啊，还剩最后一步，不知道该怎么解决了。。。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;搭建 Kubernetes 花了四个小时&lt;/li&gt;
+  &lt;li&gt;在 Jenkins 那个接口上花了尽五个小时&lt;/li&gt;
+  &lt;li&gt;加上剩下的总计花费了十二个小时&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;此时已经是早上八点了，不搞了，去睡觉&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_07-52-08.png&quot; alt=&quot;current&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;睡了一觉，一觉醒来&lt;/p&gt;
+
+&lt;p&gt;仔细看了配置，发现&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;hostNetwork&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;dnsPolicy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Default&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Jenkins 的 manifest 和我拉下来测试的 manifest 网络部分有不一样的地方&lt;/p&gt;
+
+&lt;p&gt;经过测试是 &lt;code class=&quot;highlighter-rouge&quot;&gt;hostNetwork: true&lt;/code&gt; 的影响&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;hostNetwork&lt;/code&gt; 这个参数是 &lt;a href=&quot;https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces&quot;&gt;使用本机的网络&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这说明我 Kubernetes 目前是没法联网的&lt;/p&gt;
+
+&lt;h3 id=&quot;写构建过程&quot;&gt;写构建过程&lt;/h3&gt;
+
+&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;podTemplate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;yaml:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: golang
+    image: golang:1.13.0
+    command:
+    - sleep
+    args:
+    - infinity
+  hostNetwork: true
+  dnsPolicy: Default
+'''&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;POD_LABEL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Build TiDB'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;url:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://github.com/pingcap/tidb.git'&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;container&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'golang'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Build a TiDB'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;sh&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&quot;
+                    make server
+
+                    cd bin
+                    sha1sum tidb-server &amp;gt; tidb-server.sha1sum
+                    sha512sum tidb-server &amp;gt; tidb-server.sha512sum
+                    &quot;&quot;&quot;&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;archiveArtifacts&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'bin/*'&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-51-20.png&quot; alt=&quot;Kubernetes&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-48-15.png&quot; alt=&quot;Jenkins&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如果重点是：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;k8s 作为 Jenkins 的 Work Node 自动调度&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;我觉得我已经完成了（作为一个 demo 来说），虽然 Jenkins 还需要手动点 build （重点不在这吧），构建结果只提供了 linux x86_64 的 bin 包&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/sticker_power.png&quot; alt=&quot;power&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;预计花费时间 12h&lt;/li&gt;
+  &lt;li&gt;总计花费时间 14h&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;完成时间 &lt;code class=&quot;highlighter-rouge&quot;&gt;Wed Jan 20 13:49:15 CST 2021&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;之后的思考&quot;&gt;之后的思考&lt;/h1&gt;
+
+&lt;h3 id=&quot;尝试在自己笔记本上远程控制&quot;&gt;尝试在自己笔记本上远程控制&lt;/h3&gt;
+
+&lt;p&gt;启动时要指定连接 ip 。vps 是 basic nat 转换的，拿到的 ip  是私有地址&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 在自己的笔记本安装 kubectl&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube
+scp root@152.32.240.177:/etc/kubernetes/admin.conf &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+
+kubectl get nodes
+Unable to connect to the server: x509: certificate is valid &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.96.0.1, 10.8.19.173, not 152.32.240.177
+
+&lt;span class=&quot;c&quot;&gt;# 可以跳过证书。（逃&lt;/span&gt;
+kubectl &lt;span class=&quot;nt&quot;&gt;--insecure-skip-tls-verify&lt;/span&gt; get nodes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;发动技能，“人生重来“，&lt;code class=&quot;highlighter-rouge&quot;&gt;reset&lt;/code&gt; 之后再 &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt; 加上这个参数&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubeadm init &lt;span class=&quot;nt&quot;&gt;--apiserver-advertise-address&lt;/span&gt; 152.32.240.177 &lt;span class=&quot;nt&quot;&gt;--pod-network-cidr&lt;/span&gt; 192.168.0.0/16
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#options&quot;&gt;kubeadm init&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;问题来了。。。我能不能不 &lt;code class=&quot;highlighter-rouge&quot;&gt;reset&lt;/code&gt; 再 &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/52915110/unable-to-connect-to-the-server-x509-certificate-is-valid-for&quot;&gt;Unable to connect to the server: x509: certificate is valid for&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;不过大体思路是有的：自己生成一个 tls 证书，把公共的 ip 写进去&lt;/p&gt;
+
+&lt;p&gt;这个地方是由 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/manifests/kube-apiserver.yaml&lt;/code&gt; 文件起的 pod&lt;/p&gt;
+
+&lt;p&gt;修改这个，然后再 apply ，应该可行&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl apply &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /etc/kubernetes/manifests/kube-apiserver.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/&quot;&gt;不过 &lt;code class=&quot;highlighter-rouge&quot;&gt;apiserver&lt;/code&gt; 似乎并不生成证书&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;后来又翻到了这篇：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/46360361/invalid-x509-certificate-for-kubernetes-master&quot;&gt;Invalid x509 certificate for kubernetes master&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;直接两行解决&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; /etc/kubernetes/pki/apiserver.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+kubeadm init phase certs all &lt;span class=&quot;nt&quot;&gt;--apiserver-advertise-address&lt;/span&gt; 152.32.240.177
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;肯定会有人有疑问。。。&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/admin.conf&lt;/code&gt; 更新了吗？&lt;/p&gt;
+
+&lt;p&gt;没有，那里面写的是根证书&lt;/p&gt;
+
+&lt;p&gt;根证书在这里：&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/pki/ca.crt&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/admin.conf&lt;/code&gt; 里的 clusters &lt;code class=&quot;highlighter-rouge&quot;&gt;certificate-authority-data&lt;/code&gt; 可以通过这条命令生成&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# certificate-authority-data&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/kubernetes/pki/ca.crt | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;当然，用 &lt;code class=&quot;highlighter-rouge&quot;&gt;openssl x509&lt;/code&gt; 去生成一个证书应该也是可行的&lt;/p&gt;
+
+&lt;h2 id=&quot;面试&quot;&gt;面试&lt;/h2&gt;
+
+&lt;p&gt;之后就是和面试官聊了&lt;/p&gt;
+
+&lt;p&gt;我专门找 HR 确认了，面试官不是出题人，应该不会谈面试题&lt;/p&gt;
+
+&lt;p&gt;我很慌，万一考了 &lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;图论&lt;/code&gt; 我估计就挂了&lt;/p&gt;
+
+&lt;p&gt;然后，倒是没聊什么技术，就聊了聊产品和原来做的东西。。。。&lt;/p&gt;
+
+&lt;p&gt;然后我就挂了&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;面试官内心 OS：这家伙说话声音难听，语速又贼快，随便编个理由把它挂了吧&lt;/p&gt;
+
+  &lt;p&gt;理由就叫：就叫没讲清楚你干了啥吧&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;我：？？？？？？？&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/jenkins_and_kubernetes/sticker_think.jpg&quot; alt=&quot;太奇怪了，准备用脑子想&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;等着，这就去学伪声（x&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;这就和面试进门先迈哪只脚一样，反正看你不爽，你先迈哪只脚都不对（&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;我觉得我被莫名其妙拉过去面试，然后又莫名其妙挂掉了&lt;/p&gt;
+
+&lt;p&gt;可能是我不够 Match 。我也觉得我不 Match，毕竟我原来做的东西和 PingCAP 做的东西基本上没啥相关性&lt;/p&gt;
+
+&lt;p&gt;不过，没啥相关性别拉我过去做题啊。（我每天忙的要死&lt;/p&gt;
+
+&lt;p&gt;啊，对了。我还不知道我面的是啥岗位那（&lt;/p&gt;
+
+&lt;p&gt;挂掉这一面没有问技术是我最出乎意料掉一点，昨天晚上我还在研究会问什么题那（x&lt;/p&gt;
+
+&lt;p&gt;还有就是所属行业不同，我没有交代清楚背景，和为什么要这么做。&lt;/p&gt;
+
+&lt;p&gt;&lt;del&gt;最后的总结就是：&lt;strong&gt;PingCAP 这家不按套路出牌&lt;/strong&gt; 和 &lt;strong&gt;我的吹牛技术还不够资深&lt;/strong&gt;&lt;/del&gt;&lt;/p&gt;
+
+&lt;p&gt;面试题我和 HR 确认过了，是可以发 blog 的&lt;/p&gt;
+
+&lt;h2 id=&quot;反省&quot;&gt;反省&lt;/h2&gt;
+
+&lt;p&gt;我挂掉是我的问题，我不应该假定别人有相应的基础知识。&lt;/p&gt;
+
+&lt;p&gt;上次去分享 WebRTC 的时候也是，我假定大家都懂 NAT （我不该这么假定）&lt;/p&gt;
+
+&lt;p&gt;一上来就讲原理，大家甚至都不知道这个东西是什么，也不知这东西有什么用&lt;/p&gt;
+
+&lt;p&gt;讲的内容又过于硬核，语速又超快
+（之后被朋友批评了一顿，又在同一个地方栽跟头了）&lt;/p&gt;
+
+&lt;p&gt;还有这篇文章，我又双叒叕的假定了大家都知道 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/motd&lt;/code&gt; 是干什么用的&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/motd&lt;/code&gt; 内容的会在用户成功登录后由 Unix 登录命令显示，&lt;/p&gt;
+
+  &lt;p&gt;整个过程发生在 shell 登录之前。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;立个 Flag 吧：我要让你们都知道，我这几年干了啥！&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">看我给你表演一个绝活，12 个小时之内完成</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">MQTT 踩坑指南</title><link href="https://a-wing.top/iot/2020/12/05/mqtt.html" rel="alternate" type="text/html" title="MQTT 踩坑指南" /><published>2020-12-05T09:00:00+00:00</published><updated>2020-12-05T09:00:00+00:00</updated><id>https://a-wing.top/iot/2020/12/05/mqtt</id><content type="html" xml:base="https://a-wing.top/iot/2020/12/05/mqtt.html">&lt;p&gt;MQTT（Message Queuing Telemetry Transport 消息队列遥测传输协议）
 是一种基于发布/订阅（publish/subscribe）模式的 “轻量级” 通讯协议，该协议构建于 TCP/IP 协议上，最早由 IBM 在 1999 年发布。
 目前由 OASIS 维护 &lt;a href=&quot;https://mqtt.org&quot;&gt;MQTT&lt;/a&gt; 标准&lt;/p&gt;
 
@@ -1521,47 +2232,4 @@ Similarity = 94.74%
 
 &lt;p&gt;默认配置很完美，可定制性差一些。。。也就是可以开箱即用&lt;/p&gt;
 
-&lt;p&gt;如果你平时用 iphone , ipad 之类的苹果全家桶，那加上 mbp 还是很不错的。如果只有一个 mbp 就很没必要了。。。如果你正常用 Linux 无压力，Linux 也许是更好的选择&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html"></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">关于中秋节发月饼这件事</title><link href="https://a-wing.top/think/2019/09/15/moon_cake.html" rel="alternate" type="text/html" title="关于中秋节发月饼这件事" /><published>2019-09-15T08:00:00+00:00</published><updated>2019-09-15T08:00:00+00:00</updated><id>https://a-wing.top/think/2019/09/15/moon_cake</id><content type="html" xml:base="https://a-wing.top/think/2019/09/15/moon_cake.html">&lt;p&gt;这篇本来不想发出来，不过想了想还是发出来吧，毕竟我的想法也不一定是对的。&lt;/p&gt;
-
-&lt;p&gt;事情是这样的，我司本来是小公司，没有专门的 HR 行政之类的人。到中秋节了吗。。。因为我们有远程工作的，还有常年不来公司露面的销售&lt;/p&gt;
-
-&lt;p&gt;我司这个是第一次过节全员发福利，主要是今年员工快翻了两倍了&lt;/p&gt;
-
-&lt;p&gt;本来我是本着发点月饼增加以下感情。。。毕竟发100块的月饼和发100块的红包给人的感觉是不一样的&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;100块的月饼：哇，还有月饼吃，好开心&lt;/li&gt;
-  &lt;li&gt;100块的红包：抠死了。才100块，这公司要倒闭了，散了吧散了吧&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;嗯，发月饼这件事是我向领导提出来的。。。（我TM 就是嘴欠&lt;/p&gt;
-
-&lt;p&gt;本来我想先去找销售去商量一下的，然而销售那几天都没来。。。&lt;/p&gt;
-
-&lt;p&gt;然而最糟糕的事情出现了。。。我找领导一商量，好，月饼买了。。。。销售也每个人都买了一份月饼，最大的问题是那个销售根本不知道有多少远程的。。。所有只买了平时在办公室里的。。。&lt;/p&gt;
-
-&lt;p&gt;好了现在月饼泛滥了，没人可以拿两份了。。。那怎么行啊，把月饼都送出去，剩下的拆开大家分着吃&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;然而令我最不爽的是有人提出给客户送月饼&lt;/strong&gt;，理由是：原来用财务公司记账的时候，财务公司给客户送月饼。嗯，好像很有道理的样子。。（不对啊，这个分行业吧&lt;/p&gt;
-
-&lt;p&gt;不过我怎么都感觉不对：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;像那种财务公司，可替代性极强，维护客情关系就显得尤为重要。&lt;/li&gt;
-  &lt;li&gt;但我们的客户，今天把它骂了，明天它还会乐呵呵的买你的产品。。毕竟没得选&lt;/li&gt;
-  &lt;li&gt;最终结论就是，月饼等于丢了。没有产生任何价值&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;保险，财务，专利代理之类的逢年过节，完全销售主导型的送点礼品维护一下客情很重要&lt;/p&gt;
-
-&lt;p&gt;你一个做产品的，干嘛给客户送礼啊。。。就因为客单价很高？（送经销商礼品还差不多。不对经销商是从你这赚钱的，经销商应该给你送礼&lt;/p&gt;
-
-&lt;p&gt;这中间还有一下涉及公司的项目的合作公司的人送月饼。。。这个更有意思：对接的本来有两个人。。一个很熟，一个不熟悉的新加入的。。。然后和对方的大领导很熟。&lt;/p&gt;
-
-&lt;p&gt;只送给很熟的人，那另一个不熟的人知道了感觉不太好，那就都送吧。。。然后那个不熟的就把月饼推了回来，理由是：不敢收&lt;/p&gt;
-
-&lt;p&gt;站在他的角度想想，收了才是心大。。。我和你们不熟啊，你们和我大领导那么熟，到底是有什么关系？是在试探我吗？还是在贿赂我？&lt;/p&gt;
-
-&lt;p&gt;到最后所有人都发完了，还剩下一些月饼，刚准备拆开大家分开吃掉。。。要不要在确认一下，不常来的是不是都收到了。。。一查，还真有没收到的。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;最后总结一下就是，还真不能小瞧发月饼这件事，这里面学问还挺多&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;以上想法纯属个人YY，如有不同见解，请务必指出&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">这篇本来不想发出来，不过想了想还是发出来吧，毕竟我的想法也不一定是对的。</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+&lt;p&gt;如果你平时用 iphone , ipad 之类的苹果全家桶，那加上 mbp 还是很不错的。如果只有一个 mbp 就很没必要了。。。如果你正常用 Linux 无压力，Linux 也许是更好的选择&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html"></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
