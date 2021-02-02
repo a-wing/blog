@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh_CN">
-
-  <head>
+<html lang="zh-CN"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>自制旁路网关（三） ——nftables 来做透明代理 - Hi! 上天不?</title>
-  <link rel="stylesheet" href="/assets/main.css">
-  <!-- Begin Jekyll SEO tag v2.6.1 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>自制旁路网关（三） ——nftables 来做透明代理 | Hi! 上天不?</title>
-<meta name="generator" content="Jekyll v3.7.4" />
+<meta name="generator" content="Jekyll v4.2.0" />
 <meta property="og:title" content="自制旁路网关（三） ——nftables 来做透明代理" />
 <meta name="author" content="metal A-wing" />
 <meta property="og:locale" content="zh_CN" />
@@ -21,114 +16,50 @@
 <meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-03-07T04:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="twitter:title" content="自制旁路网关（三） ——nftables 来做透明代理" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","url":"https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables.html","headline":"自制旁路网关（三） ——nftables 来做透明代理","dateModified":"2020-03-07T04:00:00+00:00","datePublished":"2020-03-07T04:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","author":{"@type":"Person","name":"metal A-wing"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables.html"},"description":"本以为这篇文章会写的很长，因为笔记上还有好多内容。不过博客不能是笔记，把最核心的地方用最简单的话提炼出来，尽可能让所有人能看懂才算是一篇好文章","@context":"https://schema.org"}</script>
+{"headline":"自制旁路网关（三） ——nftables 来做透明代理","dateModified":"2020-03-07T04:00:00+00:00","datePublished":"2020-03-07T04:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables.html"},"url":"https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables.html","author":{"@type":"Person","name":"metal A-wing"},"description":"本以为这篇文章会写的很长，因为笔记上还有好多内容。不过博客不能是笔记，把最核心的地方用最简单的话提炼出来，尽可能让所有人能看懂才算是一篇好文章","image":"https://a-wing.top/assets/avatar.png","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117419557-1"></script>
+<script>
+  window['ga-disable-UA-117419557-1'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
-  
-    <script>
-if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-117419557-1', 'auto');
-  ga('send', 'pageview');
-}
+  gtag('config', 'UA-117419557-1');
 </script>
-  
 
-  
 </head>
+<body><img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
+<header class="site-header">
 
-
-  <body>
-
-    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
-<header class="site-header" role="banner">
-
-  <div class="wrapper">
-    
-    
-    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
-
-    
-      <nav class="site-nav">
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Hi! 上天不?</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
             <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
-              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
-              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
             </svg>
           </span>
         </label>
 
-        <div class="trigger">
-
-          <a href="https://travis-ci.org/a-wing/blog">
-            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
-          </a>
-
-            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
-
-          
-            
-            
-          
-            
-            
-            <a class="page-link" href="/about/">关于我</a>
-            
-          
-            
-            
-            <a class="page-link" href="/equipment/">硬件设备</a>
-            
-          
-            
-            
-          
-            
-            
-            <a class="page-link" href="/links/">友情连接</a>
-            
-          
-            
-            
-          
-            
-            
-            <a class="page-link" href="/projects/">个人项目</a>
-            
-          
-            
-            
-          
-        </div>
-      </nav>
-    
-  </div>
+        <div class="trigger"><a class="page-link" href="/projects/">个人项目</a><a class="page-link" href="/equipment/">硬件设备</a><a class="page-link" href="/links/">友情连接</a><a class="page-link" href="/about/">关于我</a></div>
+      </nav></div>
 </header>
-
-
-    <main class="page-content" aria-label="Content">
+<main class="page-content" aria-label="Content">
       <div class="wrapper">
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">自制旁路网关（三） ——nftables 来做透明代理</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2020-03-07T04:00:00+00:00" itemprop="datePublished">
-        
+    <p class="post-meta"><time class="dt-published" datetime="2020-03-07T04:00:00+00:00" itemprop="datePublished">
         Mar 7, 2020
-      </time>
-      
-        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
-      </p>
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">metal A-wing</span></span></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
@@ -136,9 +67,9 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
 
 <p>今天或许是个好日子，<a href="https://zh.wikipedia.org/wiki/%E5%A5%B3%E7%94%9F%E8%8A%82">三月七号女生节</a>。我决定今天把这个系列的坑填上，就当作给所有女孩子的礼物了（大雾）</p>
 
-<p>为什要使用 nftables 来分流而不用，clash 的分流。如果你了解零拷贝实现，你就会了解为什么这样做。不了解也没关系，记住结论 <code class="highlighter-rouge">nftables</code> 分流性能更高一些</p>
+<p>为什要使用 nftables 来分流而不用，clash 的分流。如果你了解零拷贝实现，你就会了解为什么这样做。不了解也没关系，记住结论 <code class="language-plaintext highlighter-rouge">nftables</code> 分流性能更高一些</p>
 
-<p>不过那个<code class="highlighter-rouge">nftables</code> 性能高只是理论上的。实际上我并没有做过 <code class="highlighter-rouge">benchmarks</code> 。可能实际情况也刚好相反。（也欢迎那个较真的杠精来做下 <code class="highlighter-rouge">benchmarks</code> 来证明一下）</p>
+<p>不过那个<code class="language-plaintext highlighter-rouge">nftables</code> 性能高只是理论上的。实际上我并没有做过 <code class="language-plaintext highlighter-rouge">benchmarks</code> 。可能实际情况也刚好相反。（也欢迎那个较真的杠精来做下 <code class="language-plaintext highlighter-rouge">benchmarks</code> 来证明一下）</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 挂上socks 代理下的大概快一点</span>
 curl <span class="nt">--socks5</span> localhost:7891 <span class="s1">'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest'</span> <span class="o">&gt;</span> raw
@@ -157,7 +88,7 @@ curl <span class="nt">--socks5</span> localhost:7891 <span class="s1">'http://ft
 <span class="nb">cp </span>chnroute.nft /etc/nftables/chnroute.nft
 </code></pre></div></div>
 
-<p>再来修改配置文件 <code class="highlighter-rouge">/etc/nftables.conf</code></p>
+<p>再来修改配置文件 <code class="language-plaintext highlighter-rouge">/etc/nftables.conf</code></p>
 
 <p>这个地方接上一篇 <a href="/network/2020/02/22/bypass_gateway-1_clash.html">自制旁路网关（一） ——使用clash做代理</a> 的 nftables 部分</p>
 
@@ -180,15 +111,15 @@ table ip nat <span class="o">{</span>
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">nft flush ruleset</code> 可以写在文件里，不用担心语法错误会把规则清空（这个我实际测试过）。nftables 的配置是 “事务型规则更新” （了解关系型数据库的人应该知道我在说什么）</p>
+<p><code class="language-plaintext highlighter-rouge">nft flush ruleset</code> 可以写在文件里，不用担心语法错误会把规则清空（这个我实际测试过）。nftables 的配置是 “事务型规则更新” （了解关系型数据库的人应该知道我在说什么）</p>
 
 <blockquote>
-  <p>细心的朋友可能会发现我在上一篇文章中用的是 <code class="highlighter-rouge">jump</code></p>
+  <p>细心的朋友可能会发现我在上一篇文章中用的是 <code class="language-plaintext highlighter-rouge">jump</code></p>
 </blockquote>
 
-<p>关于 <code class="highlighter-rouge">goto</code> 和 <code class="highlighter-rouge">jump</code> 指令是有区别的。我觉得这里用 <code class="highlighter-rouge">goto</code> 更好一些 <a href="https://wiki.nftables.org/wiki-nftables/index.php/Jumping_to_chain">官方文档讲的很清楚应该不用我再翻译一遍 jump vs goto</a></p>
+<p>关于 <code class="language-plaintext highlighter-rouge">goto</code> 和 <code class="language-plaintext highlighter-rouge">jump</code> 指令是有区别的。我觉得这里用 <code class="language-plaintext highlighter-rouge">goto</code> 更好一些 <a href="https://wiki.nftables.org/wiki-nftables/index.php/Jumping_to_chain">官方文档讲的很清楚应该不用我再翻译一遍 jump vs goto</a></p>
 
-<p>然后重新载入配置文件 <code class="highlighter-rouge">nft -f /etc/nftables.conf</code></p>
+<p>然后重新载入配置文件 <code class="language-plaintext highlighter-rouge">nft -f /etc/nftables.conf</code></p>
 
 <h4 id="做完这些如果你发现国内网站全上不去了">做完这些如果你发现国内网站全上不去了</h4>
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 看看这些个显示的是 0 还是 1</span>
@@ -202,9 +133,9 @@ sysctl <span class="nt">-w</span> net.ipv4.ip_forward<span class="o">=</span>1
 <span class="nb">echo </span>1 <span class="o">&gt;</span> /proc/sys/net/ipv4/ip_forward
 </code></pre></div></div>
 
-<p>不过长期的稳定的办法是修改 <code class="highlighter-rouge">/etc/sysctl.conf</code> 的 <code class="highlighter-rouge">net.ipv4.ip_forward=1</code></p>
+<p>不过长期的稳定的办法是修改 <code class="language-plaintext highlighter-rouge">/etc/sysctl.conf</code> 的 <code class="language-plaintext highlighter-rouge">net.ipv4.ip_forward=1</code></p>
 
-<p>然后 <code class="highlighter-rouge">sysctl -p</code> 载入</p>
+<p>然后 <code class="language-plaintext highlighter-rouge">sysctl -p</code> 载入</p>
 
 <h3 id="后记">后记</h3>
 <p>如果国外走 udp 。也是同理，只是要用 tproxy，或者 tun 设备（虚线一个网卡）</p>
@@ -229,12 +160,7 @@ sysctl <span class="nt">-w</span> net.ipv4.ip_forward<span class="o">=</span>1
 <p><a href="https://omicron3069.com/post/nftablesfornode/">nftables 上手小记</a></p>
 
 
-  </div>
-
-  
-    
-
-  <div id="disqus_thread"></div>
+  </div><div id="disqus_thread"></div>
   <script>
     var disqus_config = function () {
       this.page.url = 'https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables.html';
@@ -250,76 +176,45 @@ sysctl <span class="nt">-w</span> net.ipv4.ip_forward<span class="o">=</span>1
       (d.head || d.body).appendChild(s);
     })();
   </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-
-  
-
-  <a class="u-url" href="/network/2020/03/07/bypass_gateway-3_nftables.html" hidden></a>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><a class="u-url" href="/network/2020/03/07/bypass_gateway-3_nftables.html" hidden></a>
 </article>
 
       </div>
-    </main>
-
-    <footer class="site-footer h-card">
+    </main><footer class="site-footer h-card">
   <data class="u-url" href="/"></data>
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">Hi! 上天不?</h2>
-
     <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
         <ul class="contact-list">
-          <li class="p-name">
-            
-              Hi! 上天不?
-            
-            </li>
-            
+          <li class="p-name">Metal A-wing</li>
+          <li>1 at 233 dot email</li>
         </ul>
-
-        <a href="https://www.upyun.com/">
-          <img src="https://a-wing.top/assets/upyun_logo.png"/>
-        </a>
-
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-  
-  
-  
-  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
-  
-  
-  
-  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
-  
-  
-  
-</ul>
-
-
         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
         </a>
       </div>
-
-      <div class="footer-col footer-col-3">
+      <div class="footer-col">
         <p>新一的个人博客</p>
         <p>Power by Jekyll && Theme by minima-改</p>
         <p>Copyright © 2016-2021 Powered by a-wing</p>
       </div>
-
-      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
     </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/a-wing" title="a-wing"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/_a_wing" title="_a_wing"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
 
   </div>
 
 </footer>
-
-
-  </body>
+</body>
 
 </html>
