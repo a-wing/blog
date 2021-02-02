@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://a-wing.top/feed.xml" rel="self" type="application/atom+xml" /><link href="https://a-wing.top/" rel="alternate" type="text/html" hreflang="zh-CN" /><updated>2021-02-02T14:57:03+00:00</updated><id>https://a-wing.top/feed.xml</id><title type="html">Hi! 上天不?</title><subtitle>新一的个人博客</subtitle><author><name>Metal A-wing</name><email>1 at 233 dot email</email></author><entry><title type="html">PingCAP 面试：Jenkins 和 Kubernetes</title><link href="https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html" rel="alternate" type="text/html" title="PingCAP 面试：Jenkins 和 Kubernetes" /><published>2021-01-27T09:00:00+00:00</published><updated>2021-01-27T09:00:00+00:00</updated><id>https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes</id><content type="html" xml:base="https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html">&lt;p&gt;看我给你表演一个绝活，12 个小时之内完成&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN"><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="https://a-wing.top/feed.xml" rel="self" type="application/atom+xml" /><link href="https://a-wing.top/" rel="alternate" type="text/html" hreflang="zh_CN" /><updated>2021-02-02T15:48:12+00:00</updated><id>https://a-wing.top/feed.xml</id><title type="html">Hi! 上天不?</title><subtitle>新一的个人博客</subtitle><entry><title type="html">PingCAP 面试：Jenkins 和 Kubernetes</title><link href="https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html" rel="alternate" type="text/html" title="PingCAP 面试：Jenkins 和 Kubernetes" /><published>2021-01-27T09:00:00+00:00</published><updated>2021-01-27T09:00:00+00:00</updated><id>https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes</id><content type="html" xml:base="https://a-wing.top/kubernetes/2021/01/27/jenkins_and_kubernetes.html">&lt;p&gt;看我给你表演一个绝活，12 个小时之内完成&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;题目：给定三台香港的机器（4C8G），搭建一个单 master 节点的 k8s 集群，并搭建 Jenkins ，
@@ -66,23 +66,23 @@ ok，完美。先看一下 kubernetes 文档，看看 kubernetes 都能干啥&lt
 &lt;span class=&quot;nv&quot;&gt;REDHAT_SUPPORT_PRODUCT_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;7&quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;完蛋了，我没用过 CentOS 系统，不过问题不大，记住这三个字母就行了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yum&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;完蛋了，我没用过 CentOS 系统，不过问题不大，记住这三个字母就行了 &lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;查看基本信息备忘:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;版本 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cat /etc/os-release&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;时间 时区 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;timedatectl status&lt;/code&gt; （这个不同发行版可能不同）&lt;/li&gt;
-  &lt;li&gt;语言 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;echo $LANG&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;网络 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ip addr&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;镜像站 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cat /etc/yum.repos.d/CentOS-Base.repo&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;cpu &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cat /proc/cpuinfo&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;内存 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cat /proc/meminfo &amp;amp;&amp;amp; free -h&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;版本 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /etc/os-release&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;时间 时区 &lt;code class=&quot;highlighter-rouge&quot;&gt;timedatectl status&lt;/code&gt; （这个不同发行版可能不同）&lt;/li&gt;
+  &lt;li&gt;语言 &lt;code class=&quot;highlighter-rouge&quot;&gt;echo $LANG&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;网络 &lt;code class=&quot;highlighter-rouge&quot;&gt;ip addr&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;镜像站 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /etc/yum.repos.d/CentOS-Base.repo&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;cpu &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /proc/cpuinfo&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;内存 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /proc/meminfo &amp;amp;&amp;amp; free -h&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;然后在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/motd&lt;/code&gt; 留下笔记的链接（我就默认你们知道 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;motd&lt;/code&gt;（message of the day） 是干啥用的了）&lt;/p&gt;
+&lt;p&gt;然后在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/motd&lt;/code&gt; 留下笔记的链接（我就默认你们知道 &lt;code class=&quot;highlighter-rouge&quot;&gt;motd&lt;/code&gt;（message of the day） 是干啥用的了）&lt;/p&gt;
 
-&lt;p&gt;更新：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yum upgrade&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;更新：&lt;code class=&quot;highlighter-rouge&quot;&gt;yum upgrade&lt;/code&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -93,14 +93,14 @@ ok，完美。先看一下 kubernetes 文档，看看 kubernetes 都能干啥&lt
 &lt;p&gt;了解了这三个模块&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubeadm&lt;/code&gt;: 这是一个启动器&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubelet&lt;/code&gt;: 这玩意就是 kubernetes 的本体&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl&lt;/code&gt;: 命令行控制程序&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubeadm&lt;/code&gt;: 这是一个启动器&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubelet&lt;/code&gt;: 这玩意就是 kubernetes 的本体&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt;: 命令行控制程序&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubelet&lt;/code&gt; 每个都要有，但是 kubernetes 是个集群，启动的过程有些复杂，所以需要 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubeadm&lt;/code&gt; 来帮助我们来启动的集群&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubelet&lt;/code&gt; 每个都要有，但是 kubernetes 是个集群，启动的过程有些复杂，所以需要 &lt;code class=&quot;highlighter-rouge&quot;&gt;kubeadm&lt;/code&gt; 来帮助我们来启动的集群&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; 就是仅仅只是一个命令行客户端，在不在服务器上无所谓&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; 就是仅仅只是一个命令行客户端，在不在服务器上无所谓&lt;/p&gt;
 
 &lt;p&gt;kubernetes 的运行时 CRI （Container Runtimes Interface）&lt;/p&gt;
 
@@ -112,7 +112,7 @@ ok，完美。先看一下 kubernetes 文档，看看 kubernetes 都能干啥&lt
   &lt;li&gt;Docker&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;鉴于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;containerd&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CRI-O&lt;/code&gt; 完全没听说过，我们直接从 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Docker&lt;/code&gt; 开始&lt;/p&gt;
+&lt;p&gt;鉴于 &lt;code class=&quot;highlighter-rouge&quot;&gt;containerd&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;CRI-O&lt;/code&gt; 完全没听说过，我们直接从 &lt;code class=&quot;highlighter-rouge&quot;&gt;Docker&lt;/code&gt; 开始&lt;/p&gt;
 
 &lt;h3 id=&quot;设置网桥&quot;&gt;设置网桥&lt;/h3&gt;
 
@@ -166,9 +166,9 @@ exclude=kubelet kubeadm kubectl
 &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--now&lt;/span&gt; kubelet
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;由于对版本有要求，所以那个软件源禁用了那三个包（防止 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;upgrade&lt;/code&gt; 时挂掉）&lt;/p&gt;
+&lt;p&gt;由于对版本有要求，所以那个软件源禁用了那三个包（防止 &lt;code class=&quot;highlighter-rouge&quot;&gt;upgrade&lt;/code&gt; 时挂掉）&lt;/p&gt;
 
-&lt;p&gt;不要在意 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemctl status kubelet&lt;/code&gt; 的错误，因为：&lt;/p&gt;
+&lt;p&gt;不要在意 &lt;code class=&quot;highlighter-rouge&quot;&gt;systemctl status kubelet&lt;/code&gt; 的错误，因为：&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@10-8-19-173 ~]# systemctl &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;kubelet
 &lt;span class=&quot;c&quot;&gt;# /usr/lib/systemd/system/kubelet.service&lt;/span&gt;
@@ -212,7 +212,7 @@ exclude=kubelet kubeadm kubectl
     &lt;span class=&quot;nt&quot;&gt;--discovery-token-ca-cert-hash&lt;/span&gt; sha256:dc1778180a75dbf321463dd17897d2357fde5c69756342671cef5048eaf01249
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;然后按照提示在 master 配置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; 都配置文件&lt;/p&gt;
+&lt;p&gt;然后按照提示在 master 配置 &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; 都配置文件&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube
 &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; /etc/kubernetes/admin.conf &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
@@ -223,7 +223,7 @@ exclude=kubelet kubeadm kubectl
 
 &lt;h4 id=&quot;跑起来了跑起来了此时已经是到了凌晨了&quot;&gt;&lt;strong&gt;跑起来了，跑起来了！！！此时已经是到了凌晨了&lt;/strong&gt;&lt;/h4&gt;
 
-&lt;p&gt;现在可以看到状态是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NotReady&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;现在可以看到状态是 &lt;code class=&quot;highlighter-rouge&quot;&gt;NotReady&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;是因为缺少 CNI （Container Network Interface）&lt;/p&gt;
 
@@ -232,20 +232,20 @@ exclude=kubelet kubeadm kubectl
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl apply &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;虽然官方使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Calico&lt;/code&gt; 来测试的&lt;/p&gt;
+&lt;p&gt;虽然官方使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;Calico&lt;/code&gt; 来测试的&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://docs.projectcalico.org/getting-started/kubernetes/flannel/migration-from-flannel&quot;&gt;有迁移办法方法问题不大&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubeadm init&lt;/code&gt; 设置参数有问题，忘记设置网络了&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubeadm init&lt;/code&gt; 设置参数有问题，忘记设置网络了&lt;/p&gt;
 
-&lt;p&gt;在全部的机器上执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubeadm reset&lt;/code&gt;，关闭集群&lt;/p&gt;
+&lt;p&gt;在全部的机器上执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;kubeadm reset&lt;/code&gt;，关闭集群&lt;/p&gt;
 
 &lt;p&gt;人生重来，重新开始&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubeadm init &lt;span class=&quot;nt&quot;&gt;--pod-network-cidr&lt;/span&gt; 192.168.0.0/16
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;每次生成的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/kubernetes/admin.conf&lt;/code&gt; 里面的内容都是不同的，reset 之后要重新设置&lt;/p&gt;
+&lt;p&gt;每次生成的 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/admin.conf&lt;/code&gt; 里面的内容都是不同的，reset 之后要重新设置&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# To start using your cluster, you need to run the following as a regular user:&lt;/span&gt;
 
@@ -290,7 +290,7 @@ exclude=kubelet kubeadm kubectl
 
 &lt;p&gt;使用 Secret File (kubeconfig file)&lt;/p&gt;
 
-&lt;p&gt;配置 Kubernetes 地址 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localhost:6443&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;配置 Kubernetes 地址 &lt;code class=&quot;highlighter-rouge&quot;&gt;localhost:6443&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;好build-开始&quot;&gt;好，build 开始&lt;/h2&gt;
 
@@ -350,7 +350,7 @@ Caused by: java.net.SocketTimeoutException: connect timed out
 &lt;p&gt;在 Kubernetes 创建一个 pods，这个 pods 里面有两个容器。
 一个是构建用的，另一个是负责收集构建容器输出的日志传回 Jenkins 主程序&lt;/p&gt;
 
-&lt;p&gt;收集日志的容器会主动链接主程序，可以使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;websocket&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tcp&lt;/code&gt; 来通信&lt;/p&gt;
+&lt;p&gt;收集日志的容器会主动链接主程序，可以使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;http&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;websocket&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;tcp&lt;/code&gt; 来通信&lt;/p&gt;
 
 &lt;p&gt;这几种方式我都测试过了，然后也把 Jenkins 都权限一路开到最大，仍然无法通信&lt;/p&gt;
 
@@ -358,7 +358,7 @@ Caused by: java.net.SocketTimeoutException: connect timed out
 
 &lt;h2 id=&quot;验证-kubernetes-的内部网络&quot;&gt;验证 Kubernetes 的内部网络&lt;/h2&gt;
 
-&lt;p&gt;先在宿主机上安装 nc 工具。（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;netcat&lt;/code&gt;）&lt;/p&gt;
+&lt;p&gt;先在宿主机上安装 nc 工具。（&lt;code class=&quot;highlighter-rouge&quot;&gt;netcat&lt;/code&gt;）&lt;/p&gt;
 
 &lt;p&gt;随便起一个 Tcp server&lt;/p&gt;
 
@@ -368,7 +368,7 @@ Caused by: java.net.SocketTimeoutException: connect timed out
 &lt;p&gt;把 jenkins kubernetes 的插件设置改到刚开到那个端口（ 8877 那个 ），要用 http 的方式（当然 websocket 也可以）&lt;/p&gt;
 
 &lt;p&gt;根据 http 1.x 的原理，http 是明文传输，是可以在 nc 起的 server 里面看到 http 头的
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;websocket&lt;/code&gt; 也是先发个 http 包，之后 Upgrade&lt;/p&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;websocket&lt;/code&gt; 也是先发个 http 包，之后 Upgrade&lt;/p&gt;
 
 &lt;p&gt;你可以用这两条来验证我说的：&lt;/p&gt;
 
@@ -386,7 +386,7 @@ curl localhost:8877
 
 &lt;p&gt;这个是日志收集容器 &lt;a href=&quot;https://hub.docker.com/r/jenkins/inbound-agent&quot;&gt;Docker Hub&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;照着这个文件画瓢 &lt;a href=&quot;https://k8s.io/examples/application/shell-demo.yaml&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://k8s.io/examples/application/shell-demo.yaml&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;照着这个文件画瓢 &lt;a href=&quot;https://k8s.io/examples/application/shell-demo.yaml&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;https://k8s.io/examples/application/shell-demo.yaml&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; jenkins.yaml &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
 apiVersion: v1
@@ -435,7 +435,7 @@ tidb2-13-dn3zw-tsdqp-vtmxg   0/2     Terminating        0          2m3s
 
 &lt;p&gt;查看 Jenkins 起动的 pods 的环境变量&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl describe pods/tidb2-13-dn3zw-tsdqp-ms1l&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl describe pods/tidb2-13-dn3zw-tsdqp-ms1l&lt;/code&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Environment:
       JENKINS_SECRET:         fe2e12708ad3b3daa74f5c7e253ab1e8620901255927238ad7444aba650a3e3e
@@ -482,9 +482,9 @@ spec:
 
 &lt;p&gt;对比环境变量，完全一致&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl describe pods/jenkins-demo&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl describe pods/jenkins-demo&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl describe pods/tidb2-13-dn3zw-tsdqp-ms1l&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl describe pods/tidb2-13-dn3zw-tsdqp-ms1l&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;然后我该怎么处理没思路了&quot;&gt;&lt;strong&gt;然后我该怎么处理。。。。没思路了&lt;/strong&gt;&lt;/h2&gt;
 
@@ -517,9 +517,9 @@ spec:
 
 &lt;p&gt;Jenkins 的 manifest 和我拉下来测试的 manifest 网络部分有不一样的地方&lt;/p&gt;
 
-&lt;p&gt;经过测试是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hostNetwork: true&lt;/code&gt; 的影响&lt;/p&gt;
+&lt;p&gt;经过测试是 &lt;code class=&quot;highlighter-rouge&quot;&gt;hostNetwork: true&lt;/code&gt; 的影响&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hostNetwork&lt;/code&gt; 这个参数是 &lt;a href=&quot;https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces&quot;&gt;使用本机的网络&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;hostNetwork&lt;/code&gt; 这个参数是 &lt;a href=&quot;https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces&quot;&gt;使用本机的网络&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;这说明我 Kubernetes 目前是没法联网的&lt;/p&gt;
 
@@ -579,7 +579,7 @@ spec:
   &lt;li&gt;总计花费时间 14h&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;完成时间 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Wed Jan 20 13:49:15 CST 2021&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;完成时间 &lt;code class=&quot;highlighter-rouge&quot;&gt;Wed Jan 20 13:49:15 CST 2021&lt;/code&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;之后的思考&quot;&gt;之后的思考&lt;/h1&gt;
 
@@ -598,27 +598,27 @@ Unable to connect to the server: x509: certificate is valid &lt;span class=&quot
 kubectl &lt;span class=&quot;nt&quot;&gt;--insecure-skip-tls-verify&lt;/span&gt; get nodes
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;发动技能，“人生重来“，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt; 之后再 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;init&lt;/code&gt; 加上这个参数&lt;/p&gt;
+&lt;p&gt;发动技能，“人生重来“，&lt;code class=&quot;highlighter-rouge&quot;&gt;reset&lt;/code&gt; 之后再 &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt; 加上这个参数&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubeadm init &lt;span class=&quot;nt&quot;&gt;--apiserver-advertise-address&lt;/span&gt; 152.32.240.177 &lt;span class=&quot;nt&quot;&gt;--pod-network-cidr&lt;/span&gt; 192.168.0.0/16
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#options&quot;&gt;kubeadm init&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;问题来了。。。我能不能不 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt; 再 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;init&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;问题来了。。。我能不能不 &lt;code class=&quot;highlighter-rouge&quot;&gt;reset&lt;/code&gt; 再 &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/52915110/unable-to-connect-to-the-server-x509-certificate-is-valid-for&quot;&gt;Unable to connect to the server: x509: certificate is valid for&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;不过大体思路是有的：自己生成一个 tls 证书，把公共的 ip 写进去&lt;/p&gt;
 
-&lt;p&gt;这个地方是由 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/kubernetes/manifests/kube-apiserver.yaml&lt;/code&gt; 文件起的 pod&lt;/p&gt;
+&lt;p&gt;这个地方是由 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/manifests/kube-apiserver.yaml&lt;/code&gt; 文件起的 pod&lt;/p&gt;
 
 &lt;p&gt;修改这个，然后再 apply ，应该可行&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl apply &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /etc/kubernetes/manifests/kube-apiserver.yaml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/&quot;&gt;不过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apiserver&lt;/code&gt; 似乎并不生成证书&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/&quot;&gt;不过 &lt;code class=&quot;highlighter-rouge&quot;&gt;apiserver&lt;/code&gt; 似乎并不生成证书&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;后来又翻到了这篇：&lt;/p&gt;
 
@@ -630,19 +630,19 @@ kubectl &lt;span class=&quot;nt&quot;&gt;--insecure-skip-tls-verify&lt;/span&gt;
 kubeadm init phase certs all &lt;span class=&quot;nt&quot;&gt;--apiserver-advertise-address&lt;/span&gt; 152.32.240.177
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;肯定会有人有疑问。。。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/kubernetes/admin.conf&lt;/code&gt; 更新了吗？&lt;/p&gt;
+&lt;p&gt;肯定会有人有疑问。。。&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/admin.conf&lt;/code&gt; 更新了吗？&lt;/p&gt;
 
 &lt;p&gt;没有，那里面写的是根证书&lt;/p&gt;
 
-&lt;p&gt;根证书在这里：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/kubernetes/pki/ca.crt&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;根证书在这里：&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/pki/ca.crt&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/kubernetes/admin.conf&lt;/code&gt; 里的 clusters &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;certificate-authority-data&lt;/code&gt; 可以通过这条命令生成&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/kubernetes/admin.conf&lt;/code&gt; 里的 clusters &lt;code class=&quot;highlighter-rouge&quot;&gt;certificate-authority-data&lt;/code&gt; 可以通过这条命令生成&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# certificate-authority-data&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/kubernetes/pki/ca.crt | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; 0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;当然，用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;openssl x509&lt;/code&gt; 去生成一个证书应该也是可行的&lt;/p&gt;
+&lt;p&gt;当然，用 &lt;code class=&quot;highlighter-rouge&quot;&gt;openssl x509&lt;/code&gt; 去生成一个证书应该也是可行的&lt;/p&gt;
 
 &lt;h2 id=&quot;面试&quot;&gt;面试&lt;/h2&gt;
 
@@ -650,7 +650,7 @@ kubeadm init phase certs all &lt;span class=&quot;nt&quot;&gt;--apiserver-advert
 
 &lt;p&gt;我专门找 HR 确认了，面试官不是出题人，应该不会谈面试题&lt;/p&gt;
 
-&lt;p&gt;我很慌，万一考了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;动态规划&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;图论&lt;/code&gt; 我估计就挂了&lt;/p&gt;
+&lt;p&gt;我很慌，万一考了 &lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;图论&lt;/code&gt; 我估计就挂了&lt;/p&gt;
 
 &lt;p&gt;然后，倒是没聊什么技术，就聊了聊产品和原来做的东西。。。。&lt;/p&gt;
 
@@ -701,15 +701,15 @@ kubeadm init phase certs all &lt;span class=&quot;nt&quot;&gt;--apiserver-advert
 &lt;p&gt;讲的内容又过于硬核，语速又超快
 （之后被朋友批评了一顿，又在同一个地方栽跟头了）&lt;/p&gt;
 
-&lt;p&gt;还有这篇文章，我又双叒叕的假定了大家都知道 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/motd&lt;/code&gt; 是干什么用的&lt;/p&gt;
+&lt;p&gt;还有这篇文章，我又双叒叕的假定了大家都知道 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/motd&lt;/code&gt; 是干什么用的&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/motd&lt;/code&gt; 内容的会在用户成功登录后由 Unix 登录命令显示，&lt;/p&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/motd&lt;/code&gt; 内容的会在用户成功登录后由 Unix 登录命令显示，&lt;/p&gt;
 
   &lt;p&gt;整个过程发生在 shell 登录之前。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;立个 Flag 吧：我要让你们都知道，我这几年干了啥！&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="kubernetes" /><summary type="html">看我给你表演一个绝活，12 个小时之内完成</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">MQTT 踩坑指南</title><link href="https://a-wing.top/iot/2020/12/05/mqtt.html" rel="alternate" type="text/html" title="MQTT 踩坑指南" /><published>2020-12-05T09:00:00+00:00</published><updated>2020-12-05T09:00:00+00:00</updated><id>https://a-wing.top/iot/2020/12/05/mqtt</id><content type="html" xml:base="https://a-wing.top/iot/2020/12/05/mqtt.html">&lt;p&gt;MQTT（Message Queuing Telemetry Transport 消息队列遥测传输协议）
+&lt;p&gt;立个 Flag 吧：我要让你们都知道，我这几年干了啥！&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">看我给你表演一个绝活，12 个小时之内完成</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">MQTT 踩坑指南</title><link href="https://a-wing.top/iot/2020/12/05/mqtt.html" rel="alternate" type="text/html" title="MQTT 踩坑指南" /><published>2020-12-05T09:00:00+00:00</published><updated>2020-12-05T09:00:00+00:00</updated><id>https://a-wing.top/iot/2020/12/05/mqtt</id><content type="html" xml:base="https://a-wing.top/iot/2020/12/05/mqtt.html">&lt;p&gt;MQTT（Message Queuing Telemetry Transport 消息队列遥测传输协议）
 是一种基于发布/订阅（publish/subscribe）模式的 “轻量级” 通讯协议，该协议构建于 TCP/IP 协议上，最早由 IBM 在 1999 年发布。
 目前由 OASIS 维护 &lt;a href=&quot;https://mqtt.org&quot;&gt;MQTT&lt;/a&gt; 标准&lt;/p&gt;
 
@@ -743,16 +743,16 @@ kubeadm init phase certs all &lt;span class=&quot;nt&quot;&gt;--apiserver-advert
 
 &lt;p&gt;这个必须是唯一的。如果没有设置就会随机生成一个&lt;/p&gt;
 
-&lt;p&gt;如果有 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ClientID&lt;/code&gt; 相同的就会把之前的挤掉&lt;/p&gt;
+&lt;p&gt;如果有 &lt;code class=&quot;highlighter-rouge&quot;&gt;ClientID&lt;/code&gt; 相同的就会把之前的挤掉&lt;/p&gt;
 
 &lt;h3 id=&quot;last-will-遗愿消息&quot;&gt;Last Will （遗愿消息）&lt;/h3&gt;
 
-&lt;p&gt;MQTT 客户端向服务器端 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CONNECT&lt;/code&gt; 请求时，可以设置是否发送遗愿消息(Will Message)标志，和遗愿消息主题(Topic)与内容(Payload)。&lt;/p&gt;
+&lt;p&gt;MQTT 客户端向服务器端 &lt;code class=&quot;highlighter-rouge&quot;&gt;CONNECT&lt;/code&gt; 请求时，可以设置是否发送遗愿消息(Will Message)标志，和遗愿消息主题(Topic)与内容(Payload)。&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;注：&lt;/p&gt;
 
-  &lt;p&gt;遗愿消息只有 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CONNECT&lt;/code&gt; 才能设置&lt;/p&gt;
+  &lt;p&gt;遗愿消息只有 &lt;code class=&quot;highlighter-rouge&quot;&gt;CONNECT&lt;/code&gt; 才能设置&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;MQTT 客户端异常下线时(客户端断开前未向服务器发送 DISCONNECT 消息)，MQTT 消息服务器会发布遗愿消息。&lt;/p&gt;
@@ -780,15 +780,15 @@ kubeadm init phase certs all &lt;span class=&quot;nt&quot;&gt;--apiserver-advert
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;&lt;/td&gt;
       &lt;td&gt;无任何保证&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;1&lt;/code&gt;&lt;/td&gt;
       &lt;td&gt;一定会到达&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;2&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;2&lt;/code&gt;&lt;/td&gt;
       &lt;td&gt;一定会到达并且只会到达一次&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
@@ -800,21 +800,21 @@ kubeadm init phase certs all &lt;span class=&quot;nt&quot;&gt;--apiserver-advert
 
 &lt;p&gt;mqttv5 新特性：&lt;a href=&quot;https://www.emqx.io/cn/blog/mqtt5-request-response&quot;&gt;请求响应&lt;/a&gt; 可以解决这个问题&lt;/p&gt;
 
-&lt;p&gt;不过 mqttv5 这也有问题。。我有要是多个订阅者那（按照你业务具体需求来实现吧，返回个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ClientID} ACK&lt;/code&gt; 之类的）&lt;/p&gt;
+&lt;p&gt;不过 mqttv5 这也有问题。。我有要是多个订阅者那（按照你业务具体需求来实现吧，返回个 &lt;code class=&quot;highlighter-rouge&quot;&gt;${ClientID} ACK&lt;/code&gt; 之类的）&lt;/p&gt;
 
 &lt;h3 id=&quot;topic-主题消息路由&quot;&gt;Topic (主题：消息路由）&lt;/h3&gt;
 
-&lt;p&gt;主题 (Topic) 通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/&lt;/code&gt; 分割层级，支持 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#&lt;/code&gt; 通配符:&lt;/p&gt;
+&lt;p&gt;主题 (Topic) 通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt; 分割层级，支持 &lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;#&lt;/code&gt; 通配符:&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/a&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a&lt;/code&gt; 是两个完全不同的 topic&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/a&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; 是两个完全不同的 topic&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+&lt;/code&gt;: 表示通配一个层级，例如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a/+&lt;/code&gt;，匹配 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a/x&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a/y&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;: 表示通配一个层级，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;a/+&lt;/code&gt;，匹配 &lt;code class=&quot;highlighter-rouge&quot;&gt;a/x&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;a/y&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#&lt;/code&gt;: 表示通配多个层级，例如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a/#&lt;/code&gt;，匹配 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a/x&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a/b/c/d&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;#&lt;/code&gt;: 表示通配多个层级，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;a/#&lt;/code&gt;，匹配 &lt;code class=&quot;highlighter-rouge&quot;&gt;a/x&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;a/b/c/d&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;可以这样写：&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;chat/room/1
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;chat/room/1
 
 chat/#
 
@@ -845,14 +845,14 @@ sensor/+/temperature
 
 &lt;p&gt;这点和 RabbitMQ 不同（抱歉，我没有实际使用过 RabbitMQ。如果这个地方说错了，请务必指出）&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Reconnect&lt;/code&gt; 之后虽然恢复。但 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Disconnect&lt;/code&gt; 到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Reconnect&lt;/code&gt; 之间的信息会丢失&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Reconnect&lt;/code&gt; 之后虽然恢复。但 &lt;code class=&quot;highlighter-rouge&quot;&gt;Disconnect&lt;/code&gt; 到 &lt;code class=&quot;highlighter-rouge&quot;&gt;Reconnect&lt;/code&gt; 之间的信息会丢失&lt;/p&gt;
 
 &lt;p&gt;用这个选项是可以解决的 &lt;a href=&quot;https://sourcegraph.com/github.com/eclipse/paho.mqtt.golang/-/blob/options.go#L104:3&quot;&gt;CleanSession 的默认设置是开启的，要关掉这个&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;还应该把检测掉线延时设置大一点，这样对抗网络波动的能力就更好些&lt;/p&gt;
 
 &lt;p&gt;不过这里还有其他问题。。。如果长时间没有恢复（这个看各 broker 是如何实现的）
-不过 mqttv5 加入了&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;session-expiry-interval&lt;/code&gt; 这个地方更完善了&lt;/p&gt;
+不过 mqttv5 加入了&lt;code class=&quot;highlighter-rouge&quot;&gt;session-expiry-interval&lt;/code&gt; 这个地方更完善了&lt;/p&gt;
 
 &lt;h3 id=&quot;eclipse-paho-项目&quot;&gt;eclipse Paho 项目&lt;/h3&gt;
 
@@ -899,13 +899,13 @@ mosquitto_rr &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; mqtt://localhost:1
 
 &lt;h3 id=&quot;emqx&quot;&gt;emqx&lt;/h3&gt;
 
-&lt;p&gt;这个是国人用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;erlang&lt;/code&gt; 写的，还不错&lt;/p&gt;
+&lt;p&gt;这个是国人用 &lt;code class=&quot;highlighter-rouge&quot;&gt;erlang&lt;/code&gt; 写的，还不错&lt;/p&gt;
 
 &lt;h3 id=&quot;mqtt-over-websocket&quot;&gt;MQTT Over Websocket&lt;/h3&gt;
 
 &lt;p&gt;MQTT 协议的 WebSocket 连接，必须采用 binary 模式，并携带子协议 Header:&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Sec-WebSocket-Protocol:&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mqttv5&lt;/code&gt; 或 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mqttv3.1.1&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Sec-WebSocket-Protocol:&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;mqttv5&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;mqttv3.1.1&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;这个是有标准文档的：&lt;a href=&quot;https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Using_WebSocket_as&quot;&gt;Using WebSocket as a network transport&lt;/a&gt;&lt;/p&gt;
 
@@ -915,7 +915,7 @@ mosquitto_rr &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; mqtt://localhost:1
 
 &lt;p&gt;有些异常情况的处理方案还不够完善。（极端恶劣的现实情况下表现比较骨感）&lt;/p&gt;
 
-&lt;p&gt;这个要把 Last Will 消息 和传输考虑进去。要依赖 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;qos 2&lt;/code&gt; 和 Disable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CleanSession&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这个要把 Last Will 消息 和传输考虑进去。要依赖 &lt;code class=&quot;highlighter-rouge&quot;&gt;qos 2&lt;/code&gt; 和 Disable &lt;code class=&quot;highlighter-rouge&quot;&gt;CleanSession&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;topic 虽然是全双工的可以当 tcp 用。状态用另一个 topic 里提供&lt;/p&gt;
 
@@ -937,11 +937,11 @@ mosquitto_rr &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; mqtt://localhost:1
 
 &lt;h4 id=&quot;为了快速响应设备断网&quot;&gt;为了快速响应设备断网&lt;/h4&gt;
 
-&lt;p&gt;如果要求快速响应有 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keep alive&lt;/code&gt; 的（默认 60s ），可以设置很低。&lt;/p&gt;
+&lt;p&gt;如果要求快速响应有 &lt;code class=&quot;highlighter-rouge&quot;&gt;keep alive&lt;/code&gt; 的（默认 60s ），可以设置很低。&lt;/p&gt;
 
 &lt;p&gt;不过个人建议不要设置在 3s 以下（网络延时和时间差（ntp服务）可能会导致问题）&lt;/p&gt;
 
-&lt;p&gt;快速响应 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keep alive&lt;/code&gt; 10-15s 大概可以适配绝大部分情况了。&lt;/p&gt;
+&lt;p&gt;快速响应 &lt;code class=&quot;highlighter-rouge&quot;&gt;keep alive&lt;/code&gt; 10-15s 大概可以适配绝大部分情况了。&lt;/p&gt;
 
 &lt;p&gt;主动关闭时最好发送关闭的信息。&lt;/p&gt;
 
@@ -953,7 +953,7 @@ mosquitto_rr &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; mqtt://localhost:1
 
 &lt;p&gt;我每次都想吐嘈这个地方&lt;/p&gt;
 
-&lt;p&gt;这个库可是支持 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;alis&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wxs&lt;/code&gt; 协议的哟～&lt;/p&gt;
+&lt;p&gt;这个库可是支持 &lt;code class=&quot;highlighter-rouge&quot;&gt;alis&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;wxs&lt;/code&gt; 协议的哟～&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/mqttjs/MQTT.js/blob/master/lib/connect/ali.js&quot;&gt;带你了解 ali 协议&lt;/a&gt;&lt;/p&gt;
 
@@ -973,13 +973,13 @@ mosquitto_rr &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; mqtt://localhost:1
 
 &lt;p&gt;eclipse 是有 mqttv5 的库的&lt;/p&gt;
 
-&lt;p&gt;大概是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;paho.mqtt.golang&lt;/code&gt; 实现过于魔幻。所以作者重新开了一个新坑（只是这个 API 看起来正常多了）&lt;/p&gt;
+&lt;p&gt;大概是 &lt;code class=&quot;highlighter-rouge&quot;&gt;paho.mqtt.golang&lt;/code&gt; 实现过于魔幻。所以作者重新开了一个新坑（只是这个 API 看起来正常多了）&lt;/p&gt;
 
 &lt;h3 id=&quot;ruby-mqtt&quot;&gt;ruby-mqtt&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/njh/ruby-mqtt&quot;&gt;njh/ruby-mqtt&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;这个不支持 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QoS 2&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这个不支持 &lt;code class=&quot;highlighter-rouge&quot;&gt;QoS 2&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;类似 mqtt 特性支持不全的库还有很多。。这大概也是一大坑点&lt;/p&gt;
 
@@ -995,7 +995,7 @@ mosquitto_rr &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; mqtt://localhost:1
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/emqx/emqx&quot;&gt;EMQ X&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/VolantMQ/volantmq&quot;&gt;volantmq&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="iot" /><summary type="html">MQTT（Message Queuing Telemetry Transport 消息队列遥测传输协议） 是一种基于发布/订阅（publish/subscribe）模式的 “轻量级” 通讯协议，该协议构建于 TCP/IP 协议上，最早由 IBM 在 1999 年发布。 目前由 OASIS 维护 MQTT 标准</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">从零开始的学游泳</title><link href="https://a-wing.top/sport/2020/11/07/learn_to_swim.html" rel="alternate" type="text/html" title="从零开始的学游泳" /><published>2020-11-07T10:00:00+00:00</published><updated>2020-11-07T10:00:00+00:00</updated><id>https://a-wing.top/sport/2020/11/07/learn_to_swim</id><content type="html" xml:base="https://a-wing.top/sport/2020/11/07/learn_to_swim.html">&lt;p&gt;这天我参加了我人生中第一场游泳比赛 100M 蛙泳和 100M 自由泳，分别取得了第三名和第五名的成绩（小型比赛缺席的人太多，我运气比较好）。本文就分享一下我从旱鸭子，从头开始学习游泳的过程：
+&lt;p&gt;&lt;a href=&quot;https://github.com/VolantMQ/volantmq&quot;&gt;volantmq&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">MQTT（Message Queuing Telemetry Transport 消息队列遥测传输协议） 是一种基于发布/订阅（publish/subscribe）模式的 “轻量级” 通讯协议，该协议构建于 TCP/IP 协议上，最早由 IBM 在 1999 年发布。 目前由 OASIS 维护 MQTT 标准</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">从零开始的学游泳</title><link href="https://a-wing.top/sport/2020/11/07/learn_to_swim.html" rel="alternate" type="text/html" title="从零开始的学游泳" /><published>2020-11-07T10:00:00+00:00</published><updated>2020-11-07T10:00:00+00:00</updated><id>https://a-wing.top/sport/2020/11/07/learn_to_swim</id><content type="html" xml:base="https://a-wing.top/sport/2020/11/07/learn_to_swim.html">&lt;p&gt;这天我参加了我人生中第一场游泳比赛 100M 蛙泳和 100M 自由泳，分别取得了第三名和第五名的成绩（小型比赛缺席的人太多，我运气比较好）。本文就分享一下我从旱鸭子，从头开始学习游泳的过程：
 &lt;strong&gt;学习游泳运动这件事和学习一种新的编程语言一样，都只不过是学了一项新技能&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;注本人并非游泳教练也不是专业人士这只是业余个人学习游泳的一点心得&quot;&gt;&lt;strong&gt;注：本人并非游泳教练，也不是专业人士，这只是业余个人学习游泳的一点心得&lt;/strong&gt;&lt;/h4&gt;
@@ -1245,17 +1245,17 @@ me 就靠着这招在水下一口气游 25M 。。。只要多加连续，我相
 &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Swimming_(sport)&quot;&gt;Wikipedia Swimming&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;GIF 来源，我是在没有找到原出处。找了个还不错的版本
-&lt;a href=&quot;https://blog.xuite.net/bluetemple/blog/226529700&quot;&gt;轉自：不會遊泳的看了包你學會！有很多人還是不會遊泳的，看了麻煩請分享傳開！謝謝！ | Giga Circle&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="sport" /><summary type="html">这天我参加了我人生中第一场游泳比赛 100M 蛙泳和 100M 自由泳，分别取得了第三名和第五名的成绩（小型比赛缺席的人太多，我运气比较好）。本文就分享一下我从旱鸭子，从头开始学习游泳的过程： 学习游泳运动这件事和学习一种新的编程语言一样，都只不过是学了一项新技能</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">modbus 协议初体验</title><link href="https://a-wing.top/mcu/2020/05/23/modbus.html" rel="alternate" type="text/html" title="modbus 协议初体验" /><published>2020-05-23T09:00:00+00:00</published><updated>2020-05-23T09:00:00+00:00</updated><id>https://a-wing.top/mcu/2020/05/23/modbus</id><content type="html" xml:base="https://a-wing.top/mcu/2020/05/23/modbus.html">&lt;p&gt;最近被拉去支援硬件部分，又写了几天对接嵌入式的上位机程序 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_(ˊཀˋ」∠)_&lt;/code&gt;&lt;/p&gt;
+&lt;a href=&quot;https://blog.xuite.net/bluetemple/blog/226529700&quot;&gt;轉自：不會遊泳的看了包你學會！有很多人還是不會遊泳的，看了麻煩請分享傳開！謝謝！ | Giga Circle&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">这天我参加了我人生中第一场游泳比赛 100M 蛙泳和 100M 自由泳，分别取得了第三名和第五名的成绩（小型比赛缺席的人太多，我运气比较好）。本文就分享一下我从旱鸭子，从头开始学习游泳的过程： 学习游泳运动这件事和学习一种新的编程语言一样，都只不过是学了一项新技能</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">modbus 协议初体验</title><link href="https://a-wing.top/mcu/2020/05/23/modbus.html" rel="alternate" type="text/html" title="modbus 协议初体验" /><published>2020-05-23T09:00:00+00:00</published><updated>2020-05-23T09:00:00+00:00</updated><id>https://a-wing.top/mcu/2020/05/23/modbus</id><content type="html" xml:base="https://a-wing.top/mcu/2020/05/23/modbus.html">&lt;p&gt;最近被拉去支援硬件部分，又写了几天对接嵌入式的上位机程序 &lt;code class=&quot;highlighter-rouge&quot;&gt;_(ˊཀˋ」∠)_&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;和下位机通信是用 modbus 协议的。趁机学习了一下这个上古协议。（奇怪的知识又增加了&lt;/p&gt;
 
-&lt;p&gt;modbus 是用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;req/res&lt;/code&gt; 的模式来通信的。和 http 是一样的，如果要拿传感器信息只能轮询&lt;/p&gt;
+&lt;p&gt;modbus 是用 &lt;code class=&quot;highlighter-rouge&quot;&gt;req/res&lt;/code&gt; 的模式来通信的。和 http 是一样的，如果要拿传感器信息只能轮询&lt;/p&gt;
 
 &lt;p&gt;关于 modbus 协议的一大特点，就是支持设备并连，可以通过一个串口控制最多 256 个设备（每次发送请求时要发送目标地址）&lt;/p&gt;
 
-&lt;p&gt;由于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;modbus.org&lt;/code&gt; 不支持 https 。所以就不放标准文档的连接了（迫真，上古协议）&lt;/p&gt;
+&lt;p&gt;由于 &lt;code class=&quot;highlighter-rouge&quot;&gt;modbus.org&lt;/code&gt; 不支持 https 。所以就不放标准文档的连接了（迫真，上古协议）&lt;/p&gt;
 
-&lt;p&gt;以这个读取状态的请求为例 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;03 (0x03) Read Holding Registers&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;以这个读取状态的请求为例 &lt;code class=&quot;highlighter-rouge&quot;&gt;03 (0x03) Read Holding Registers&lt;/code&gt;&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -1284,27 +1284,27 @@ me 就靠着这招在水下一口气游 25M 。。。只要多加连续，我相
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;每个请求要有 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 字段。用到的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 是有标准的定义的。（当然是可以不按照标准实现）&lt;/p&gt;
+&lt;p&gt;每个请求要有 &lt;code class=&quot;highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 字段。用到的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 是有标准的定义的。（当然是可以不按照标准实现）&lt;/p&gt;
 
-&lt;p&gt;当然不同的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 对应的参数也不同。&lt;/p&gt;
+&lt;p&gt;当然不同的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 对应的参数也不同。&lt;/p&gt;
 
 &lt;p&gt;这个协议的读写是直接写到对应地址里的。&lt;/p&gt;
 
-&lt;p&gt;比如有一个地址为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x01&lt;/code&gt; 的存温度，地址为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x02&lt;/code&gt; 存湿度&lt;/p&gt;
+&lt;p&gt;比如有一个地址为 &lt;code class=&quot;highlighter-rouge&quot;&gt;0x01&lt;/code&gt; 的存温度，地址为 &lt;code class=&quot;highlighter-rouge&quot;&gt;0x02&lt;/code&gt; 存湿度&lt;/p&gt;
 
 &lt;p&gt;由于这两个地址是连续的。可以一口气全部读出来&lt;/p&gt;
 
-&lt;h2 id=&quot;我们先来发送一个-0x03-的请求&quot;&gt;我们先来发送一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x03&lt;/code&gt; 的请求&lt;/h2&gt;
+&lt;h2 id=&quot;我们先来发送一个-0x03-的请求&quot;&gt;我们先来发送一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;0x03&lt;/code&gt; 的请求&lt;/h2&gt;
 
-&lt;p&gt;当然 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Starting Address&lt;/code&gt; 是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x01&lt;/code&gt;，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Quantity of Registers&lt;/code&gt; 是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x02&lt;/code&gt;（一共读两个: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x01&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x02&lt;/code&gt;）&lt;/p&gt;
+&lt;p&gt;当然 &lt;code class=&quot;highlighter-rouge&quot;&gt;Starting Address&lt;/code&gt; 是 &lt;code class=&quot;highlighter-rouge&quot;&gt;0x01&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;Quantity of Registers&lt;/code&gt; 是 &lt;code class=&quot;highlighter-rouge&quot;&gt;0x02&lt;/code&gt;（一共读两个: &lt;code class=&quot;highlighter-rouge&quot;&gt;0x01&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;0x02&lt;/code&gt;）&lt;/p&gt;
 
-&lt;p&gt;然后请求转换成这样一段东西：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;['0x03', '0x00', '0x01', '0x00', '0x02']&lt;/code&gt; （我应该不用解释这一串是怎么生成的吧。。。）&lt;/p&gt;
+&lt;p&gt;然后请求转换成这样一段东西：&lt;code class=&quot;highlighter-rouge&quot;&gt;['0x03', '0x00', '0x01', '0x00', '0x02']&lt;/code&gt; （我应该不用解释这一串是怎么生成的吧。。。）&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;这个叫 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pdu&lt;/code&gt; （Protocol Data Unit）也就是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 加上 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 对应的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Data&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;这个叫 &lt;code class=&quot;highlighter-rouge&quot;&gt;pdu&lt;/code&gt; （Protocol Data Unit）也就是 &lt;code class=&quot;highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 加上 &lt;code class=&quot;highlighter-rouge&quot;&gt;Function code&lt;/code&gt; 对应的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Data&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;之后把 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pdu&lt;/code&gt; emmmmm 。之后分成多种情况。这个和你的传输方式有关。modbus 可以使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RTU&lt;/code&gt;（串口传输）也可以使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TCP&lt;/code&gt; 来传输。&lt;/p&gt;
+&lt;p&gt;之后把 &lt;code class=&quot;highlighter-rouge&quot;&gt;pdu&lt;/code&gt; emmmmm 。之后分成多种情况。这个和你的传输方式有关。modbus 可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;RTU&lt;/code&gt;（串口传输）也可以使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;TCP&lt;/code&gt; 来传输。&lt;/p&gt;
 
-&lt;p&gt;如果是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RTU&lt;/code&gt; 传输，加入目标地址，加入 crc 校验字段，然后就可以直接发送出去了&lt;/p&gt;
+&lt;p&gt;如果是 &lt;code class=&quot;highlighter-rouge&quot;&gt;RTU&lt;/code&gt; 传输，加入目标地址，加入 crc 校验字段，然后就可以直接发送出去了&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -1333,7 +1333,7 @@ me 就靠着这招在水下一口气游 25M 。。。只要多加连续，我相
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;如果使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TCP&lt;/code&gt; 就多出了很多字段&lt;/p&gt;
+&lt;p&gt;如果使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;TCP&lt;/code&gt; 就多出了很多字段&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -1376,13 +1376,13 @@ me 就靠着这招在水下一口气游 25M 。。。只要多加连续，我相
 
 &lt;p&gt;modbus 还可以的。就是，如果个厂商能按照 modbus 标准来实现就好了（我写的时候，坑人的硬件厂商没有按照 modbus 标准实现）&lt;/p&gt;
 
-&lt;p&gt;这协议要是支持订阅某个地址的值，然后当数值变化的时候自动推送消息就好了（设置个最小推送时间间隔，这样就可以不用轮询了）&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="mcu" /><summary type="html">最近被拉去支援硬件部分，又写了几天对接嵌入式的上位机程序 _(ˊཀˋ」∠)_</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">自制旁路网关（三） ——nftables 来做透明代理</title><link href="https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables.html" rel="alternate" type="text/html" title="自制旁路网关（三） ——nftables 来做透明代理" /><published>2020-03-07T04:00:00+00:00</published><updated>2020-03-07T04:00:00+00:00</updated><id>https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables</id><content type="html" xml:base="https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables.html">&lt;p&gt;本以为这篇文章会写的很长，因为笔记上还有好多内容。不过博客不能是笔记，把最核心的地方用最简单的话提炼出来，尽可能让所有人能看懂才算是一篇好文章&lt;/p&gt;
+&lt;p&gt;这协议要是支持订阅某个地址的值，然后当数值变化的时候自动推送消息就好了（设置个最小推送时间间隔，这样就可以不用轮询了）&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">最近被拉去支援硬件部分，又写了几天对接嵌入式的上位机程序 _(ˊཀˋ」∠)_</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">自制旁路网关（三） ——nftables 来做透明代理</title><link href="https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables.html" rel="alternate" type="text/html" title="自制旁路网关（三） ——nftables 来做透明代理" /><published>2020-03-07T04:00:00+00:00</published><updated>2020-03-07T04:00:00+00:00</updated><id>https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables</id><content type="html" xml:base="https://a-wing.top/network/2020/03/07/bypass_gateway-3_nftables.html">&lt;p&gt;本以为这篇文章会写的很长，因为笔记上还有好多内容。不过博客不能是笔记，把最核心的地方用最简单的话提炼出来，尽可能让所有人能看懂才算是一篇好文章&lt;/p&gt;
 
 &lt;p&gt;今天或许是个好日子，&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%A5%B3%E7%94%9F%E8%8A%82&quot;&gt;三月七号女生节&lt;/a&gt;。我决定今天把这个系列的坑填上，就当作给所有女孩子的礼物了（大雾）&lt;/p&gt;
 
-&lt;p&gt;为什要使用 nftables 来分流而不用，clash 的分流。如果你了解零拷贝实现，你就会了解为什么这样做。不了解也没关系，记住结论 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nftables&lt;/code&gt; 分流性能更高一些&lt;/p&gt;
+&lt;p&gt;为什要使用 nftables 来分流而不用，clash 的分流。如果你了解零拷贝实现，你就会了解为什么这样做。不了解也没关系，记住结论 &lt;code class=&quot;highlighter-rouge&quot;&gt;nftables&lt;/code&gt; 分流性能更高一些&lt;/p&gt;
 
-&lt;p&gt;不过那个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nftables&lt;/code&gt; 性能高只是理论上的。实际上我并没有做过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;benchmarks&lt;/code&gt; 。可能实际情况也刚好相反。（也欢迎那个较真的杠精来做下 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;benchmarks&lt;/code&gt; 来证明一下）&lt;/p&gt;
+&lt;p&gt;不过那个&lt;code class=&quot;highlighter-rouge&quot;&gt;nftables&lt;/code&gt; 性能高只是理论上的。实际上我并没有做过 &lt;code class=&quot;highlighter-rouge&quot;&gt;benchmarks&lt;/code&gt; 。可能实际情况也刚好相反。（也欢迎那个较真的杠精来做下 &lt;code class=&quot;highlighter-rouge&quot;&gt;benchmarks&lt;/code&gt; 来证明一下）&lt;/p&gt;
 
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 挂上socks 代理下的大概快一点&lt;/span&gt;
 curl &lt;span class=&quot;nt&quot;&gt;--socks5&lt;/span&gt; localhost:7891 &lt;span class=&quot;s1&quot;&gt;'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; raw
@@ -1401,7 +1401,7 @@ curl &lt;span class=&quot;nt&quot;&gt;--socks5&lt;/span&gt; localhost:7891 &lt;s
 &lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;chnroute.nft /etc/nftables/chnroute.nft
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;再来修改配置文件 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/nftables.conf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;再来修改配置文件 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/nftables.conf&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;这个地方接上一篇 &lt;a href=&quot;/network/2020/02/22/bypass_gateway-1_clash.html&quot;&gt;自制旁路网关（一） ——使用clash做代理&lt;/a&gt; 的 nftables 部分&lt;/p&gt;
 
@@ -1424,15 +1424,15 @@ table ip nat &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nft flush ruleset&lt;/code&gt; 可以写在文件里，不用担心语法错误会把规则清空（这个我实际测试过）。nftables 的配置是 “事务型规则更新” （了解关系型数据库的人应该知道我在说什么）&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;nft flush ruleset&lt;/code&gt; 可以写在文件里，不用担心语法错误会把规则清空（这个我实际测试过）。nftables 的配置是 “事务型规则更新” （了解关系型数据库的人应该知道我在说什么）&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;细心的朋友可能会发现我在上一篇文章中用的是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jump&lt;/code&gt;&lt;/p&gt;
+  &lt;p&gt;细心的朋友可能会发现我在上一篇文章中用的是 &lt;code class=&quot;highlighter-rouge&quot;&gt;jump&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;关于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;goto&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jump&lt;/code&gt; 指令是有区别的。我觉得这里用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;goto&lt;/code&gt; 更好一些 &lt;a href=&quot;https://wiki.nftables.org/wiki-nftables/index.php/Jumping_to_chain&quot;&gt;官方文档讲的很清楚应该不用我再翻译一遍 jump vs goto&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;关于 &lt;code class=&quot;highlighter-rouge&quot;&gt;goto&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;jump&lt;/code&gt; 指令是有区别的。我觉得这里用 &lt;code class=&quot;highlighter-rouge&quot;&gt;goto&lt;/code&gt; 更好一些 &lt;a href=&quot;https://wiki.nftables.org/wiki-nftables/index.php/Jumping_to_chain&quot;&gt;官方文档讲的很清楚应该不用我再翻译一遍 jump vs goto&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;然后重新载入配置文件 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nft -f /etc/nftables.conf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;然后重新载入配置文件 &lt;code class=&quot;highlighter-rouge&quot;&gt;nft -f /etc/nftables.conf&lt;/code&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;做完这些如果你发现国内网站全上不去了&quot;&gt;做完这些如果你发现国内网站全上不去了&lt;/h4&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 看看这些个显示的是 0 还是 1&lt;/span&gt;
@@ -1446,9 +1446,9 @@ sysctl &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; net.ipv4.ip_forward&lt;s
 &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /proc/sys/net/ipv4/ip_forward
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;不过长期的稳定的办法是修改 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/sysctl.conf&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;net.ipv4.ip_forward=1&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;不过长期的稳定的办法是修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sysctl.conf&lt;/code&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;net.ipv4.ip_forward=1&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;然后 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sysctl -p&lt;/code&gt; 载入&lt;/p&gt;
+&lt;p&gt;然后 &lt;code class=&quot;highlighter-rouge&quot;&gt;sysctl -p&lt;/code&gt; 载入&lt;/p&gt;
 
 &lt;h3 id=&quot;后记&quot;&gt;后记&lt;/h3&gt;
 &lt;p&gt;如果国外走 udp 。也是同理，只是要用 tproxy，或者 tun 设备（虚线一个网卡）&lt;/p&gt;
@@ -1470,7 +1470,7 @@ sysctl &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; net.ipv4.ip_forward&lt;s
 
 &lt;p&gt;&lt;a href=&quot;https://64mb.org/2018/12/24/linux-on-m8-01/&quot;&gt; Linux on m8 第一篇、网络配置&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://omicron3069.com/post/nftablesfornode/&quot;&gt;nftables 上手小记&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="network" /><summary type="html">本以为这篇文章会写的很长，因为笔记上还有好多内容。不过博客不能是笔记，把最核心的地方用最简单的话提炼出来，尽可能让所有人能看懂才算是一篇好文章</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">自制旁路网关（二） ——用unbound和smartdns来优化dns服务</title><link href="https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html" rel="alternate" type="text/html" title="自制旁路网关（二） ——用unbound和smartdns来优化dns服务" /><published>2020-03-01T14:00:00+00:00</published><updated>2020-03-01T14:00:00+00:00</updated><id>https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns</id><content type="html" xml:base="https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html">&lt;p&gt;今天是三月一日，我应该昨天更新，因为昨天是四年一度的二月二十九日。错过了了个好日子 T_T 。不过没关系，今天还是一年一次的三月一号那（&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://omicron3069.com/post/nftablesfornode/&quot;&gt;nftables 上手小记&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">本以为这篇文章会写的很长，因为笔记上还有好多内容。不过博客不能是笔记，把最核心的地方用最简单的话提炼出来，尽可能让所有人能看懂才算是一篇好文章</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">自制旁路网关（二） ——用unbound和smartdns来优化dns服务</title><link href="https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html" rel="alternate" type="text/html" title="自制旁路网关（二） ——用unbound和smartdns来优化dns服务" /><published>2020-03-01T14:00:00+00:00</published><updated>2020-03-01T14:00:00+00:00</updated><id>https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns</id><content type="html" xml:base="https://a-wing.top/network/2020/03/01/bypass_gateway-2_improve_dns.html">&lt;p&gt;今天是三月一日，我应该昨天更新，因为昨天是四年一度的二月二十九日。错过了了个好日子 T_T 。不过没关系，今天还是一年一次的三月一号那（&lt;/p&gt;
 
 &lt;p&gt;先来回顾一下 dns 查询会遇到那些问题&lt;/p&gt;
 
@@ -1510,13 +1510,13 @@ sysctl &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; net.ipv4.ip_forward&lt;s
 
 &lt;h1 id=&quot;目前我用的方案&quot;&gt;目前我用的方案&lt;/h1&gt;
 
-&lt;p&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unbound&lt;/code&gt; 来做主 dns 服务（其实用什么都无所谓 coredns 也可以）&lt;/p&gt;
+&lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;unbound&lt;/code&gt; 来做主 dns 服务（其实用什么都无所谓 coredns 也可以）&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;smartdns&lt;/code&gt; 来查询国内的 dns （我设成 5351 端口）&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;smartdns&lt;/code&gt; 来查询国内的 dns （我设成 5351 端口）&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;clash&lt;/code&gt; 来查询国外的 dns （我设成 5352 端口）&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;clash&lt;/code&gt; 来查询国外的 dns （我设成 5352 端口）&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dnsmasq-china-list&lt;/code&gt; 的规则来分流国内外&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dnsmasq-china-list&lt;/code&gt; 的规则来分流国内外&lt;/p&gt;
 
 &lt;h3 id=&quot;smartdns&quot;&gt;smartdns&lt;/h3&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://github.com/pymumu/smartdns/releases/download/Release28/smartdns.1.2019.12.15-1028.arm-debian-all.deb
@@ -1533,9 +1533,9 @@ systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;smartdns.service
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;unbound&quot;&gt;unbound&lt;/h3&gt;
-&lt;p&gt;这个直接从源里安装就行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt install unbound&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这个直接从源里安装就行 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt install unbound&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;不过这个源里的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unbound&lt;/code&gt;， DD (Debian Developer) 定制了一点东西&lt;/p&gt;
+&lt;p&gt;不过这个源里的 &lt;code class=&quot;highlighter-rouge&quot;&gt;unbound&lt;/code&gt;， DD (Debian Developer) 定制了一点东西&lt;/p&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;unbound
 &lt;span class=&quot;c&quot;&gt;# /lib/systemd/system/unbound.service&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Unit]
@@ -1565,7 +1565,7 @@ systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;smartdns.service
   &lt;p&gt;&lt;strong&gt;凡是DD (Debian Developer) 打包时自己定制的功能一律禁用掉&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;顺着那个 hook 去这个文件里 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/lib/unbound/package-helper&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;顺着那个 hook 去这个文件里 &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/lib/unbound/package-helper&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;可以找到这样一段&lt;/p&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Override these variables by editing or creating /etc/default/unbound.&lt;/span&gt;
@@ -1573,7 +1573,7 @@ systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;smartdns.service
 &lt;span class=&quot;nv&quot;&gt;ROOT_TRUST_ANCHOR_UPDATE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;之后自己建个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/default/unbound&lt;/code&gt; 把那个功能关掉&lt;/p&gt;
+&lt;p&gt;之后自己建个 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/default/unbound&lt;/code&gt; 把那个功能关掉&lt;/p&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/default/unbound &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
 # 这个默认会修改 /etc/resolv.conf 文件，设成 false 禁用掉
 RESOLVCONF=&quot;false&quot;
@@ -1583,7 +1583,7 @@ ROOT_TRUST_ANCHOR_UPDATE=&quot;false&quot;
 &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;然后去修改 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/unbound/unbound.conf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;然后去修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/unbound/unbound.conf&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server:
     verbosity: 1
     num-threads: 2
@@ -1601,7 +1601,7 @@ ROOT_TRUST_ANCHOR_UPDATE=&quot;false&quot;
     	name: &lt;span class=&quot;s2&quot;&gt;&quot;.&quot;&lt;/span&gt;
     	forward-addr: 127.0.0.1@5352
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;之后把 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;include&lt;/code&gt; 的文件放进去&lt;/p&gt;
+&lt;p&gt;之后把 &lt;code class=&quot;highlighter-rouge&quot;&gt;include&lt;/code&gt; 的文件放进去&lt;/p&gt;
 
 &lt;h3 id=&quot;dnsmasq-china-list&quot;&gt;dnsmasq-china-list&lt;/h3&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/felixonmars/dnsmasq-china-list.git &lt;span class=&quot;nt&quot;&gt;--depth&lt;/span&gt; 1
@@ -1611,17 +1611,17 @@ make &lt;span class=&quot;nv&quot;&gt;SERVER&lt;/span&gt;&lt;span class=&quot;o&
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;最后&quot;&gt;最后&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;clash&lt;/code&gt; 的配置去看我前几篇文章&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;clash&lt;/code&gt; 的配置去看我前几篇文章&lt;/p&gt;
 
-&lt;p&gt;最好别忘了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemctl restart unbound&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;最好别忘了 &lt;code class=&quot;highlighter-rouge&quot;&gt;systemctl restart unbound&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;排查文件直接用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dig&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nslookup&lt;/code&gt; 这个软件 debian 是在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dnsutils&lt;/code&gt; 这个包里&lt;/p&gt;
+&lt;p&gt;排查文件直接用 &lt;code class=&quot;highlighter-rouge&quot;&gt;dig&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;nslookup&lt;/code&gt; 这个软件 debian 是在 &lt;code class=&quot;highlighter-rouge&quot;&gt;dnsutils&lt;/code&gt; 这个包里&lt;/p&gt;
 
 &lt;h2 id=&quot;参考文章&quot;&gt;参考文章&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/&quot;&gt;使用 Unbound 搭建更好用的 DNS 服务器&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="network" /><summary type="html">今天是三月一日，我应该昨天更新，因为昨天是四年一度的二月二十九日。错过了了个好日子 T_T 。不过没关系，今天还是一年一次的三月一号那（</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">自制旁路网关（一点一） ——增加clash订阅功能</title><link href="https://a-wing.top/network/2020/02/28/bypass_gateway-1-1_subscription.html" rel="alternate" type="text/html" title="自制旁路网关（一点一） ——增加clash订阅功能" /><published>2020-02-28T14:00:00+00:00</published><updated>2020-02-28T14:00:00+00:00</updated><id>https://a-wing.top/network/2020/02/28/bypass_gateway-1-1_subscription</id><content type="html" xml:base="https://a-wing.top/network/2020/02/28/bypass_gateway-1-1_subscription.html">&lt;p&gt;说起来也惭愧，因为觉得自己维护线路太麻烦，所以买了机场的服务，不过要使用机场，肯定要配合订阅来一起食用&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/&quot;&gt;使用 Unbound 搭建更好用的 DNS 服务器&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">今天是三月一日，我应该昨天更新，因为昨天是四年一度的二月二十九日。错过了了个好日子 T_T 。不过没关系，今天还是一年一次的三月一号那（</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">自制旁路网关（一点一） ——增加clash订阅功能</title><link href="https://a-wing.top/network/2020/02/28/bypass_gateway-1-1_subscription.html" rel="alternate" type="text/html" title="自制旁路网关（一点一） ——增加clash订阅功能" /><published>2020-02-28T14:00:00+00:00</published><updated>2020-02-28T14:00:00+00:00</updated><id>https://a-wing.top/network/2020/02/28/bypass_gateway-1-1_subscription</id><content type="html" xml:base="https://a-wing.top/network/2020/02/28/bypass_gateway-1-1_subscription.html">&lt;p&gt;说起来也惭愧，因为觉得自己维护线路太麻烦，所以买了机场的服务，不过要使用机场，肯定要配合订阅来一起食用&lt;/p&gt;
 
-&lt;p&gt;订阅功能原理：本质上就是访问一个带 token 的 url。所以直接去 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt; 那个地址就可以拿到配置文件&lt;/p&gt;
+&lt;p&gt;订阅功能原理：本质上就是访问一个带 token 的 url。所以直接去 &lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt; 那个地址就可以拿到配置文件&lt;/p&gt;
 
 &lt;p&gt;本文是接上一篇文章&lt;a href=&quot;/network/2020/02/22/bypass_gateway-1_clash.html&quot;&gt;自制旁路网关（一） ——使用clash做代理&lt;/a&gt;&lt;/p&gt;
 
@@ -1640,7 +1640,7 @@ make &lt;span class=&quot;nv&quot;&gt;SERVER&lt;/span&gt;&lt;span class=&quot;o&
 
 &lt;p&gt;先把这个服务命名为 subladder（不要吐槽命名）&lt;/p&gt;
 
-&lt;p&gt;创建文件&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/clash/subladder.rb&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;创建文件&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/clash/subladder.rb&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env ruby&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;# Author: Metal A-wing&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;# E-mail: 1@233.email&lt;/span&gt;
@@ -1679,7 +1679,7 @@ make &lt;span class=&quot;nv&quot;&gt;SERVER&lt;/span&gt;&lt;span class=&quot;o&
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;这里我们把配置用的字段统一提取放到一个新文件里 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/clash/subladder.conf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这里我们把配置用的字段统一提取放到一个新文件里 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/clash/subladder.conf&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 订阅地址&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;ADDRESS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://nnn3ro.link/link/&amp;lt;Your Token&amp;gt;&quot;&lt;/span&gt;
 
@@ -1694,7 +1694,7 @@ make &lt;span class=&quot;nv&quot;&gt;SERVER&lt;/span&gt;&lt;span class=&quot;o&
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;然后添加一个 systemd 单元的配置文件
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/systemd/system/subladder.service&lt;/code&gt;&lt;/p&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/systemd/system/subladder.service&lt;/code&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Unit]
 &lt;span class=&quot;nv&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Subscription Remote Configuration
@@ -1715,7 +1715,7 @@ make &lt;span class=&quot;nv&quot;&gt;SERVER&lt;/span&gt;&lt;span class=&quot;o&
 
 &lt;p&gt;简单的说就是用 curl 去获取订阅到的配置文件，然后生成自己需要的配置文件，备份原来的配置，更新并重启&lt;/p&gt;
 
-&lt;p&gt;最后使用使用 systemd.timer 来定时执行任务 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/systemd/system/subladder.timer&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;最后使用使用 systemd.timer 来定时执行任务 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/systemd/system/subladder.timer&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Unit]
 &lt;span class=&quot;nv&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Run Subladder Daily
 
@@ -1727,11 +1727,11 @@ make &lt;span class=&quot;nv&quot;&gt;SERVER&lt;/span&gt;&lt;span class=&quot;o&
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Install]
 &lt;span class=&quot;nv&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;timers.target
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;为什么不使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OnCalendar=daily&lt;/code&gt; 。。。这个会在每天零点更新，实际测试的结果是：零点更新会失败，可能机场本身会在零点定时跑什么服务&lt;/p&gt;
+&lt;p&gt;为什么不使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;OnCalendar=daily&lt;/code&gt; 。。。这个会在每天零点更新，实际测试的结果是：零点更新会失败，可能机场本身会在零点定时跑什么服务&lt;/p&gt;
 
-&lt;p&gt;然后启用这个定时器 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemctl enable subladder.timer&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;然后启用这个定时器 &lt;code class=&quot;highlighter-rouge&quot;&gt;systemctl enable subladder.timer&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;可以用这个来查看定时执行状态 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemctl list-timers&lt;/code&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="network" /><summary type="html">说起来也惭愧，因为觉得自己维护线路太麻烦，所以买了机场的服务，不过要使用机场，肯定要配合订阅来一起食用</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">自制旁路网关（一） ——使用clash做代理</title><link href="https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html" rel="alternate" type="text/html" title="自制旁路网关（一） ——使用clash做代理" /><published>2020-02-22T14:00:00+00:00</published><updated>2020-02-22T14:00:00+00:00</updated><id>https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash</id><content type="html" xml:base="https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html">&lt;p&gt;由于武汉新冠肺炎（&lt;a href=&quot;https://zh.wikipedia.org/wiki/2019%E5%86%A0%E7%8A%B6%E7%97%85%E6%AF%92%E7%97%85&quot;&gt;COVID-19&lt;/a&gt;）的关系，我被困在老家，自从我买了 ac68u 之后基本上就再也没折腾过网。由于长期在家办公，需要好的网络，还好手里有树莓派，还有 nas。只能使用传统技能（时代变化还真实快，一觉醒来工具链全变了）&lt;/p&gt;
+&lt;p&gt;可以用这个来查看定时执行状态 &lt;code class=&quot;highlighter-rouge&quot;&gt;systemctl list-timers&lt;/code&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">说起来也惭愧，因为觉得自己维护线路太麻烦，所以买了机场的服务，不过要使用机场，肯定要配合订阅来一起食用</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">自制旁路网关（一） ——使用clash做代理</title><link href="https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html" rel="alternate" type="text/html" title="自制旁路网关（一） ——使用clash做代理" /><published>2020-02-22T14:00:00+00:00</published><updated>2020-02-22T14:00:00+00:00</updated><id>https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash</id><content type="html" xml:base="https://a-wing.top/network/2020/02/22/bypass_gateway-1_clash.html">&lt;p&gt;由于武汉新冠肺炎（&lt;a href=&quot;https://zh.wikipedia.org/wiki/2019%E5%86%A0%E7%8A%B6%E7%97%85%E6%AF%92%E7%97%85&quot;&gt;COVID-19&lt;/a&gt;）的关系，我被困在老家，自从我买了 ac68u 之后基本上就再也没折腾过网。由于长期在家办公，需要好的网络，还好手里有树莓派，还有 nas。只能使用传统技能（时代变化还真实快，一觉醒来工具链全变了）&lt;/p&gt;
 
 &lt;p&gt;这次优化网路的经历我准备写一个系列（预计三篇文章：代理，dns，分流增强）。我也不知道能不能写完，也说不定后面两篇文章会咕掉&lt;/p&gt;
 
@@ -1759,7 +1759,7 @@ wget https://github.com/Dreamacro/clash/releases/download/v0.17.1/clash-linux-ar
 &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /etc/clash/
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;创建一个本地的 systemd 配置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/systemd/system/clash.service&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;创建一个本地的 systemd 配置&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/systemd/system/clash.service&lt;/code&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Unit]
 &lt;span class=&quot;nv&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;clash service
@@ -1849,9 +1849,9 @@ iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nat &lt;span class=&qu
 
 &lt;p&gt;我觉得只写 iptables 版，我会被人耻笑（这和网上随手一搜的垃圾教程有什么两样。对，其实我写的也是垃圾）&lt;/p&gt;
 
-&lt;p&gt;来个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nftables&lt;/code&gt; 版的 （Raspbian buster 要先安装个 nft 的前端 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt install nftables&lt;/code&gt;）&lt;/p&gt;
+&lt;p&gt;来个 &lt;code class=&quot;highlighter-rouge&quot;&gt;nftables&lt;/code&gt; 版的 （Raspbian buster 要先安装个 nft 的前端 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt install nftables&lt;/code&gt;）&lt;/p&gt;
 
-&lt;p&gt;先创建一个私有地址的定义文件 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/nftables/private.nft&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;先创建一个私有地址的定义文件 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/nftables/private.nft&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;define private_list &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 	0.0.0.0/8,
 	10.0.0.0/8,
@@ -1864,7 +1864,7 @@ iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nat &lt;span class=&qu
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;再来修改主配置文件 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/nftables.conf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;再来修改主配置文件 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/nftables.conf&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/sbin/nft -f&lt;/span&gt;
 
 include &lt;span class=&quot;s2&quot;&gt;&quot;/etc/nftables/private.nft&quot;&lt;/span&gt;
@@ -1880,11 +1880,11 @@ table ip nat &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然后执行清空设置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nft flush ruleset&lt;/code&gt;，让新的设置生效 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nft -f /etc/nftables.conf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;然后执行清空设置 &lt;code class=&quot;highlighter-rouge&quot;&gt;nft flush ruleset&lt;/code&gt;，让新的设置生效 &lt;code class=&quot;highlighter-rouge&quot;&gt;nft -f /etc/nftables.conf&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;或者直接这样 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo sh -c &quot;nft flush ruleset &amp;amp;&amp;amp; nft -f /etc/nftables.conf&quot;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;或者直接这样 &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo sh -c &quot;nft flush ruleset &amp;amp;&amp;amp; nft -f /etc/nftables.conf&quot;&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;然后通过这条命令来看当前 nftables 的状态 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo nft list ruleset&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;然后通过这条命令来看当前 nftables 的状态 &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo nft list ruleset&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;最后再设置一下开机启动&lt;/p&gt;
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;nftables.service
@@ -1897,7 +1897,7 @@ table ip nat &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://toutyrater.github.io/app/transparent_proxy.html&quot;&gt;V2Ray 做透明代理&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://ghost.qinan.co/debian10_iptables_to_nftables/&quot;&gt;debian10 使用 nftables 替换 iptables&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="network" /><summary type="html">由于武汉新冠肺炎（COVID-19）的关系，我被困在老家，自从我买了 ac68u 之后基本上就再也没折腾过网。由于长期在家办公，需要好的网络，还好手里有树莓派，还有 nas。只能使用传统技能（时代变化还真实快，一觉醒来工具链全变了）</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">使用 OpenCV 来做单元测试</title><link href="https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html" rel="alternate" type="text/html" title="使用 OpenCV 来做单元测试" /><published>2019-11-05T09:00:00+00:00</published><updated>2019-11-05T09:00:00+00:00</updated><id>https://a-wing.top/program/2019/11/05/use_opencv_for_unittest</id><content type="html" xml:base="https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html">&lt;p&gt;最近一直都在搞图像传输，webrtc 可以检测网络状况来调整码率。为了探究图像传输中损失了多少数据，用 opencv 来计算输入视频流和输出视频流的相似性&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://ghost.qinan.co/debian10_iptables_to_nftables/&quot;&gt;debian10 使用 nftables 替换 iptables&lt;/a&gt;&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">由于武汉新冠肺炎（COVID-19）的关系，我被困在老家，自从我买了 ac68u 之后基本上就再也没折腾过网。由于长期在家办公，需要好的网络，还好手里有树莓派，还有 nas。只能使用传统技能（时代变化还真实快，一觉醒来工具链全变了）</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">使用 OpenCV 来做单元测试</title><link href="https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html" rel="alternate" type="text/html" title="使用 OpenCV 来做单元测试" /><published>2019-11-05T09:00:00+00:00</published><updated>2019-11-05T09:00:00+00:00</updated><id>https://a-wing.top/program/2019/11/05/use_opencv_for_unittest</id><content type="html" xml:base="https://a-wing.top/program/2019/11/05/use_opencv_for_unittest.html">&lt;p&gt;最近一直都在搞图像传输，webrtc 可以检测网络状况来调整码率。为了探究图像传输中损失了多少数据，用 opencv 来计算输入视频流和输出视频流的相似性&lt;/p&gt;
 
 &lt;p&gt;不过本人作为一个不懂算法，不懂C++， 不懂openCV 的菜鸡。（我还真把这个东西给做出来了&lt;/p&gt;
 
@@ -2117,17 +2117,17 @@ https://github.com/pion/webrtc/tree/master/examples/save-to-disk&lt;/p&gt;
 &lt;p&gt;之后把这个坨都放在 gitlab ci 里&lt;/p&gt;
 
 &lt;p&gt;我最终输出的结果长这样：&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt; &amp;lt; &amp;lt; === END === &amp;gt; &amp;gt; &amp;gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt; &amp;lt; &amp;lt; === END === &amp;gt; &amp;gt; &amp;gt;
 Final Results
 R 96.10% G 95.99% B 92.14%
 Similarity = 94.74%
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;然回在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Setting&lt;/code&gt; &amp;gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CI / CD&lt;/code&gt; &amp;gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;General pipelines&lt;/code&gt; &amp;gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Test coverage parsing&lt;/code&gt; 里这样写：&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Similarity = \d+.\d+%
+&lt;p&gt;然回在 &lt;code class=&quot;highlighter-rouge&quot;&gt;Setting&lt;/code&gt; &amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;CI / CD&lt;/code&gt; &amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;General pipelines&lt;/code&gt; &amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Test coverage parsing&lt;/code&gt; 里这样写：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Similarity = \d+.\d+%
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;这样就把视频相识度结果输出到代码覆盖率上了（对于这种图像传输算相似度才有意义 （（（大雾&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="program" /><summary type="html">最近一直都在搞图像传输，webrtc 可以检测网络状况来调整码率。为了探究图像传输中损失了多少数据，用 opencv 来计算输入视频流和输出视频流的相似性</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">MacBook Pro 初体验感想</title><link href="https://a-wing.top/linux/2019/10/01/macbookpro.html" rel="alternate" type="text/html" title="MacBook Pro 初体验感想" /><published>2019-10-01T08:00:00+00:00</published><updated>2019-10-01T08:00:00+00:00</updated><id>https://a-wing.top/linux/2019/10/01/macbookpro</id><content type="html" xml:base="https://a-wing.top/linux/2019/10/01/macbookpro.html">&lt;p&gt;&lt;img src=&quot;/assets/img/macbookpro/mbp.jpg&quot; alt=&quot;mbp&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;这样就把视频相识度结果输出到代码覆盖率上了（对于这种图像传输算相似度才有意义 （（（大雾&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html">最近一直都在搞图像传输，webrtc 可以检测网络状况来调整码率。为了探究图像传输中损失了多少数据，用 opencv 来计算输入视频流和输出视频流的相似性</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">MacBook Pro 初体验感想</title><link href="https://a-wing.top/linux/2019/10/01/macbookpro.html" rel="alternate" type="text/html" title="MacBook Pro 初体验感想" /><published>2019-10-01T08:00:00+00:00</published><updated>2019-10-01T08:00:00+00:00</updated><id>https://a-wing.top/linux/2019/10/01/macbookpro</id><content type="html" xml:base="https://a-wing.top/linux/2019/10/01/macbookpro.html">&lt;p&gt;&lt;img src=&quot;/assets/img/macbookpro/mbp.jpg&quot; alt=&quot;mbp&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;刚买了一台 2015 款的 macbook pro 。嗯，就是 MF839 的那款。正好来谈谈使用感想&lt;/p&gt;
 
@@ -2188,7 +2188,7 @@ Similarity = 94.74%
 
 &lt;p&gt;Finder 也很不错，当然最强大的要属 Spotlight 。。类似 kde 下的 krunner&lt;/p&gt;
 
-&lt;p&gt;还想问一下苹果用 mbp 的各位，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;command + c&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;command + v&lt;/code&gt; 里那么近，平时应该用那个手指按比较好啊&lt;/p&gt;
+&lt;p&gt;还想问一下苹果用 mbp 的各位，&lt;code class=&quot;highlighter-rouge&quot;&gt;command + c&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;command + v&lt;/code&gt; 里那么近，平时应该用那个手指按比较好啊&lt;/p&gt;
 
 &lt;p&gt;官方那个用 iPad 作为扩展屏的功能要 16 款之后的 MBP 才能支持&lt;/p&gt;
 
@@ -2232,4 +2232,4 @@ Similarity = 94.74%
 
 &lt;p&gt;默认配置很完美，可定制性差一些。。。也就是可以开箱即用&lt;/p&gt;
 
-&lt;p&gt;如果你平时用 iphone , ipad 之类的苹果全家桶，那加上 mbp 还是很不错的。如果只有一个 mbp 就很没必要了。。。如果你正常用 Linux 无压力，Linux 也许是更好的选择&lt;/p&gt;</content><author><name>metal A-wing</name></author><category term="linux" /><summary type="html"></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+&lt;p&gt;如果你平时用 iphone , ipad 之类的苹果全家桶，那加上 mbp 还是很不错的。如果只有一个 mbp 就很没必要了。。。如果你正常用 Linux 无压力，Linux 也许是更好的选择&lt;/p&gt;</content><author><name>metal A-wing</name></author><summary type="html"></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://a-wing.top/assets/avatar.png" /><media:content medium="image" url="https://a-wing.top/assets/avatar.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
