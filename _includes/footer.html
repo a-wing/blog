@@ -3,44 +3,38 @@
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">{{ site.title | escape }}</h2>
-
     <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="{{ 'feed.xml' | relative_url }}">
+            <svg class="svg-icon orange">
+              <use xlink:href="{{ 'assets/minima-social-icons.svg#rss' | relative_url }}"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      {%- if site.author %}
         <ul class="contact-list">
-          <li class="p-name">
-            {% if site.author %}
-              {{ site.author | escape }}
-            {% else %}
-              {{ site.title | escape }}
-            {% endif %}
-            </li>
-            {% if site.email %}
-            <li><a class="u-email" href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-            {% endif %}
+          {% if site.author.name -%}
+            <li class="p-name">{{ site.author.name | escape }}</li>
+          {% endif -%}
+          {% if site.author.email -%}
+            <li>{{ site.author.email }}</li>
+          {%- endif %}
         </ul>
-
-        <a href="https://www.upyun.com/">
-          <img src="{{ site.url }}/assets/upyun_logo.png"/>
-        </a>
-
-      </div>
-
-      <div class="footer-col footer-col-2">
-        {% include social.html %}
-
         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
         </a>
+      {%- endif %}
       </div>
-
-      <div class="footer-col footer-col-3">
+      <div class="footer-col">
         <p>{{ site.description | escape }}</p>
         <p>Power by Jekyll && Theme by minima-改</p>
         <p>Copyright © 2016-2021 Powered by a-wing</p>
       </div>
+    </div>
 
-      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
+    <div class="social-links">
+      {%- include social.html -%}
     </div>
 
   </div>

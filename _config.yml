@@ -18,9 +18,14 @@ description: >- # this means to ignore newlines until "baseurl:"
   新一的个人博客
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://a-wing.top" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: _a_wing
-github_username:  a-wing
-lang: zh_CN
+
+author:
+  name: Metal A-wing
+  email: "1 at 233 dot email"
+
+# https://www.ietf.org/rfc/bcp/bcp47.html#section-3.2
+lang: zh-CN
+
 #image: "/assets/avatar.png"
 defaults:
   - scope:
@@ -30,7 +35,23 @@ defaults:
 
 # Build settings
 markdown: kramdown
-#theme: minima
+theme: minima
+
+header_pages:
+  - projects.md
+  - equipment.md
+  - links.md
+  - about.md
+
+minima:
+  #skin: dark
+  #skin: solarized
+  #skin: solarized-dark
+  social_links:
+    twitter: _a_wing
+    github: a-wing
+    #telegram: a_wing
+
 plugins:
   - jekyll-seo-tag
   - jekyll-feed
