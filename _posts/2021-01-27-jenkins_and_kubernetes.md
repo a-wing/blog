@@ -3,7 +3,7 @@ layout: post
 title:  "PingCAP 面试：Jenkins 和 Kubernetes"
 author: metal A-wing
 date:   2021-01-27 17:00:00 +0800
-image: "/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-51-20.png"
+image: "/assets/img/jenkins_and_kubernetes/sticker_think.jpg"
 comments: true
 categories: kubernetes
 ---
