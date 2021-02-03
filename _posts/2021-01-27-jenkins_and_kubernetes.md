@@ -3,6 +3,7 @@ layout: post
 title:  "PingCAP 面试：Jenkins 和 Kubernetes"
 author: metal A-wing
 date:   2021-01-27 17:00:00 +0800
+image: "/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-51-20.png"
 comments: true
 categories: kubernetes
 ---
@@ -41,8 +42,6 @@ ok，完美。先看一下 kubernetes 文档，看看 kubernetes 都能干啥
 <blockquote class="twitter-tweet"><p lang="zh" dir="ltr">为了学习 redis 我把 iredis 打包到 archlinuxcn 仓库。然后看到原来 aur 上的是 bin 包。研究了一晚上 iredis 的构建流程。顺便也把用的打包工具 pyoxidizer 也打包了。。最后把体积减少了一半多，让它走了系统库<br><br>好了，我现在可以愉快的使用 redis 的命令行了。。折腾一晚上，redis 还一点没学（ <a href="https://t.co/VTkjd47t6N">pic.twitter.com/VTkjd47t6N</a></p>&mdash; 新一 (@_a_wing) <a href="https://twitter.com/_a_wing/status/1350937185957113857?ref_src=twsrc%5Etfw">January 17, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 * * *
-
-<br/>
 
 ## 奥利给：真正的全栈可以解决任何问题
 
@@ -88,8 +87,6 @@ REDHAT_SUPPORT_PRODUCT_VERSION="7"
 更新：`yum upgrade`
 
 * * *
-
-<br/>
 
 [首选看 kubernetes 文档，这篇是最关键的](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
 
@@ -518,11 +515,6 @@ spec:
 ![current](/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_07-52-08.png)
 
 * * *
-<br/>
-* * *
-<br/>
-* * *
-<br/>
 
 睡了一觉，一觉醒来
 
@@ -579,9 +571,9 @@ spec:
 }
 ```
 
-![Kubernetes](/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-51-20.png)
+![Jenkins](/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-51-20.png)
 
-![Jenkins](/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-48-15.png)
+![Kubernetes](/assets/img/jenkins_and_kubernetes/screenshot_2021-01-20_13-48-15.png)
 
 如果重点是：
 
