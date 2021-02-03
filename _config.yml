@@ -17,11 +17,12 @@ title: Hi! 上天不?
 description: >- # this means to ignore newlines until "baseurl:"
   新一的个人博客
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://blog-plum-rho.vercel.app"
+url: "https://blog-git-dev.a-wing.vercel.app"
 
 author:
   name: Metal A-wing
   email: "1 at 233 dot email"
+  twitter: _a_wing
 
 twitter:
   username: _a_wing
