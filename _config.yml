@@ -55,6 +55,7 @@ minima:
 plugins:
   - jekyll-seo-tag
   - jekyll-feed
+  - jekyll-toc
 
 google_analytics: UA-117419557-1
 
