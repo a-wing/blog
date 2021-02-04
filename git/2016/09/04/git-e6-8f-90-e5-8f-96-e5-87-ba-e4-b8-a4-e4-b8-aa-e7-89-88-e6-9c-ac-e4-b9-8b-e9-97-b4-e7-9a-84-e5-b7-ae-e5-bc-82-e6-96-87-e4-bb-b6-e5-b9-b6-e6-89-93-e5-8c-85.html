@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh_CN">
-
-  <head>
+<html lang="zh-CN"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>git提取出两个版本之间的差异文件并打包 - Hi! 上天不?</title>
-  <link rel="stylesheet" href="/assets/main.css">
-  <!-- Begin Jekyll SEO tag v2.6.1 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>git提取出两个版本之间的差异文件并打包 | Hi! 上天不?</title>
-<meta name="generator" content="Jekyll v3.7.4" />
+<meta name="generator" content="Jekyll v4.2.0" />
 <meta property="og:title" content="git提取出两个版本之间的差异文件并打包" />
 <meta name="author" content="shiyongxin" />
 <meta property="og:locale" content="zh_CN" />
@@ -21,114 +16,55 @@
 <meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2016-09-04T06:46:39+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="twitter:title" content="git提取出两个版本之间的差异文件并打包" />
+<meta name="twitter:site" content="@_a_wing" />
+<meta name="twitter:creator" content="@shiyongxin" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","url":"https://a-wing.top/git/2016/09/04/git-e6-8f-90-e5-8f-96-e5-87-ba-e4-b8-a4-e4-b8-aa-e7-89-88-e6-9c-ac-e4-b9-8b-e9-97-b4-e7-9a-84-e5-b7-ae-e5-bc-82-e6-96-87-e4-bb-b6-e5-b9-b6-e6-89-93-e5-8c-85.html","headline":"git提取出两个版本之间的差异文件并打包","dateModified":"2016-09-04T06:46:39+00:00","datePublished":"2016-09-04T06:46:39+00:00","image":"https://a-wing.top/assets/avatar.png","author":{"@type":"Person","name":"shiyongxin"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/git/2016/09/04/git-e6-8f-90-e5-8f-96-e5-87-ba-e4-b8-a4-e4-b8-aa-e7-89-88-e6-9c-ac-e4-b9-8b-e9-97-b4-e7-9a-84-e5-b7-ae-e5-bc-82-e6-96-87-e4-bb-b6-e5-b9-b6-e6-89-93-e5-8c-85.html"},"description":"sudo apt-get install zip","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","url":"https://a-wing.top/git/2016/09/04/git-e6-8f-90-e5-8f-96-e5-87-ba-e4-b8-a4-e4-b8-aa-e7-89-88-e6-9c-ac-e4-b9-8b-e9-97-b4-e7-9a-84-e5-b7-ae-e5-bc-82-e6-96-87-e4-bb-b6-e5-b9-b6-e6-89-93-e5-8c-85.html","image":"https://a-wing.top/assets/avatar.png","headline":"git提取出两个版本之间的差异文件并打包","datePublished":"2016-09-04T06:46:39+00:00","dateModified":"2016-09-04T06:46:39+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/git/2016/09/04/git-e6-8f-90-e5-8f-96-e5-87-ba-e4-b8-a4-e4-b8-aa-e7-89-88-e6-9c-ac-e4-b9-8b-e9-97-b4-e7-9a-84-e5-b7-ae-e5-bc-82-e6-96-87-e4-bb-b6-e5-b9-b6-e6-89-93-e5-8c-85.html"},"author":{"@type":"Person","name":"shiyongxin"},"description":"sudo apt-get install zip","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117419557-1"></script>
+<script>
+  window['ga-disable-UA-117419557-1'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
-  
-    <script>
-if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-117419557-1', 'auto');
-  ga('send', 'pageview');
-}
+  gtag('config', 'UA-117419557-1');
 </script>
-  
 
-  
 </head>
+<body><div style="
+	height: 250px;
+	background: linear-gradient(288deg, #FFB6B9 0%, #FFB6B9 35%, #FAE3D9 calc(35% + 1px), #FAE3D9 45%, #BBDED6 calc(45% + 1px), #BBDED6 65%, #61C0BF calc(65% + 1px), #61C0BF 100%);
+	"></div>
+<header class="site-header">
 
-
-  <body>
-
-    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
-<header class="site-header" role="banner">
-
-  <div class="wrapper">
-    
-    
-    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
-
-    
-      <nav class="site-nav">
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Hi! 上天不?</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
             <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
-              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
-              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
             </svg>
           </span>
         </label>
 
-        <div class="trigger">
-
-          <a href="https://travis-ci.org/a-wing/blog">
-            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
-          </a>
-
-            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
-
-          
-            
-            
-          
-            
-            
-            <a class="page-link" href="/about/">关于我</a>
-            
-          
-            
-            
-            <a class="page-link" href="/equipment/">硬件设备</a>
-            
-          
-            
-            
-          
-            
-            
-            <a class="page-link" href="/links/">友情连接</a>
-            
-          
-            
-            
-          
-            
-            
-            <a class="page-link" href="/projects/">个人项目</a>
-            
-          
-            
-            
-          
-        </div>
-      </nav>
-    
-  </div>
+        <div class="trigger"><a class="page-link" href="/projects/">陈列室</a><a class="page-link" href="/equipment/">装备篇</a><a class="page-link" href="/links/">友情连接</a><a class="page-link" href="/about/">关于我</a></div>
+      </nav></div>
 </header>
-
-
-    <main class="page-content" aria-label="Content">
+<main class="page-content" aria-label="Content">
       <div class="wrapper">
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">git提取出两个版本之间的差异文件并打包</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2016-09-04T06:46:39+00:00" itemprop="datePublished">
-        
+    <p class="post-meta"><time class="dt-published" datetime="2016-09-04T06:46:39+00:00" itemprop="datePublished">
         Sep 4, 2016
-      </time>
-      
-        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">shiyongxin</span></span>
-      </p>
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">shiyongxin</span></span></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
@@ -136,81 +72,48 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
 
 <p>就能成功打包了。只是这样的话也太麻烦了吧，幸好linux有提供一个命令xargs能将前一个命令的输出转成另外一个命令的参数，按照这个思路就非常简单了。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git diff 608e120 4abe32e --name-only | xargs zip update.zip
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git diff 608e120 4abe32e --name-only | xargs zip update.zip
 </code></pre></div></div>
 
-  </div>
-
-  
-    
-
-  
-
-  <a class="u-url" href="/git/2016/09/04/git-e6-8f-90-e5-8f-96-e5-87-ba-e4-b8-a4-e4-b8-aa-e7-89-88-e6-9c-ac-e4-b9-8b-e9-97-b4-e7-9a-84-e5-b7-ae-e5-bc-82-e6-96-87-e4-bb-b6-e5-b9-b6-e6-89-93-e5-8c-85.html" hidden></a>
+  </div><a class="u-url" href="/git/2016/09/04/git-e6-8f-90-e5-8f-96-e5-87-ba-e4-b8-a4-e4-b8-aa-e7-89-88-e6-9c-ac-e4-b9-8b-e9-97-b4-e7-9a-84-e5-b7-ae-e5-bc-82-e6-96-87-e4-bb-b6-e5-b9-b6-e6-89-93-e5-8c-85.html" hidden></a>
 </article>
 
       </div>
-    </main>
-
-    <footer class="site-footer h-card">
+    </main><footer class="site-footer h-card">
   <data class="u-url" href="/"></data>
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">Hi! 上天不?</h2>
-
     <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
         <ul class="contact-list">
-          <li class="p-name">
-            
-              Hi! 上天不?
-            
-            </li>
-            
+          <li class="p-name">Metal A-wing</li>
+          <li>1 at 233 dot email</li>
         </ul>
-
-        <a href="https://www.upyun.com/">
-          <img src="https://a-wing.top/assets/upyun_logo.png"/>
-        </a>
-
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-  
-  
-  
-  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
-  
-  
-  
-  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
-  
-  
-  
-</ul>
-
-
         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
         </a>
       </div>
-
-      <div class="footer-col footer-col-3">
+      <div class="footer-col">
         <p>新一的个人博客</p>
         <p>Power by Jekyll && Theme by minima-改</p>
         <p>Copyright © 2016-2021 Powered by a-wing</p>
       </div>
-
-      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
     </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/a-wing" title="a-wing"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/_a_wing" title="_a_wing"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
 
   </div>
 
 </footer>
-
-
-  </body>
+</body>
 
 </html>

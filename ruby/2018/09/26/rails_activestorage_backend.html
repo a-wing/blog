@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh_CN">
-
-  <head>
+<html lang="zh-CN"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>一篇超水的 Rails ActiveStorage 源码解读（后端部分） - Hi! 上天不?</title>
-  <link rel="stylesheet" href="/assets/main.css">
-  <!-- Begin Jekyll SEO tag v2.6.1 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>一篇超水的 Rails ActiveStorage 源码解读（后端部分） | Hi! 上天不?</title>
-<meta name="generator" content="Jekyll v3.7.4" />
+<meta name="generator" content="Jekyll v4.2.0" />
 <meta property="og:title" content="一篇超水的 Rails ActiveStorage 源码解读（后端部分）" />
 <meta name="author" content="metal A-wing" />
 <meta property="og:locale" content="zh_CN" />
@@ -21,114 +16,55 @@
 <meta property="og:image" content="https://a-wing.top/assets/avatar.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-09-26T09:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:image" content="https://a-wing.top/assets/avatar.png" />
+<meta property="twitter:title" content="一篇超水的 Rails ActiveStorage 源码解读（后端部分）" />
+<meta name="twitter:site" content="@_a_wing" />
+<meta name="twitter:creator" content="@metal A-wing" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","url":"https://a-wing.top/ruby/2018/09/26/rails_activestorage_backend.html","headline":"一篇超水的 Rails ActiveStorage 源码解读（后端部分）","dateModified":"2018-09-26T09:00:00+00:00","datePublished":"2018-09-26T09:00:00+00:00","image":"https://a-wing.top/assets/avatar.png","author":{"@type":"Person","name":"metal A-wing"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/ruby/2018/09/26/rails_activestorage_backend.html"},"description":"ActiveStorage 是 Rails 5.2 的一个新特性 ，建议你先去读完官方的文档再回看来这个","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","url":"https://a-wing.top/ruby/2018/09/26/rails_activestorage_backend.html","image":"https://a-wing.top/assets/avatar.png","headline":"一篇超水的 Rails ActiveStorage 源码解读（后端部分）","datePublished":"2018-09-26T09:00:00+00:00","dateModified":"2018-09-26T09:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://a-wing.top/ruby/2018/09/26/rails_activestorage_backend.html"},"author":{"@type":"Person","name":"metal A-wing"},"description":"ActiveStorage 是 Rails 5.2 的一个新特性 ，建议你先去读完官方的文档再回看来这个","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117419557-1"></script>
+<script>
+  window['ga-disable-UA-117419557-1'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  <link type="application/atom+xml" rel="alternate" href="https://a-wing.top/feed.xml" title="Hi! 上天不?" />
-  
-    <script>
-if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-117419557-1', 'auto');
-  ga('send', 'pageview');
-}
+  gtag('config', 'UA-117419557-1');
 </script>
-  
 
-  
 </head>
+<body><div style="
+	height: 250px;
+	background: linear-gradient(288deg, #FFB6B9 0%, #FFB6B9 35%, #FAE3D9 calc(35% + 1px), #FAE3D9 45%, #BBDED6 calc(45% + 1px), #BBDED6 65%, #61C0BF calc(65% + 1px), #61C0BF 100%);
+	"></div>
+<header class="site-header">
 
-
-  <body>
-
-    <img alt="banner" width=100% src="https://a-wing.top/assets/banner.jpg"/>
-<header class="site-header" role="banner">
-
-  <div class="wrapper">
-    
-    
-    <a class="site-title" rel="author" href="/">Hi! 上天不?</a>
-
-    
-      <nav class="site-nav">
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Hi! 上天不?</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
             <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
-              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
-              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
             </svg>
           </span>
         </label>
 
-        <div class="trigger">
-
-          <a href="https://travis-ci.org/a-wing/blog">
-            <img src="https://travis-ci.org/a-wing/blog.svg?branch=master"/>
-          </a>
-
-            <a class="page-link" href="/feed.xml">&nbsp;&nbsp; RSS</a>
-
-          
-            
-            
-          
-            
-            
-            <a class="page-link" href="/about/">关于我</a>
-            
-          
-            
-            
-            <a class="page-link" href="/equipment/">硬件设备</a>
-            
-          
-            
-            
-          
-            
-            
-            <a class="page-link" href="/links/">友情连接</a>
-            
-          
-            
-            
-          
-            
-            
-            <a class="page-link" href="/projects/">个人项目</a>
-            
-          
-            
-            
-          
-        </div>
-      </nav>
-    
-  </div>
+        <div class="trigger"><a class="page-link" href="/projects/">陈列室</a><a class="page-link" href="/equipment/">装备篇</a><a class="page-link" href="/links/">友情连接</a><a class="page-link" href="/about/">关于我</a></div>
+      </nav></div>
 </header>
-
-
-    <main class="page-content" aria-label="Content">
+<main class="page-content" aria-label="Content">
       <div class="wrapper">
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">一篇超水的 Rails ActiveStorage 源码解读（后端部分）</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2018-09-26T09:00:00+00:00" itemprop="datePublished">
-        
+    <p class="post-meta"><time class="dt-published" datetime="2018-09-26T09:00:00+00:00" itemprop="datePublished">
         Sep 26, 2018
-      </time>
-      
-        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">metal A-wing</span></span>
-      </p>
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">metal A-wing</span></span></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
@@ -136,7 +72,7 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
 
 <p><a href="https://guides.rubyonrails.org/active_storage_overview.html">https://guides.rubyonrails.org/active_storage_overview.html</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>▾ activestorage-5.2.1/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>▾ activestorage-5.2.1/
   ▾ app/
     ▸ assets/javascripts/
     ▾ controllers/
@@ -205,18 +141,18 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
 
 <h2 id="数据结构">数据结构</h2>
 
-<p>先看 <code class="highlighter-rouge">db/migrate/20170806125915_create_active_storage_tables.rb</code></p>
+<p>先看 <code class="language-plaintext highlighter-rouge">db/migrate/20170806125915_create_active_storage_tables.rb</code></p>
 
 <p>我们能看到两张表，其中一张表储存的是文件信息。。en，en 文件的基本信息</p>
 
 <p>另一张表是储存文件的对象信息</p>
 
 <h4 id="active_storage_blobs">active_storage_blobs</h4>
-<p>这个表储存了所有文件的基本信息，我们可以看到这个表只有 <code class="highlighter-rouge">created_at</code> ，因为这张表被设计成只能添加和删除。</p>
+<p>这个表储存了所有文件的基本信息，我们可以看到这个表只有 <code class="language-plaintext highlighter-rouge">created_at</code> ，因为这张表被设计成只能添加和删除。</p>
 
-<p><code class="highlighter-rouge">key</code> 是文件唯一的索引。 <code class="highlighter-rouge">Disk service</code> 默认把文件放在 storage 目录下，然后建立了以<code class="highlighter-rouge">key</code>值开头两位命名的两个目录。。。。有点绕）</p>
+<p><code class="language-plaintext highlighter-rouge">key</code> 是文件唯一的索引。 <code class="language-plaintext highlighter-rouge">Disk service</code> 默认把文件放在 storage 目录下，然后建立了以<code class="language-plaintext highlighter-rouge">key</code>值开头两位命名的两个目录。。。。有点绕）</p>
 
-<p>就像这样，来解决大量文件的查找问题：<code class="highlighter-rouge">storage/qS/gY/qSgYgMNvwQNzpvBsx91QHQwW</code></p>
+<p>就像这样，来解决大量文件的查找问题：<code class="language-plaintext highlighter-rouge">storage/qS/gY/qSgYgMNvwQNzpvBsx91QHQwW</code></p>
 
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rsd_development</span><span class="o">=#</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">active_storage_blobs</span><span class="p">;</span>                                                                                                                                                                                         
  <span class="n">id</span> <span class="o">|</span>           <span class="k">key</span>            <span class="o">|</span>  <span class="n">filename</span>  <span class="o">|</span>       <span class="n">content_type</span>       <span class="o">|</span>              <span class="n">metadata</span>               <span class="o">|</span> <span class="n">byte_size</span> <span class="o">|</span>         <span class="n">checksum</span>         <span class="o">|</span>         <span class="n">created_at</span>                                                                      
@@ -237,14 +173,14 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
  <span class="mi">12</span> <span class="o">|</span> <span class="n">file</span> <span class="o">|</span> <span class="n">Plan</span>        <span class="o">|</span>         <span class="mi">1</span> <span class="o">|</span>      <span class="mi">11</span> <span class="o">|</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">20</span> <span class="mi">10</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">36</span><span class="p">.</span><span class="mi">677669</span>
  <span class="mi">14</span> <span class="o">|</span> <span class="k">map</span>  <span class="o">|</span> <span class="n">MissionLog</span>  <span class="o">|</span>         <span class="mi">1</span> <span class="o">|</span>      <span class="mi">13</span> <span class="o">|</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">25</span> <span class="mi">07</span><span class="p">:</span><span class="mi">52</span><span class="p">:</span><span class="mi">44</span><span class="p">.</span><span class="mi">820024</span>
 </code></pre></div></div>
-<p>这张表是通过<code class="highlighter-rouge">对象名</code>和<code class="highlighter-rouge">属性名</code>和<code class="highlighter-rouge">对象id</code>来绑定文件的。。。如果你改了。类名。。那就呵呵了</p>
+<p>这张表是通过<code class="language-plaintext highlighter-rouge">对象名</code>和<code class="language-plaintext highlighter-rouge">属性名</code>和<code class="language-plaintext highlighter-rouge">对象id</code>来绑定文件的。。。如果你改了。类名。。那就呵呵了</p>
 
-<p>不同的<code class="highlighter-rouge">attachments</code>是可以指定同一个<code class="highlighter-rouge">blobs</code>的，但是更新<code class="highlighter-rouge">blobs</code>只有一个会更新（应该是删了重建）。。。</p>
+<p>不同的<code class="language-plaintext highlighter-rouge">attachments</code>是可以指定同一个<code class="language-plaintext highlighter-rouge">blobs</code>的，但是更新<code class="language-plaintext highlighter-rouge">blobs</code>只有一个会更新（应该是删了重建）。。。</p>
 
-<p><strong>这里应该算个坑</strong> <code class="highlighter-rouge">blobs</code>在删除时并不会检测<code class="highlighter-rouge">attachments</code>里是否有包含这个<code class="highlighter-rouge">blobs</code>(我不知道他为什么这么实现啊。喵) 咱觉得这应该算 bug。。。或者每次检查开销太大？留给开发者自己解决？</p>
+<p><strong>这里应该算个坑</strong> <code class="language-plaintext highlighter-rouge">blobs</code>在删除时并不会检测<code class="language-plaintext highlighter-rouge">attachments</code>里是否有包含这个<code class="language-plaintext highlighter-rouge">blobs</code>(我不知道他为什么这么实现啊。喵) 咱觉得这应该算 bug。。。或者每次检查开销太大？留给开发者自己解决？</p>
 
-<h2 id="云存储-libactive_storageservice">云存储 <code class="highlighter-rouge">lib/active_storage/service/</code></h2>
-<p>这里面除了 <code class="highlighter-rouge">local</code> 和 <code class="highlighter-rouge">mirrors</code> 默认还集成了 Amazon S3 Service， Microsoft Azure Storage Service，Google Cloud Storage Service 服务，当然还要引入对应的SDK</p>
+<h2 id="云存储-libactive_storageservice">云存储 <code class="language-plaintext highlighter-rouge">lib/active_storage/service/</code></h2>
+<p>这里面除了 <code class="language-plaintext highlighter-rouge">local</code> 和 <code class="language-plaintext highlighter-rouge">mirrors</code> 默认还集成了 Amazon S3 Service， Microsoft Azure Storage Service，Google Cloud Storage Service 服务，当然还要引入对应的SDK</p>
 
 <p>active_storage 和 active_job 一样，只是提供一个中间层。具体还要引入对应云服务的sdk</p>
 
@@ -254,14 +190,14 @@ active_storage -&gt; active_storage_<XXX>云服务 -&gt;  <XXX>云服务SDK</XXX
 <p>国内的可以用 upyun， qiniu, aliyun 都有 gem 可以直接用</p>
 
 <h2 id="attached-附件">attached 附件</h2>
-<p>这里面有三个文件，有个叫<code class="highlighter-rouge">macros</code> 值得一看，在注释里说了关于 <code class="highlighter-rouge">has_one_attached</code> 和 <code class="highlighter-rouge">has_many_attached</code> 的 N+1 查询问题的解决办法</p>
+<p>这里面有三个文件，有个叫<code class="language-plaintext highlighter-rouge">macros</code> 值得一看，在注释里说了关于 <code class="language-plaintext highlighter-rouge">has_one_attached</code> 和 <code class="language-plaintext highlighter-rouge">has_many_attached</code> 的 N+1 查询问题的解决办法</p>
 
 <p>我来抄段源码：</p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
   <span class="n">has_one_attached</span> <span class="ss">:avatar</span>
 <span class="k">end</span>
 </code></pre></div></div>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># There is no column defined on the model side, Active Storage takes
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># There is no column defined on the model side, Active Storage takes
 # care of the mapping between your records and the attachment.
 #
 # To avoid N+1 queries, you can include the attached blobs in your query like so:
@@ -275,7 +211,7 @@ active_storage -&gt; active_storage_<XXX>云服务 -&gt;  <XXX>云服务SDK</XXX
   <span class="n">has_many_attached</span> <span class="ss">:photos</span>
 <span class="k">end</span>
 </code></pre></div></div>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># There are no columns defined on the model side, Active Storage takes
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># There are no columns defined on the model side, Active Storage takes
 # care of the mapping between your records and the attachments.
 #
 # To avoid N+1 queries, you can include the attached blobs in your query like so:
@@ -289,18 +225,13 @@ active_storage -&gt; active_storage_<XXX>云服务 -&gt;  <XXX>云服务SDK</XXX
 <p>然后就是一些分析啊，预览啊之类的功能。。。没啥说的。。。</p>
 
 <h2 id="activestorage-文件存储的理解">activestorage 文件存储的理解</h2>
-<p><code class="highlighter-rouge">activestorage</code> 把 <code class="highlighter-rouge">Disk service</code> 也当作云盘来处理，因此不会有 <code class="highlighter-rouge">.path</code>之类的获取路径的方法。所有的获取文件都是通过<code class="highlighter-rouge">.download</code>方法来实现的，如果要传路径，就先存在一个 tmp 的目录中</p>
+<p><code class="language-plaintext highlighter-rouge">activestorage</code> 把 <code class="language-plaintext highlighter-rouge">Disk service</code> 也当作云盘来处理，因此不会有 <code class="language-plaintext highlighter-rouge">.path</code>之类的获取路径的方法。所有的获取文件都是通过<code class="language-plaintext highlighter-rouge">.download</code>方法来实现的，如果要传路径，就先存在一个 tmp 的目录中</p>
 
-<p>还有我觉得官方的文档 <code class="highlighter-rouge">.download</code> 的那个方法的用法太有误导性。只要在 rails 获取文件对象就要用<code class="highlighter-rouge">.download</code>来获取 （我当时以为是用户给 url, 然后后台下载。。。。）</p>
+<p>还有我觉得官方的文档 <code class="language-plaintext highlighter-rouge">.download</code> 的那个方法的用法太有误导性。只要在 rails 获取文件对象就要用<code class="language-plaintext highlighter-rouge">.download</code>来获取 （我当时以为是用户给 url, 然后后台下载。。。。）</p>
 
 <p>后端部分可以拿出来单独用。。。前端部分我还没仔细研究。。不清楚。。。但是他的开发者发了 npm 的包。前后端分离项目用 activestorage 好像也不是什么难事。。enen。大概不是很难</p>
 
-  </div>
-
-  
-    
-
-  <div id="disqus_thread"></div>
+  </div><div id="disqus_thread"></div>
   <script>
     var disqus_config = function () {
       this.page.url = 'https://a-wing.top/ruby/2018/09/26/rails_activestorage_backend.html';
@@ -316,76 +247,45 @@ active_storage -&gt; active_storage_<XXX>云服务 -&gt;  <XXX>云服务SDK</XXX
       (d.head || d.body).appendChild(s);
     })();
   </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-
-  
-
-  <a class="u-url" href="/ruby/2018/09/26/rails_activestorage_backend.html" hidden></a>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><a class="u-url" href="/ruby/2018/09/26/rails_activestorage_backend.html" hidden></a>
 </article>
 
       </div>
-    </main>
-
-    <footer class="site-footer h-card">
+    </main><footer class="site-footer h-card">
   <data class="u-url" href="/"></data>
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">Hi! 上天不?</h2>
-
     <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
         <ul class="contact-list">
-          <li class="p-name">
-            
-              Hi! 上天不?
-            
-            </li>
-            
+          <li class="p-name">Metal A-wing</li>
+          <li>1 at 233 dot email</li>
         </ul>
-
-        <a href="https://www.upyun.com/">
-          <img src="https://a-wing.top/assets/upyun_logo.png"/>
-        </a>
-
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-  
-  
-  
-  <li><a href="https://github.com/a-wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">a-wing</span></a></li>
-  
-  
-  
-  <li><a href="https://www.twitter.com/_a_wing"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">_a_wing</span></a></li>
-  
-  
-  
-</ul>
-
-
         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+          <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
         </a>
       </div>
-
-      <div class="footer-col footer-col-3">
+      <div class="footer-col">
         <p>新一的个人博客</p>
         <p>Power by Jekyll && Theme by minima-改</p>
         <p>Copyright © 2016-2021 Powered by a-wing</p>
       </div>
-
-      <div align="center">本博客由 Github 提供源文件托管，Travis-ci 提供构建服务，Upyun 提供静态存储，Aliyun 提供域名解析</div>
     </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/a-wing" title="a-wing"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/_a_wing" title="_a_wing"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
 
   </div>
 
 </footer>
-
-
-  </body>
+</body>
 
 </html>
