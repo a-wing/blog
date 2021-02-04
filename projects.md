@@ -2,8 +2,11 @@
 layout: page
 title: 陈列室
 date:   2021-02-02 17:00:00 +0800
+toc: true
 permalink: /projects/
 ---
+
+{% toc %}
 
 ## filegogo [![filegogo](https://img.shields.io/github/stars/a-wing/filegogo.svg?style=social&label=Star)](https://github.com/a-wing/filegogo/)
 
@@ -18,6 +21,8 @@ permalink: /projects/
 中文翻译 《 Real-Time Communication with WebRTC 》
 
 阅读地址： [https://a-wing.github.io/webrtc-book-cn/](https://a-wing.github.io/webrtc-book-cn/)
+
+{% twitter https://twitter.com/_a_wing/status/1246129464070647808 %}
 
 这个三月，在你们都在玩动物深林的时候，我把全部的休息的时间都用来翻译这本书了
 
