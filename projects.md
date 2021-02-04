@@ -5,15 +5,19 @@ date:   2021-02-02 17:00:00 +0800
 permalink: /projects/
 ---
 
-## filegogo ![filegogo](https://img.shields.io/github/stars/a-wing/filegogo.svg?style=social&label=Star)
+## filegogo [![filegogo](https://img.shields.io/github/stars/a-wing/filegogo.svg?style=social&label=Star)](https://github.com/a-wing/filegogo/)
+
+[![Demo.gif](https://i.postimg.cc/wTyzyHMc/Peek-2020-10-24-11-29.gif)](https://github.com/a-wing/filegogo/)
 
 一个跑在浏览器上的 P2P 文件传输工具，基于 WebRTC
 
 * * *
 
-## webrtc-book-cn ![webrtc-book-cn](https://img.shields.io/github/stars/a-wing/webrtc-book-cn.svg?style=social&label=Star)
+## webrtc-book-cn [![webrtc-book-cn](https://img.shields.io/github/stars/a-wing/webrtc-book-cn.svg?style=social&label=Star)](https://github.com/a-wing/webrtc-book-cn/)
 
 中文翻译 《 Real-Time Communication with WebRTC 》
+
+阅读地址： [https://a-wing.github.io/webrtc-book-cn/](https://a-wing.github.io/webrtc-book-cn/)
 
 这个三月，在你们都在玩动物深林的时候，我把全部的休息的时间都用来翻译这本书了
 
@@ -27,7 +31,9 @@ permalink: /projects/
 
 * * *
 
-## endplayer ![endplayer](https://img.shields.io/github/stars/a-wing/endplayer.svg?style=social&label=Star)
+## endplayer [![endplayer](https://img.shields.io/github/stars/a-wing/endplayer.svg?style=social&label=Star)](https://github.com/a-wing/endplayer/)
+
+![screenshot/endplayer](https://raw.githubusercontent.com/a-wing/endplayer/gh-pages/screenshot/endplayer.png)
 
 这是刚开的新坑。。。一个基于 mpv 和 Electron 的本地弹幕播放器
 
@@ -35,15 +41,29 @@ permalink: /projects/
 
 * * *
 
-## argus ![argus](https://img.shields.io/github/stars/JRT-FOREVER/argus.svg?style=social&label=Star)
+## argus [![argus](https://img.shields.io/github/stars/JRT-FOREVER/argus.svg?style=social&label=Star)](https://github.com/JRT-FOREVER/argus/)
+
+![argus_active](/assets/img/hey_siri_open_door/argus.webp)
 
 这才是我第一个写的项目，由于当时不会用 git 之类的 vcs 。。。也不知道 github 。。。这是后来整理之后上传开源的。之后也重构过好多遍
+
+A.R.G.U.S.
+
+> auxiliary reliable guardian undertaking system
+>
+> 辅助的可靠的守护者任务系统
+
+这个项目的名字还是我上学时师弟给取的：（当时想取个希腊神话之类的，让人不明觉厉的名字）
+
+这个名字其实是硬凑出来的（
+
+> Argus Panoptes（古希腊语：Ἄργος，来自于形容词ἀργός“闪亮的”），希腊神话中的百眼巨人。
 
 用法在这：[diy/2019/03/15/hey_siri_open_door.html](/diy/2019/03/15/hey_siri_open_door.html)
 
 * * *
 
-## KISS2U / KISS2UI ![KISS2U](https://img.shields.io/github/stars/a-wing/KISS2U.svg?style=social&label=Star)
+## KISS2U / KISS2UI [![KISS2U](https://img.shields.io/github/stars/a-wing/KISS2U.svg?style=social&label=Star)](https://github.com/a-wing/KISS2U/)
 
 这个是 archlinuxcn 社区的的 lilac 的 web 端接口，KISS2U 提供API, KISS2UI 提供界面
 
@@ -53,14 +73,14 @@ permalink: /projects/
 - [kiss2ugo](https://github.com/a-wing/kiss2ugo) 后端 API/v2 部分（新的)
 - [KISS2UI](https://github.com/a-wing/KISS2UI) 前端 UI 部分
 
-[文档在这](https://build.archlinuxcn.org/api/v2/docs/)
+文档在这： [https://build.archlinuxcn.org/api/v2/docs/](https://build.archlinuxcn.org/api/v2/docs/)
 
 更详细的信息在这里：[archlinux/2018/08/05/kiss2u](/archlinux/2018/08/05/kiss2u.html)
 > 你这个 bug 该修了，这个 API 该更新了。。。`_(ˊཀˋ」∠)_`
 
 * * *
 
-## Menhera-chan ![Menhera-chan](https://img.shields.io/github/stars/a-wing/Menhera-chan.svg?style=social&label=Star)
+## Menhera-chan [![Menhera-chan](https://img.shields.io/github/stars/a-wing/Menhera-chan.svg?style=social&label=Star)](https://github.com/a-wing/Menhera-chan/)
 
 Menhera-chan 超可爱。。。我要把他装进 github
 
@@ -68,7 +88,7 @@ Menhera-chan 超可爱。。。我要把他装进 github
 
 * * *
 
-## RailsGun ![RailsGun](https://img.shields.io/github/stars/MoePlayer/RailsGun.svg?style=social&label=Star)
+## RailsGun [![RailsGun](https://img.shields.io/github/stars/MoePlayer/RailsGun.svg?style=social&label=Star)](https://github.com/MoePlayer/RailsGun/)
 
 这是一个 `Dplayer` 的弹幕后端
 
@@ -76,7 +96,7 @@ Menhera-chan 超可爱。。。我要把他装进 github
 
 * * *
 
-## Github-dashboard (已弃坑) ![Github-dashboard](https://img.shields.io/github/stars/a-wing/Github-dashboard.svg?style=social&label=Star)
+## Github-dashboard (已弃坑) [![Github-dashboard](https://img.shields.io/github/stars/a-wing/Github-dashboard.svg?style=social&label=Star)](https://github.com/a-wing/Github-dashboard/)
 
 原因是 github 的一次界面改版，我用油猴脚本又还原了回来。。。之后 github 的界面又改版。。这东西就没用了。。。
 
@@ -84,13 +104,13 @@ Menhera-chan 超可爱。。。我要把他装进 github
 
 * * *
 
-## linuxdeer (已弃坑) ![linuxdeer](https://img.shields.io/github/stars/a-wing/linuxdeer.svg?style=social&label=Star)
+## linuxdeer (已弃坑) [![linuxdeer](https://img.shields.io/github/stars/a-wing/linuxdeer.svg?style=social&label=Star)](https://github.com/a-wing/linuxdeer/)
 
 本来想写一份关于 Linux 桌面的教程。。。我真的不知道还应该写一些什么。。。
 
 * * *
 
-## cfcart (已弃坑) ![cfcart](https://img.shields.io/github/stars/a-wing/cfcart.svg?style=social&label=Star)
+## cfcart (已弃坑) [![cfcart](https://img.shields.io/github/stars/a-wing/cfcart.svg?style=social&label=Star)](https://github.com/a-wing/cfcart/)
 
 这个是我真正学会编程的第一个项目，我都快忘记了我最开始是学 PHP 的
 
