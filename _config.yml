@@ -61,6 +61,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-feed
   - jekyll-toc
+  - jekyll-twitter-plugin
 
 google_analytics: UA-117419557-1
 

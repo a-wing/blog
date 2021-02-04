@@ -3,4 +3,5 @@ _site
 .jekyll-metadata
 vendor/
 .jekyll-cache/
+.tweet-cache/
 .DS_Store
