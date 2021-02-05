@@ -10,9 +10,37 @@ permalink: /projects/
 
 ## filegogo [![filegogo](https://img.shields.io/github/stars/a-wing/filegogo.svg?style=social&label=Star)](https://github.com/a-wing/filegogo/)
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/a-wing/filegogo)](https://goreportcard.com/report/github.com/a-wing/filegogo)
+[![GitHub release](https://img.shields.io/github/tag/a-wing/filegogo.svg?label=release)](https://github.com/a-wing/filegogo/releases)
+[![license](https://img.shields.io/github/license/a-wing/filegogo.svg?maxAge=2592000)](https://github.com/a-wing/filegogo/blob/master/LICENSE)
+
+[send.22333.fun](https://send.22333.fun) | [send.cn.22333.fun](https://send.cn.22333.fun)
+
 [![Demo.gif](https://i.postimg.cc/wTyzyHMc/Peek-2020-10-24-11-29.gif)](https://github.com/a-wing/filegogo/)
 
 一个跑在浏览器上的 P2P 文件传输工具，基于 WebRTC
+
+* * *
+
+## jsonrpc-lite [![jsonrpc-lite](https://img.shields.io/github/stars/SB-IM/jsonrpc-lite.svg?style=social&label=Star)](https://github.com/SB-IM/jsonrpc-lite/)
+
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/SB-IM/jsonrpc-lite)](https://pkg.go.dev/github.com/SB-IM/jsonrpc-lite)
+[![Build Status](https://travis-ci.org/SB-IM/jsonrpc-lite.svg?branch=master)](https://travis-ci.org/SB-IM/jsonrpc-lite)
+[![codecov](https://codecov.io/gh/SB-IM/jsonrpc-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/SB-IM/jsonrpc-lite)
+[![Documentation](https://godoc.org/github.com/SB-IM/jsonrpc-lite?status.svg)](http://godoc.org/github.com/SB-IM/jsonrpc-lite)
+[![Go Report Card](https://goreportcard.com/badge/github.com/SB-IM/jsonrpc-lite)](https://goreportcard.com/report/github.com/SB-IM/jsonrpc-lite)
+[![GitHub release](https://img.shields.io/github/tag/SB-IM/jsonrpc-lite.svg?label=release)](https://github.com/SB-IM/jsonrpc-lite/releases)
+[![license](https://img.shields.io/github/license/SB-IM/jsonrpc-lite.svg?maxAge=2592000)](https://github.com/SB-IM/jsonrpc-lite/blob/master/LICENSE)
+
+Golang 的 jsonrpc 2.0 序列化和解析库
+
+这大概是我第一次写开源的库，不足之处还请多多指出
+
+灵感来自 [teambition/jsonrpc-lite](https://github.com/teambition/jsonrpc-lite) 项目。
+其实就是这个库的 golang 版
+
+Golang 和 jsonrpc 用起来，不管怎么写都不合理。所以只做了序列化和反序列化。
+（不能假定使用了 http 传输，也不能假定使用 websocket 传输。假定这个接口一定由某个对象提供也不合理
 
 * * *
 
@@ -102,6 +130,8 @@ Menhera-chan 超可爱。。。我要把他装进 github
 * * *
 
 ## Github-dashboard (已弃坑) [![Github-dashboard](https://img.shields.io/github/stars/a-wing/Github-dashboard.svg?style=social&label=Star)](https://github.com/a-wing/Github-dashboard/)
+
+![github.png](https://raw.githubusercontent.com/a-wing/Github-dashboard/master/github.png)
 
 原因是 github 的一次界面改版，我用油猴脚本又还原了回来。。。之后 github 的界面又改版。。这东西就没用了。。。
 
