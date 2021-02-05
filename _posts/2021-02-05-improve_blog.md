@@ -3,6 +3,7 @@ layout: post
 title: "博客优化记录"
 author: "Metal A-wing"
 date: 2021-02-05 15:04:05 +0800
+image: "/assets/img/improve_blog/screenshot_2021-02-05T10-36-07.103Z.png"
 categories: log
 ---
 
@@ -20,7 +21,7 @@ categories: log
 
 ## 友链也改了下规则
 
-站点挂了就删除太绝情了。
+站点挂了就删除太绝情了。所以决定链去掉，只留个名字
 
 ## 优化
 
