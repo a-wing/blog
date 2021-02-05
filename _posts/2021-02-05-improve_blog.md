@@ -83,6 +83,8 @@ vercel 有 Lighthouse 集成
 
 ### 在你的自己的页面上引用 Twitter
 
+{% twitter https://twitter.com/_a_wing/status/1357651767689793536 %}
+
 twitter 自己提供了这个工具可以随意使用，引用你想引用的任何内容
 
 [publish.twitter.com](https://publish.twitter.com/)
