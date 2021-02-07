@@ -13,7 +13,9 @@ categories: log
 
 ## 服务器
 
-备案号被撤销，我不得不从 upyun 上滚出来
+备案号被撤销，我不得不从 upyun 上爬了出来
+
+> 爬爬爬，我最会爬了
 
 这回我整体都迁移到了 vercel 上。vercel 真好用（vercel 打钱
 
@@ -21,7 +23,7 @@ categories: log
 
 ## 友链也改了下规则
 
-站点挂了就删除太绝情了。所以决定链去掉，只留个名字
+站点挂了就删除太绝情了。所以决定链接去掉，只留个名字
 
 ## 优化
 
@@ -43,7 +45,7 @@ vercel 有 Lighthouse 集成
 
 把 Banner 的图片去掉了，主要问题是应该固定高度，不然会有 Cumulative Layout Shift (CLS)
 
-是的，加载中会发生页面偏移，首次渲染时并不知道图片尺寸，（先把高和宽当作 0 px 处理）
+是的，加载中会发生页面偏移，首次渲染时并不知道图片尺寸，（先把高和宽当作 `0px` 处理）
 
 等到图片加载完成，会引发重排（Reflow）
 
@@ -97,7 +99,9 @@ twitter 自己提供了这个工具可以随意使用，引用你想引用的任
 
 ## 图片
 
-我都用 [tingpng](https://tinypng.com/) 压缩一边之后再放进来，没有找到插件，可能要自己造轮子了
+我都用 [tingpng](https://tinypng.com/) 压缩一遍之后再放进来，没有找到插件，可能要自己造轮子了
+
+试过其他的图片压缩，还是这个效果最好
 
 ## 搜索功能
 
@@ -109,7 +113,7 @@ twitter 自己提供了这个工具可以随意使用，引用你想引用的任
 
 直接在 google 里面搜这一段 `site:a-wing.top debian`
 
-当然可以直接点击这个：[google debian](https://lmstfy.net/?q=c2l0ZTphLXdpbmcudG9wIGRlYmlhbg==) （逃
+当然可以直接点击这个：[google debian](https://lmstfy.net/?q=c2l0ZTphLXdpbmcudG9wIGRlYmlhbg==) （光速逃
 
 ## 什么？暗夜模式
 
@@ -125,9 +129,7 @@ twitter 自己提供了这个工具可以随意使用，引用你想引用的任
 
 简单的说就是遍历整篇文章，然后生成一个目录
 
-装备篇有一个目录原来是我手写的，通过这个插件来自动生成
-
-[equipment](/equipment/)
+[装备篇](/equipment/) 那个目录原来是我手写的，现在是通过这个插件来自动生成
 
 ## projects 页可点击的图标
 
