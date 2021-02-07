@@ -125,6 +125,10 @@ twitter 自己提供了这个工具可以随意使用，引用你想引用的任
 
 ![sticker_sleep](/assets/img/improve_blog/sticker_sleep.jpg)
 
+感谢评论 [百合（依云）](https://blog.lilydjwg.me/) 的推荐：[Dark Reader browser extension](https://darkreader.org/)
+
+![Dark Reader browser extension](https://darkreader.org/images/darkreader-screenshot-v5-preview.png)
+
 ## TOC (Table of Contents)
 
 简单的说就是遍历整篇文章，然后生成一个目录
