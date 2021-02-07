@@ -36,4 +36,5 @@ permalink: /links/
 * [~~日哭你~~ 日老师](https://rikumi.dev/)
 * [木子 （我怀疑他是看书机器人](https://k8s.li/)
 * [~~五斤~~琉璃 (((o (*ﾟ▽ﾟ*) o)))](https://rxliuli.com/)
+* [百合仙子：依云](https://blog.lilydjwg.me/)
 
