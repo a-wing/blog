@@ -127,6 +127,8 @@ twitter 自己提供了这个工具可以随意使用，引用你想引用的任
 
 感谢评论 [百合（依云）](https://blog.lilydjwg.me/) 的推荐：[Dark Reader browser extension](https://darkreader.org/)
 
+（可以使用这个浏览器扩展来启用本站的暗夜模式。（雾
+
 ![Dark Reader browser extension](https://darkreader.org/images/darkreader-screenshot-v5-preview.png)
 
 ## TOC (Table of Contents)
