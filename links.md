@@ -31,6 +31,7 @@ permalink: /links/
 * [谭枫 `_{:3 」∠}_`](https://keyin.now.sh/)
 * [IO 酱](https://iovxw.net/)
 * [是稀释](https://blog.stdin.in/)
+* [兔子鮮笙](https://tuzi.moe/)
 * [卡夫酱](https://frantic1048.com/)
 * [鱼师傅](https://www.zjyl1994.com/)
 * [~~日哭你~~ 日老师](https://rikumi.dev/)
