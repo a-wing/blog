@@ -18,7 +18,7 @@ categories: kubernetes
 ## 本篇是以面试者的第一视角来纪录，可以当小说看，本文超长，建议闲着无聊时看～
 
 作为一个开发码农，kubernetes 我是一点也不了解，看到题目一堆未知都东西。
-jenkins 倒是玩过一点，jenkins  可以调 shell，写个脚本检测一下进城和 cpu 使用率，把 docker 塞给固定的机器。
+jenkins 倒是玩过一点，jenkins  可以调 shell，写个脚本检测一下进程和 cpu 使用率，把 docker 塞给固定的机器。
 ok，完美。先看一下 kubernetes 文档，看看 kubernetes 都能干啥
 
 [找到了这篇](https://pingcap.com/meetup/meetup-84-20181220/)
