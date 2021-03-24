@@ -210,9 +210,9 @@ map <silent><F7>  <leader>ig
 
 ### NERDTree
 
-显示目录树插件。没错，vim 自己是没有这个功能的，要靠插件来实现
+显示目录树插件。vim 自己带的那个 `netrw` 需要自己配置一番。
 
-纯粹是习惯了， `F8` 打开目录树 `Crtl-w w` 切过去，按 `m` 打开菜单
+使用这个插件纯粹是习惯了， `F8` 打开目录树 `Crtl-w w` 切过去，按 `m` 打开菜单
 
 ```vim
 " A tree explorer plugin for vim
@@ -394,3 +394,6 @@ leetcode 网页那个编辑器简直难用的要死，我们可以在 vim 里面
 [[VIM] 搜索可视化选中（Visually Selected）的文本](https://blog.twofei.com/610/)
 
 [Search for visually selected text](https://vim.fandom.com/wiki/Search_for_visually_selected_text)
+
+[Vim: you don't need NERDtree or (maybe) netrw](https://shapeshed.com/vim-netrw)
+
