@@ -10,7 +10,7 @@ categories: shell
 
 `shell` 的名字和概念是从 Unix 的前身 Multics 发展过来的。应用程序通过 shell 来进行调用并被系统执行。
 
-一般的 sh 指的是 bsh （Bourne shell），但 Bourne shell 并不是 bash。bash 是 Bourne After shell
+一般的 sh 指的是 bsh （Bourne shell），但 Bourne shell 并不是 bash。bash 是 Bourne Again Shell
 
 ![unix-shells-large.png](/assets/img/sh-compatibles-history/unix-shells-large.png)
 
