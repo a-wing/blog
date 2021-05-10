@@ -387,6 +387,8 @@ leetcode 网页那个编辑器简直难用的要死，我们可以在 vim 里面
 
 {% twitter https://twitter.com/_a_wing/status/1300352161205739522 %}
 
+对我配置感兴趣，可以来这里看：[a-wing/dotfiles#nvim](https://github.com/a-wing/dotfiles/tree/master/nvim)
+
 ## 参考文章
 
 [(纯干活) Rails 高效开发工具 vim 指南](https://ruby-china.org/topics/19315)
