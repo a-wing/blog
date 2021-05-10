@@ -9,6 +9,10 @@ categories: shell
 
 轻量，简洁，简单。这个我对 zsh 配置的追求
 
+1. [如何使用 shell（1/3）—— shell 兼容和历史](/shell/2021/05/01/sh-compatibles-history.html)
+2. [如何使用 shell（2/3）—— 新时代的 shell](/shell/2021/05/05/new-shell.html)
+3. 如何使用 shell（3/3）—— 配置 zsh
+
 ## 启动 shell
 
 先来复习一下 shell 的登录和交互

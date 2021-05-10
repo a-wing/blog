@@ -2,9 +2,8 @@
 layout: post
 title: "如何使用 shell（1/3）—— shell 兼容和历史"
 author: "Metal A-wing"
-date: 2021-05-01 00:01:05 +0800
+date: 2021-05-01 20:00:00 +0800
 image: "/assets/img/sh-compatibles-history/unix-shells-large.png"
-permalink: /shell/2021/05/01/sh-compatibles-history.html
 categories: shell
 ---
 
@@ -13,6 +12,10 @@ categories: shell
 一般的 sh 指的是 bsh （Bourne shell），但 Bourne shell 并不是 bash。bash 是 Bourne Again Shell
 
 ![unix-shells-large.png](/assets/img/sh-compatibles-history/unix-shells-large.png)
+
+1. 如何使用 shell（1/3）—— shell 兼容和历史
+2. [如何使用 shell（2/3）—— 新时代的 shell](/shell/2021/05/05/new-shell.html)
+3. [如何使用 shell（3/3）—— 配置 zsh](/shell/2021/05/10/zsh-config.html)
 
 ## Thompson shell
 
