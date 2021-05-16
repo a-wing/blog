@@ -83,11 +83,11 @@ zsh 由于历史问题，默认设置基本上和几十年前一样，现在的 
 
 集成了大量实用的函数和主题（个人推荐 `ys` 主题），比较极端的用户甚至会使用 ramdom 主题，每次开启随机选择一个，保证新鲜感
 
-oh-my-zsh 最大的问题就是太慢了，还有就是管的东西太多了。oh-my-zsh 的各种插件里面基本上全是 aliases。建议一个都不要用
+oh-my-zsh 管的东西太多了。oh-my-zsh 的各种插件里面基本上全是 aliases。建议一个都不要用
 
 ### prezto
 
-oh-my-zsh 之外的另一个选择，或者说是他的的替代品。比 oh-my-zsh 轻一点。不过依然很慢
+oh-my-zsh 之外的另一个选择，或者说是他的的替代品。比 oh-my-zsh 轻量一点。
 
 ### zimfw
 
@@ -459,6 +459,10 @@ nnn_cd () {
 bindkey -s '^N' 'nnn_cd\n'
 ```
 
+- hunter
+
+这是一个 Rust 写的命令行文件管理器。目前还没有办法和 shell 联动，未来也许会有这个功能
+
 ### 变量
 
 我们肯定都见过这种写法
@@ -510,9 +514,7 @@ for i in $(seq 1 5); do time /bin/zsh -i -c exit; done
 
 本文的配图说明不了什么，我选了一些视觉冲击力强的插件的配图，实际上，我个人的配置十分的精简。最实用的配置图片上看不出来任何高端的地方。**真正干活的实用配置看起来和默认的差不多**
 
-[你不需要花哨的命令提示符](https://zhuanlan.zhihu.com/p/51008087)
-
-好的提示符
+好的提示符：
 
 - 当前路径
 - git branch（应该是可以选的，作为软件开发者，这个很有必要）
@@ -526,6 +528,8 @@ for i in $(seq 1 5); do time /bin/zsh -i -c exit; done
 如果对我的配置感兴趣可以来这里看：[a-wing/dotfiles#zsh](https://github.com/a-wing/dotfiles/tree/master/zsh)
 
 ## Reference
+
+[你不需要花哨的命令提示符](https://zhuanlan.zhihu.com/p/51008087)
 
 [千万别混淆 Bash/Zsh 的四种运行模式](https://zhuanlan.zhihu.com/p/47819029)
 
