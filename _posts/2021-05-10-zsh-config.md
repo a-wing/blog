@@ -5,6 +5,7 @@ author: "Metal A-wing"
 date: 2021-05-10 20:00:00 +0800
 toc: true
 image: "/assets/img/zsh-config/power.png"
+banner: "/assets/img/zsh-config/power.png"
 categories: shell
 ---
 

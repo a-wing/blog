@@ -5,6 +5,7 @@ author: "Metal A-wing"
 date: 2021-05-01 20:00:00 +0800
 toc: true
 image: "/assets/img/sh-compatibles-history/unix-shells-large.png"
+banner: "/assets/img/sh-compatibles-history/unix-shells-large.png"
 categories: shell
 ---
 

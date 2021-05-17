@@ -4,6 +4,7 @@ title: "博客优化记录"
 author: "Metal A-wing"
 date: 2021-02-05 15:04:05 +0800
 image: "/assets/img/improve_blog/screenshot_2021-02-05T10-36-07.103Z.png"
+banner: "/assets/img/improve_blog/screenshot_2021-02-05T10-36-07.103Z.png"
 categories: log
 ---
 
