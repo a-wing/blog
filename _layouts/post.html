@@ -19,6 +19,15 @@ layout: default
     {{ content | toc }}
   </div>
 
+	{%- if page.banner -%}
+	<script type="text/javascript">
+		let bg = document.getElementById("banner").style
+		bg.background="url( {{ page.banner }} ) center"
+		bg.backgroundSize="cover"
+	</script>
+  {%- endif -%}
+
+
   {%- if site.disqus.shortname -%}
     {%- include disqus_comments.html -%}
   {%- endif -%}
