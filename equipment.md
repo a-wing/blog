@@ -7,8 +7,6 @@ toc: true
 permalink: /equipment/
 ---
 
-{% toc %}
-
 ## Router
 
 路由器我真的折腾不动了。。。还是 `openwrt` 最好用

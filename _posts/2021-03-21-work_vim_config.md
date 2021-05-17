@@ -3,6 +3,7 @@ layout: post
 title: "干活向的 vim 配置"
 author: "Metal A-wing"
 date: 2021-03-21 21:00:00 +0800
+toc: true
 image: "/assets/img/work_vim_config/vim-banner.png"
 categories: vim
 ---

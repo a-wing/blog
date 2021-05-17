@@ -3,6 +3,7 @@ layout: post
 title: "如何使用 shell（1/3）—— shell 兼容和历史"
 author: "Metal A-wing"
 date: 2021-05-01 20:00:00 +0800
+toc: true
 image: "/assets/img/sh-compatibles-history/unix-shells-large.png"
 categories: shell
 ---

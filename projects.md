@@ -6,8 +6,6 @@ toc: true
 permalink: /projects/
 ---
 
-{% toc %}
-
 ## filegogo [![filegogo](https://img.shields.io/github/stars/a-wing/filegogo.svg?style=social&label=Star)](https://github.com/a-wing/filegogo/)
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/a-wing/filegogo)](https://goreportcard.com/report/github.com/a-wing/filegogo)
