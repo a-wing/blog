@@ -282,7 +282,7 @@ bindkey "\eq" push-line-or-edit
 `sudo` 用的比较多，所以我们来定制一个快捷键。
 
 ```bash
-quick-sudo-widget() {
+sudo-command-line() {
   [[ -z $BUFFER ]] && zle up-history
   local cmd="sudo "
   if [[ ${BUFFER} == ${cmd}* ]]; then
@@ -295,9 +295,9 @@ quick-sudo-widget() {
   zle reset-prompt
 }
 
-zle     -N    quick-sudo-widget
+zle     -N   sudo-command-line
 # Ctrl-S
-bindkey '^S' quick-sudo-widget
+bindkey '^S' sudo-command-line
 ```
 
 这样直接使用 `Ctrl-S` 就可以快速在前面添加 `sudo` ，如果前面有 `sudo` 就自动去掉 `sudo`
