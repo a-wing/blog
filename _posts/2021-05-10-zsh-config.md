@@ -121,6 +121,16 @@ prompt -s adam2
 prompt off
 ```
 
+grml 的 zsh 配置拥有非常灵活的配置，默认的 grml 主题支持 vsc （git 显示当前分支）可以自定义显示的各种项。比如像这样来让 prompt 显示两行：
+
+```bash
+# Set Theme
+# http://bewatermyfriend.org/p/2013/001/
+zstyle ':prompt:grml:left:setup' items rc change-root user at host path vcs newline percent
+
+prompt grml
+```
+
 ### powerlevel 系列
 
 powerline 系列的 zsh 版主题
