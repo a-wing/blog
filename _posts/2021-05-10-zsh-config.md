@@ -273,15 +273,16 @@ bindkey "\eq" push-line-or-edit
 
 ```bash
 quick-sudo-widget() {
+  [[ -z $BUFFER ]] && zle up-history
   local cmd="sudo "
-  if [[ ${LBUFFER:0:${#cmd}} == ${cmd} ]]; then
-    LBUFFER="${LBUFFER:${#cmd}}"
+  if [[ ${BUFFER} == ${cmd}* ]]; then
+    CURSOR=$(( CURSOR-${#cmd} ))
+    BUFFER="${BUFFER#$cmd}"
   else
-    LBUFFER="${cmd}${LBUFFER}"
+    BUFFER="${cmd}${BUFFER}"
+    CURSOR=$(( CURSOR+${#cmd} ))
   fi
-  local ret=$?
   zle reset-prompt
-  return $ret
 }
 
 zle     -N    quick-sudo-widget
@@ -291,7 +292,9 @@ bindkey '^S' quick-sudo-widget
 
 这样直接使用 `Ctrl-S` 就可以快速在前面添加 `sudo` ，如果前面有 `sudo` 就自动去掉 `sudo`
 
-grml 里也带了类似的配置，不过只支持添加 `sudo` ，我这种改法和 grml 是有区别的。
+~~grml 里也带了类似的配置，不过只支持添加 `sudo` ，我这种改法和 grml 是有区别的。~~
+
+现在 grml zsh 的配置和我这个用的是同样的配置了 [grml/zshrc#119](https://github.com/grml/grml-etc-core/pull/119)
 
 ### 命令补全加载优化
 
