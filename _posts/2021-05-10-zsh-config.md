@@ -474,6 +474,30 @@ nnn_cd () {
 bindkey -s '^N' 'nnn_cd\n'
 ```
 
+- lf
+
+如果觉得 `ranger` 是 python 写的比较慢，也不喜欢 `nnn` 。那可以试试 golang 写的 `lf`
+
+```bash
+Frok from: https://github.com/gokcehan/lf/blob/master/etc/lfcd.sh
+
+lfcd () {
+  tmp="$(mktemp)"
+  lf -last-dir-path="$tmp" "$@"
+  if [ -f "$tmp" ]; then
+    dir="$(cat "$tmp")"
+    rm -f "$tmp"
+    if [ -d "$dir" ]; then
+      if [ "$dir" != "$(pwd)" ]; then
+        cd "$dir"
+      fi
+    fi
+  fi
+}
+
+bindkey -s '^N' 'lfcd\n'
+```
+
 - hunter
 
 这是一个 Rust 写的命令行文件管理器。目前还没有办法和 shell 联动，未来也许会有这个功能
