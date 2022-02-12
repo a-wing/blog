@@ -18,6 +18,16 @@ permalink: /projects/
 
 一个跑在浏览器上的 P2P 文件传输工具，基于 WebRTC
 
+### lightcable [![lightcable](https://img.shields.io/github/stars/a-wing/lightcable.svg?style=social&label=Star)](https://github.com/a-wing/lightcable)
+
+最初是我写的一个 WebRTC 的 websocket signaling 服务端，后来集成在 filegogo 里面
+
+后来逐渐发现这个模块有其他用途，就把这个模块单独拆出来了
+
+这是一个极为精简的 websocket 的聊天室服务，至于这个东西还可以用在什么地方上，就只能去自己探索了
+
+~~部分使用 socket.io 的场景都可以使用这个来替代**（注意：是部分场景）**~~
+
 * * *
 
 ## jsonrpc-lite [![jsonrpc-lite](https://img.shields.io/github/stars/SB-IM/jsonrpc-lite.svg?style=social&label=Star)](https://github.com/SB-IM/jsonrpc-lite/)
