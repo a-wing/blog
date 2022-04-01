@@ -39,5 +39,5 @@ permalink: /links/
 * [~~五斤~~琉璃 (((o (*ﾟ▽ﾟ*) o)))](https://rxliuli.com/)
 * [百合仙子：依云](https://blog.lilydjwg.me/)
 * [Wincer's Blog](https://blog.itswincer.com/)
-* [於清樂 | This Cute World](https://thiscute.world/)
+* [於清樂｜This Cute World](https://thiscute.world/)
 
