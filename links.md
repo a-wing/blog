@@ -40,4 +40,5 @@ permalink: /links/
 * [百合仙子：依云](https://blog.lilydjwg.me/)
 * [Wincer's Blog](https://blog.itswincer.com/)
 * [於清樂｜This Cute World](https://thiscute.world/)
+* [可爱的寒寒](https://ray-eldath.me/)
 
