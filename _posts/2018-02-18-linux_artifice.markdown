@@ -55,22 +55,22 @@ find 目录名 -type f | xargs cat | grep 要搜索的内容
 4. 输入注释字符`#` 或 `//`
 5. `esc`
 
+### 如果你用的是 `deb` 系的包管理
 
-### 如果你用的是deb 系的包管理
-在执行`make install`时会安装。但卸载会有问题
+在执行 `make install` 时会安装。但卸载会有问题
 
 有些软件不提供 `make uninstall`
 
-可以用 `checkinstall` 来代替`make install`来安装软件
+可以用 `checkinstall` 来代替 `make install` 来安装软件
 
-checkinstall 会产生一个虚拟环境来执行make install 然后打包成 deb 包
+`checkinstall` 会产生一个虚拟环境来执行 `make install` 然后打包成 `deb` 包
 
 这样卸载时就可以通过`dpkg`来移除软件包
 
 可以先搜索一下这个软件属于哪个包
 
 ```sh
-dpkg -S <软件名>
+dpkg -S <命令名 | 路径名>
 ```
 
 ### 录屏？
