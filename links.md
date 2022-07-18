@@ -42,6 +42,6 @@ permalink: /links/
 * [於清樂｜This Cute World](https://thiscute.world/)
 * [可爱的寒寒](https://ray-eldath.me/)
 * [~~吼姆拉~~ Homua](https://homura.live/)
-* [好，是 Saka | Manjusaka](https://www.manjusaka.blog/)
+* [好，是 Saka｜Manjusaka](https://www.manjusaka.blog/)
 * [是 Chaos Mesh 维护者 STRRL](https://strrl.dev/)
 
