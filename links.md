@@ -44,4 +44,5 @@ permalink: /links/
 * [~~吼姆拉~~ Homua](https://homura.live/)
 * [好，是 Saka｜Manjusaka](https://www.manjusaka.blog/)
 * [是 Chaos Mesh 维护者 STRRL](https://strrl.dev/)
+* [~~伪代码~~ Pseudoyu](https://www.pseudoyu.com/)
 
