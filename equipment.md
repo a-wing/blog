@@ -2,7 +2,7 @@
 layout: page
 title:  "装备篇"
 author: metal A-wing
-date:   2019-10-18 16:00:00 +0800
+date:   2022-02-12 16:00:00 +0800
 toc: true
 permalink: /equipment/
 ---
@@ -11,29 +11,41 @@ permalink: /equipment/
 
 路由器我真的折腾不动了。。。还是 `openwrt` 最好用
 
-[koolshare](https://firmware.koolshare.cn/) 的固件最省心，尤其是配合国内的上网环境
+路由我还是使用主路由加旁路有的方案
 
-[padavan](https://opt.cn2qq.com/) 老毛子固件，我一直都觉得这个固件稳定性有问题，尤其是 DNS 解析上
+~~[koolshare](https://firmware.koolshare.cn/) 的固件最省心，尤其是配合国内的上网环境~~
 
-[PandoraBox](https://downloads.pangubox.com/) 潘多拉固件，这个我用的比较少。。。感觉不出和 `openwrt` 的区别（据说用了些闭源驱动，性能更好）
+~~[padavan](https://opt.cn2qq.com/) 老毛子固件，我一直都觉得这个固件稳定性有问题，尤其是 DNS 解析上~~
 
-### ASUS RT-ac68u
+~~[PandoraBox](https://downloads.pangubox.com/) 潘多拉固件，这个我用的比较少。。。感觉不出和 `openwrt` 的区别（据说用了些闭源驱动，性能更好）~~
+
+### ASUS RT-AX86U
+
+换了新路由，现在 AX86U 是我的主路由
+
+### EasePi
+
+这个现在是我旁路由
+
+KoolShare 小宝 的新作品
+
+### ASUS RT-ac68u (discard)
 
 首推 `ASUS RT-ac68u` 一代神机。目前我的主路由就是这个。其实我想换 `ASUS RT-ax88u` 。。可惜没钱（留下了贫穷的泪水
 
-### Netgear wndr 4300
+### Netgear wndr 4300 (discard)
 
 Netgear wndr 4300 也是很好用的。主要是 [openwrt](https://openwrt.org/toh/start) 好用
 
-### Youku l1c
+### Youku l1c (discard)
 
 Youku l1c 这个一开始我用 padavan 固件。。后来用 PandoraBox 了
 
-### Newifi 2
+### Newifi 2 (discard)
 
 Newifi 2 这个和 Youku l1c 差不多。没啥值得说的地方 Youku l1c 是 MTK6120a 的方案，Newifi 2 是 MTK6121a
 
-### GL.iNET mifi
+### GL.iNET mifi (discard)
 
 ![gl-mifi](https://static.gl-inet.com/www/images/products/gl-mifi/mifi_main_4.png)
 
@@ -42,6 +54,10 @@ Newifi 2 这个和 Youku l1c 差不多。没啥值得说的地方 Youku l1c 是 
 ## PC
 
 我从来都不玩游戏，也不需要什么高的配置
+
+### i9-10900K 台式机
+
+所有零件都是在水产市场上淘的
 
 ### Dell xps 13 9360
 
@@ -55,7 +71,7 @@ Newifi 2 这个和 Youku l1c 差不多。没啥值得说的地方 Youku l1c 是 
 
 我还是更喜欢 15 款的机器，MagSafe 2 的接口是最棒的，还有触摸板的体验
 
-### Lenovo yoga 13
+### Lenovo yoga 13 (discard)
 
 Lenovo yoga 13 这个好像是联想第一代 pc 平板二合一的超级本。。。这款机器很蛋疼，首先原厂系统是 Win8。。
 嗯嗯大概只有在 Win8 下体验才是最好的吧，在 win10 下那个触摸屏驱动好像是有问题的，并不能每次都响应 PC 和平板之间的切换。
@@ -122,6 +138,16 @@ cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2
 备用机，吃灰用的
 
 ## Home
+
+### HomePod / HomePod mini
+
+这个我都买过，这东西只支持 Apple Music，不过 Apple Music 的体验实在是太差了。免费给我用，我都不用
+
+HomePod 和 HomePod mini 我全卖了。垃圾，不建议买。（乔老爷子看的这东西就是活着也得被气死
+
+### Switch 日本长续航版
+
+Switch 的设计真棒，塞尔达也很好玩
 
 ### 米家投影仪 青春版（咸鱼已出）
 
