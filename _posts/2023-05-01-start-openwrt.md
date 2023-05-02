@@ -107,7 +107,7 @@ nor-Flash 还好引脚比较少，八个引脚飞五根线出来就可以重新�
 
 但是在 OpenWRT 的编译系统里面，会对 Linux 内核打大量的 Patch。内核的参数是一个基本上不需要调的参数
 
-在原本的 LInux 内核里用 `make menuconfig` 这个命令来配置。但是在 OpenWRT 里内核的参数的配置命令被改成了 `make kernel_menuconfig`
+在原本的 Linux 内核里用 `make menuconfig` 这个命令来配置。但是在 OpenWRT 里内核的参数的配置命令被改成了 `make kernel_menuconfig`
 
 不过，更推荐的一种做法是：修改这个文件
 
