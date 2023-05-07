@@ -33,15 +33,27 @@ OpenWrt 项目是一个针对嵌入式设备的 Linux 操作系统。OpenWrt 不
 
 厂家可能会标准串口的位置，也可能不会标。不标的情况只能盲找，俗称「摸串口」，实际上也很简单，把可能的情况都试一遍就能找到
 
-![https://openwrt.org/_media/media/dlink/dir-615/d-link.dir-615c2.serial.header.pinout.jpg](https://openwrt.org/_media/media/dlink/dir-615/d-link.dir-615c2.serial.header.pinout.jpg)
+![serial.header.pinout](/assets/img/start-openwrt/d-link.dir-615c2.serial.header.pinout.jpg)
 
 然后需要一个读串口的软件。为了颜值，然后我直接氪了一个付费软件
 
 ![screenshot_serial_debug](/assets/img/start-openwrt/screenshot_serial_debug.png)
 
-不过我还是觉得命令行版的 `minicom` 更好用一点。主要是串口 shell 支持更好用。不过值得注意的是 MacOS 下的 Meta 键默认是 `Esc`
+不过我还是觉得命令行版的工具，比如 `minicom` 更好用一点。主要是串口 shell 支持更好用。不过值得注意的是 MacOS 下的 Meta 键默认是 `Esc`
+
+```bash
+minicom -D /dev/tty.usbserial-1120 -b 57600
+```
 
 ![screenshot_minicom](/assets/img/start-openwrt/screenshot_minicom.png)
+
+还一个更精简的工具 `screen` 没错，这个工具可以支持串口。熟悉 `tmux` 的人可能会觉得 `screen` 这个工具更好用，快捷键都是相同的。和 tmux 不同的是： `screen` 的 `prefix` 键是 `ctrl+a`
+
+```bash
+screen /dev/tty.usbserial-1120 57600
+```
+
+![screenshot_gnuscreen](/assets/img/start-openwrt/screenshot_gnuscreen.png)
 
 ### 文件系统原理
 
@@ -125,7 +137,7 @@ make menuconfig
 
 ![screenshot_openwrt_makeconfig](/assets/img/start-openwrt/screenshot_openwrt_makeconfig.png)
 
-### **Device Tree**
+### Device Tree
 
 操作系统要知道硬件的基本信息，但是在我们常用的 x86 的计算机里，硬件信息存储在 BIOS 里面的，然后通过 ACPI（Advanced Configuration and Power Interface）传递给 Linux 内核。内部的设备比如硬盘，pcie 设备都是有固件的。所有可以通过总线协议去拿到设备的基本信息。
 
@@ -134,6 +146,12 @@ make menuconfig
 为了解决这样的问题，Linux 使用了一种叫 DTS（Device Tree Specification）设备树描述的东西来解决这个问题。
 
 当然，DTS 是一个纯文本。需要转换成二进制（或者说叫编译成二进制）的 DTB （Device Tree Blob）交给 Linux 内核
+
+如果可以进入系统的话可以在这个路径里面拿到 dtb 信息
+
+```bash
+ls /sys/firmware/devicetree/base
+```
 
 ## 逆向固件
 
@@ -190,6 +208,34 @@ dtc -I dtb -O dts -o out.dts openwrt.dtb
 
 Linux 内核实现有个功能的模块叫：MTD（Memory Technology Devices），可以直接控制 Flash 芯片的读写，但这远远不够，还需要一层逻辑地址的映射，来实现坏块管理一类的功能。MTD 里面还有个内核实现的 FTL。对于闪存，FTL 是必须的，如果 Flash 里面没有。当然这个功能可以由 Linux 内核来实现。
 
+对于由内核实现 FTL 的情况，在 Linux 内核里会识别为「字符设备」和「块设备」。这里感谢 [@乔姐姐](https://blog.nanpuyue.com/) 补充
+
+可以在 `/dev` 目录看到这样的这里的文件（这里简化了一下输出）
+
+```bash
+crw-------    1 root     root       90,   0 Jan  1  1970 mtd0
+crw-------    1 root     root       90,   1 Jan  1  1970 mtd0ro
+crw-------    1 root     root       90,   2 Jan  1  1970 mtd1
+crw-------    1 root     root       90,   3 Jan  1  1970 mtd1ro
+crw-------    1 root     root       90,   4 Jan  1  1970 mtd2
+crw-------    1 root     root       90,   5 Jan  1  1970 mtd2ro
+crw-------    1 root     root       90,   6 Jan  1  1970 mtd3
+crw-------    1 root     root       90,   7 Jan  1  1970 mtd3ro
+crw-------    1 root     root       90,   8 Jan  1  1970 mtd4
+crw-------    1 root     root       90,   9 Jan  1  1970 mtd4ro
+brw-------    1 root     root       31,   0 Jan  1  1970 mtdblock0
+brw-------    1 root     root       31,   1 Jan  1  1970 mtdblock1
+brw-------    1 root     root       31,   2 Jan  1  1970 mtdblock2
+brw-------    1 root     root       31,   3 Jan  1  1970 mtdblock3
+brw-------    1 root     root       31,   4 Jan  1  1970 mtdblock4
+```
+
+`mtdX` 是「字符设备」，就是没有经过内核 FTL 的接口。`mtdblockX` 就是经过了内核 FTL 的「块设备」
+
+之前我们提到过在嵌入式设备里要用 `mtd` 命令去代替 `dd` 命令。`mtd` 命令是去控制「字符设备」，而 `dd` 命令是控制的「块设备」。
+
+另外，对于 Nand-Flash 的情况最好用 `nand-utils` 包里面的工具去代替 `mtd` 命令
+
 ### Nor-Flash 与 CFI 和 SPI
 
 Nor-flash 有实际上有两种接口：CFI（Common Flash Interface） 和 SPI （Serial Peripheral Interface）。虽然 CFI 和 SPI 接口最初是为了与 Nor-Flash 存储器兼容而设计的，但是它们并不仅仅适用于 Nor Flash 存储器，还可以用于其他类型的存储器。
@@ -199,6 +245,8 @@ Nor-flash 有实际上有两种接口：CFI（Common Flash Interface） 和 SPI 
 - Standard SPI （接一根线）
 - Dual SPI （接两根线）
 - Quad SPI （接四根线）
+
+![SPI-Flash](/assets/img/start-openwrt/spi-flash.png)
 
 ### Nand-Flash 和 eMMC
 
@@ -242,14 +290,16 @@ obj-$(CONFIG_MT76_xxx) += xxx/
 
 ## 不同的 SSID 后缀
 
-作为一个企业级方案，我们需要每个 SSID 的后缀都是不同的。我们要自动生成一个随机的后缀。当然更常见的方法是使用网卡的 mac 地址的后几位来标记后缀
+作为一个企业级方案，我们需要每一台设备的默认 SSID 的后缀都是不同的。我们要自动生成一个随机的后缀。但不能完全随机，对于同一个设备最好每次生成的后缀都是相同的。这样每次 rest 都是相同的，然后把这个 ssid 印在贴纸上。
 
-在这个目录里建一个文件 `/etc/uci-defaults/42-ssid`
+当然更常见的方法是使用 wan 口网卡的 mac 地址的后几位来标记后缀。原因是部分路由器厂家发货是会有个贴纸标注 wan 口的 mac 地址
+
+在这个目录里建一个文件 `/etc/uci-defaults/72-ssid`
 
 ```bash
 uci -q batch << EOI
 set wireless.@wifi-device[0].disabled='0'
-set wireless.@wifi-iface[0].ssid=OpenWrt_$(cat /dev/urandom | tr -dc A-Z | head -c 4)
+set wireless.@wifi-iface[0].ssid=OpenWrt_$(cat /sys/class/net/wan/address |awk -F ":" '{print $4""$5""$6 }' | tr a-z A-Z)
 set wireless.@wifi-iface[0].mode='ap'
 set wireless.@wifi-iface[0].network='lan'
 commit wireless
@@ -285,6 +335,16 @@ cat /sys/kernel/debug/usb/devices
 - `luci-proto-ncm`
 - `luci-proto-modemmanager`
 
+最后，这里唯一需要初始化的地方就是防火墙 `/etc/uci-defaults/71-modem` 。默认没有分配防火墙规则
+
+```bash
+uci -q batch << EOI
+add_list firewall.@zone[1].network='modem'
+commit firewall
+EOI
+```
+
+
 ## 多 Wan 口切换
 
 我们现在有两个 Wan 口了。但实际工作是两个 Wan 口（有线的和 modem）会互相覆盖掉默认路由
@@ -314,23 +374,49 @@ default via 10.10.10.1 dev modem proto dhcp src 10.10.10.2 metric 40
 
 让 wan 接口的 metric 小一点，拔掉 wan 口网线，wan 口默认路由会被删除
 
-## 编译的坑
+## 编译和打包
 
-你可能会在文档上见到这样的命令
+注意：和一般的 Linux 发行版一样，「编译」和「打包」是分开的。
+
+也经常有人说：
 
 ```bash
-make FILES="files" PACKAGES="nano shadow sudo"
+OpenWrt 有两套编译系统，make（源码编译） 和 ImageBuilder
 ```
 
-### `FILES`
+这种说法其实并不准确，ImageBuilder 实际上是打包系统。
 
-可以指定一个自定义的文件夹，来覆盖掉默认位置的文件。比如多网卡切换和默认 SSID 随机的后缀都要用这个功能来实现
+### 定制固件是在做什么？
 
-### `PACKAGES`
+> 定制固件只做了两件事「预置软件包」和「初始化配置」
 
-预置软件包，对于要支持蜂窝网络的情况当然要预置一些软件包，或者说对于一款定制的路由器来说，不需要有软件源，所有的用到的包都要预置到固件里
+预置软件包一般都是通过 `PACKAGES` 配置的，对于要支持蜂窝网络的情况当然要预置一些软件包，或者说对于一款定制的路由器来说，不需要有软件源，所有的用到的包都要预置到固件里
 
-当然还有一个更好的办法比如更改 `DEVICE_PACKAGES`
+初始化配置一般都是通过 `FILES` 配置的，它可以指定一个自定义的文件夹，来覆盖掉默认位置的文件。比如多网卡切换和默认 SSID 随机的后缀都要用这个功能来实现
+
+`FILES` 可以覆盖掉任意位置的文件，但最主要的是两个文件夹 `/etc/config` 和 `/etc/uci-defaults` 。
+
+`/etc/config` 是 uci 的存储。但其实也不重要，这是一个静态的初始化配置，这里面的内容都可以用 uci 命令生成
+
+`/etc/uci-defaults` 是一个只有在第一次启动会运行的「初始化脚本」。运行完后，里面的脚本会全部删除。不过可以在 `/rom/etc/uci-defaults` 找到初始化脚本
+
+### 源码编译
+
+编译源码步骤，官方文档写的非常的清楚：[Build system usage](https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem)
+
+在 TUI 的界面里面选择这三个选项就可以编译出固件
+
+```bash
+Target System ()  --->
+Subtarget ()  --->
+Target Profile ()  --->
+```
+
+但这样的固件是非常通用的固件。或者说叫默认固件
+
+当然只要可以配置 `PACKAGES` 和 `FILES` 就可以定制固件了。「源码编译」是可以做到这两件事情的
+
+`PACKAGES` 可以去更改 `DEVICE_PACKAGES` 来实现。我们把「预置软件包」都放在这里面
 
 比如这个例子： `target/linux/ramips/image/mt7621.mk`
 
@@ -346,16 +432,67 @@ define Device/mediatek_mt7621-xxx
                                          kmod-usb-net-rndis kmod-usb-net-qmi-wwan kmod-usb-ohci-pci \
                                          kmod-usb-uhci kmod-usb2-pci \
                                          kmod-usb-serial kmod-usb-serial-option kmod-usb-serial-wwan \
-                                         luci luci-proto-3g luci-app-multiwan
+                                         luci luci-proto-3g
 endef
 TARGET_DEVICES += mediatek_mt7621-xxx
 ```
 
-在这里更改 `DEVICE_PACKAGES` 只有在第一次生成 `.config` 时才生效。注意：是第一次生成，这里特指之前没有 `.config` 的情况。如果有会生成给 `DEFAULT_` 的选项，实际上这个包也会在固件里。~~我觉得这个设计很有问题。~~
+在这里更改 `DEVICE_PACKAGES` 只有在第一次生成 `.config` 时才生效。注意：是第一次生成，这里特指之前没有 `.config` 的情况。如果有会生成给 `DEFAULT_` 的选项，实际上这个包不会在固件里。~~我觉得这个设计很有问题。~~
+
+`FILES` 这个也可以实现。在源码目录下建一个名为 `files` 的文件夹，注意必须是这个名字。然后按照目录结构把文件放进去。比如像这样：`files/etc/uci-defaults/72-ssid`
+
+## ImageBuilder
+
+ImageBuilder 是一个非常强大的固件打包工具，对于 OpenWrt 已经支持的硬件来说，根本不要需要自己编译源码！需要的只不过是定制一个固件。这样的化只用 ImageBuilder 就可以了
+
+ImageBuilder 有三个来源：
+
+- 自己编译
+- 下载官方预编译包
+- 使用官方的 ImageBuilder Web 前端
+
+### 自己编译
+
+但实际上 OpenWrt 的源码不止可以编译出固件，配套的工具链也在这里面（比如：ImageBuilder）
+
+```bash
+[*] Build the OpenWrt Image Builder
+[*]   Include package repositories
+[*] Build the OpenWrt SDK
+[*] Package the OpenWrt-based Toolchain
+```
+
+自己编译的 ImageBuilder 可以在这个路径下找到
+
+```bash
+bin/targets/<Target System>/<Subtarget>/openwrt-imagebuilder-XXX.Linux-x86_64.tar.xz
+```
+
+### 使用
+
+官方已经提供了 ImageBuilder 的预构建包，直接下载就可以用
+
+你可能会在文档上见到这样的命令，这是 ImageBuilder 的命令
+
+```bash
+make PROFILE="wl500gp" FILES="files" PACKAGES="nano shadow -sudo"
+```
+
+可以自由切换多种配置，添加和移除预置的软件包
+
+这里面的 `PACKAGES` 是最终打包到进去的。`make menuconfig` 的是要控制哪个包要编译的，顺便带了一套哪个包在固件里哪个包在源里的默认参数。不使用 ImageBuilder 的情况下就是直接使用那套默认参数
+
+### Web Frontend
+
+官方提供了一个 [这样的工具](https://firmware-selector.openwrt.org/) 来使用 ImageBuilder
+
+如果要求不高的话，可以在网页上编辑 `PACKAGES` 和 `uci-defaults`
+
+![firmware-selector.openwrt](/assets/img/start-openwrt/firmware-selector_openwrt.png)
 
 ## 总结
 
-这个项目前前后后忙了一个多月，有一半时间都在错误的方向上努力。实际上我并没有通过逆向拿到 dtb，自己编译的固件逆向能拿到 dtb，厂家给的拿不到。所有这个项目的 dtb 参数是自己写的。另一个花费时间很多的地方是 mtd。总是无法写
+这个项目前前后后忙了一个多月，有一半时间都在错误的方向上努力。实际上我并没有通过逆向拿到 dtb，自己编译的固件逆向能拿到 dtb，厂家给的拿不到。所有这个项目的 dtb 参数是自己写的。另一个花费时间很多的地方是 mtd。总是无法识别。还有 uboot 和内核之间可能也要做一些处理，比如是否压缩，添加像这样的一行 `$(Device/uimage-lzma-loader)`
 
 ### 绝望的开局——厂家的 SDK 有多坑
 
