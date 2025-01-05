@@ -7,6 +7,11 @@ author: Metal A-wing
 language: zh_CN
 timezone: 'Asia/Shanghai'
 
+post_asset_folder: true
+marked:
+  prependRoot: true
+  postAsset: true
+
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://a-wing.top
@@ -38,7 +43,7 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+#post_asset_folder: false
 relative_link: false
 future: true
   #highlight:
@@ -102,7 +107,8 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: minimalism
+#theme: minimalism
+theme: butterfly
 #theme: minima
 #theme: jekyll
 
