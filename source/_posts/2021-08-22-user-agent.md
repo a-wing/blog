@@ -1,13 +1,15 @@
 ---
-layout: post
 title: "科学的检测用户浏览器"
-author: "Metal A-wing"
 date: 2021-08-22 14:00:00 +0800
-image: "/assets/img/user-agent/browser-list.png"
+updated: 2021-08-22 14:00:00 +0800
+cover: "/assets/img/user-agent/browser-list.png"
 categories: browser
+tags:
+- linux
+- browser
 ---
 
-> 本篇文章已入选公司官方发布的技术文章，授权的很多地方转载
+> 本篇文章已入选 ShowMeBug 公司官方发布的技术文章，授权的很多地方转载
 >
 > 本文放在这里做个归档。（这才是真正的原稿）
 >

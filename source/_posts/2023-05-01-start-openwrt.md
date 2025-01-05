@@ -1,12 +1,13 @@
 ---
-layout: post
 title: "从零开始的 OpenWrt"
-author: "Metal A-wing"
+description: "OpenWrt 刷机系统定制"
 date: 2023-05-01 20:00:00 +0800
-toc: true
-image: "/assets/img/start-openwrt/img_2952.jpg"
-banner: "/assets/img/start-openwrt/img_2952.jpg"
+updated: 2023-05-08 20:00:00 +0800
+cover: "/assets/img/start-openwrt/img_2952.jpg"
 categories: linux
+tags:
+- linux
+- openwrt
 ---
 
 最近接了一个定制路由器的项目，应该算是彻底把 OpenWrt 给玩明白了

@@ -1,12 +1,18 @@
 ---
-layout: post
 title: "[译] Arch Linux 上的完整 Wayland 设置"
-author: "Metal A-wing"
+description: "本文是一份在 Arch Linux 上实现完整的 Wayland 设置的指南"
 date: 2022-01-03 16:00:00 +0800
-toc: true
-image: "/assets/img/translate_wayland/wofi.jpg"
-banner: "/assets/img/2021/changbaishan/img_3151.jpg"
+updated: 2022-01-03 16:00:00 +0800
+
+cover: "/assets/img/translate_wayland/wofi.jpg"
+top_img: "/assets/img/2021/changbaishan/img_3151.jpg"
+
 categories: linux
+tags:
+- linux
+- archlinux
+- wayland
+- translate
 ---
 
 本文是一份在 Arch Linux 上实现完整的 Wayland 设置的指南。

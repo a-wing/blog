@@ -1,12 +1,12 @@
 ---
-layout: post
 title: "如何使用 shell（1/3）—— shell 兼容和历史"
-author: "Metal A-wing"
 date: 2021-05-01 20:00:00 +0800
-toc: true
-image: "/assets/img/sh-compatibles-history/unix-shells-large.png"
-banner: "/assets/img/sh-compatibles-history/unix-shells-large.png"
+updated: 2021-05-01 20:00:00 +0800
+cover: "/assets/img/sh-compatibles-history/unix-shells-large.png"
 categories: shell
+tags:
+- linux
+- shell
 ---
 
 `shell` 的名字和概念是从 Unix 的前身 Multics 发展过来的。应用程序通过 shell 来进行调用并被系统执行。
