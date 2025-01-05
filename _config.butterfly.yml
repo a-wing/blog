@@ -524,7 +524,7 @@ comments:
   # Leave it empty if you don't need comments
   # Choose: Disqus/Disqusjs/Livere/Gitalk/Valine/Waline/Utterances/Facebook Comments/Twikoo/Giscus/Remark42/Artalk
   # Format of two comments system : Disqus,Waline
-  use:
+  use: Disqus
   # Display the comment name next to the button
   text: true
   # Lazyload: The comment system will be load when comment element enters the browser's viewport.
@@ -538,7 +538,7 @@ comments:
 # Disqus
 # https://disqus.com/
 disqus:
-  shortname:
+  shortname: a-wing-1
   # For newest comments widget
   apikey:
 
@@ -679,7 +679,7 @@ crisp:
 baidu_analytics:
 
 # https://analytics.google.com/analytics/web/
-google_analytics:
+google_analytics: UA-117419557-1
 
 # https://www.cloudflare.com/zh-tw/web-analytics/
 cloudflare_analytics:

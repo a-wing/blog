@@ -1,10 +1,10 @@
 # Site
 title: 'Hi! 上天不?'
-subtitle: ''
+subtitle: '新一的个人博客'
 description: '新一的个人博客'
 keywords:
 author: Metal A-wing
-language: zh_CN
+language: zh-CN
 timezone: 'Asia/Shanghai'
 
 post_asset_folder: true
@@ -107,12 +107,16 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-#theme: minimalism
 theme: butterfly
-#theme: minima
-#theme: jekyll
 
-  # Deployment
+feed:
+  enable: true
+  type:
+    - atom
+  path:
+    - feed.xml
+
+# Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ''
