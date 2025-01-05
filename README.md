@@ -7,24 +7,24 @@
 ## 安装
 
 ```bash
-bundle install
+npm install
 ```
 
 ## 新建
 
 ```bash
-./new.rb "New Blog"
+npx hexo new "New Blog"
 ```
 
 ## 预览
 
 ```bash
-bundle exec jekyll serve --watch
+npm run server
 ```
 
 ## 构建
 
 ```bash
-JEKYLL_ENV=production bundler exec jekyll build
+npm run build
 ```
 
