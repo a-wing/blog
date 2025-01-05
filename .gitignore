@@ -2,7 +2,13 @@ _site
 .sass-cache
 .jekyll-metadata
 vendor/
-node_modules/
 .jekyll-cache/
 .tweet-cache/
+
 .DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/

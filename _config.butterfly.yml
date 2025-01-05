@@ -14,13 +14,14 @@ nav:
   logo: /assets/avatar.png
   display_title: true
   # Whether to fix navigation bar
-  fixed: false
+  fixed: true
 
 menu:
-  # Home: / || fas fa-home
-  # List||fas fa-list:
-  #   Music: /music/ || fas fa-music
-  #   Movie: /movies/ || fas fa-video
+  首页酱: / || fas fa-home
+  陈列室: /projects/ || fas fa-square-check
+  装备篇: /equipment/ || fas fa-toolbox
+  后宫们: /links/ || fas fa-user-friends
+  关于我: /about/ || fas fa-circle-info
 
 # --------------------------------------
 # Code Blocks Settings
@@ -45,8 +46,9 @@ code_blocks:
 # Formal:
 #   icon: link || the description || color
 social:
-  # fab fa-github: https://github.com/xxxxx || Github || '#24292e'
-  # fas fa-envelope: mailto:xxxxxx@gmail.com || Email || '#4a7dbe'
+  fab fa-github: https://github.com/a-wing || Github || '#24292e'
+  fab fa-twitter: https://twitter.com/_a_wing || Twitter || '#359aff'
+  fas fa-envelope: mailto:1@233.email || Email || '#4a7dbe'
 
 # --------------------------------------
 # Image Settings
@@ -63,7 +65,7 @@ avatar:
 disable_top_img: false
 
 # If the banner of page not setting, it will show the default_top_img
-default_top_img: assets/img/2024/gudauri.jpg
+default_top_img: /assets/img/2024/gudauri.jpg
 
 # The banner image of index page
 index_img:
@@ -285,10 +287,10 @@ aside:
       enable: true
       icon: fab fa-github
       text: Follow Me
-      link: https://github.com/xxxxxx
+      link: https://github.com/a-wing
   card_announcement:
     enable: true
-    content: This is my Blog
+    content: 实在是忍不了了，重新换了博客风格
   card_recent_post:
     enable: true
     # If set 0 will show all
