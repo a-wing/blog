@@ -46,4 +46,5 @@ permalink: /links/
 * [是 Chaos Mesh 维护者 STRRL](https://strrl.dev/)
 * [~~伪代码~~ Pseudoyu](https://www.pseudoyu.com/)
 * [~~傻妞~~ 冰码妞](https://blog.icecode.xyz/)
+* [熊熊！熊熊！](https://cynosura.one/)
 
