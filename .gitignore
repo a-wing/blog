@@ -1,10 +1,3 @@
-_site
-.sass-cache
-.jekyll-metadata
-vendor/
-.jekyll-cache/
-.tweet-cache/
-
 .DS_Store
 Thumbs.db
 db.json
