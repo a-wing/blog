@@ -1,9 +1,11 @@
 ---
-layout: post
 title:  "DIY 多旋翼无人机基础"
-author: metal A-wing
 date:   2018-02-20 15:00:35 +0800
+updated:   2018-02-20 15:00:35 +0800
 categories: uav
+tags:
+- uav
+- diy
 ---
 
 作为无人机公司的工程师应该教说说玩无人机的事。核心的东西不能说，只能说点简单的、基础的。

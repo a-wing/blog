@@ -1,9 +1,10 @@
 ---
-layout: post
 title:  "Linux 下的一些骚操作"
-author: metal A-wing
 date:   2018-02-18 15:11:35 +0800
+updated:   2018-02-18 15:11:35 +0800
 categories: linux
+tags:
+- linux
 ---
 
 简单的东西觉得水，难的东西不会写。作为一个 ~~资深~~ linux用户，讲点使用linux的骚操作。没啥实际用途。。。不过可以拿来装逼，也可以提高linux使用效率

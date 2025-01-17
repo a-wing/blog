@@ -1,10 +1,12 @@
 ---
-layout: post
 title:  "细说 Debian 的网络管理 network/interfaces"
-author: metal A-wing
 date:   2019-04-01 16:00:00 +0800
-comments: true
+updated:   2019-04-01 16:00:00 +0800
 categories: linux
+tags:
+- linux
+- debian
+- systemd
 ---
 
 最近在修一个复杂的多网卡问题，产生的玄学问题，趁机把 interfaces 文档都读了一边

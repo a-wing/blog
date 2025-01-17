@@ -1,10 +1,11 @@
 ---
-layout: post
 title:  "从零开始的学游泳"
-author: metal A-wing
 date:   2020-11-07 18:00:00 +0800
-comments: true
+updated:   2020-11-07 18:00:00 +0800
 categories: sport
+tags:
+- sport
+- swimming
 ---
 
 这天我参加了我人生中第一场游泳比赛 100M 蛙泳和 100M 自由泳，分别取得了第三名和第五名的成绩（小型比赛缺席的人太多，我运气比较好）。本文就分享一下我从旱鸭子，从头开始学习游泳的过程：

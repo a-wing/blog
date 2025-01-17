@@ -1,10 +1,12 @@
 ---
-layout: post
 title:  "使用 OpenCV 来做单元测试"
-author: metal A-wing
 date:   2019-11-05 17:00:00 +0800
-comments: true
+updated:   2019-11-05 17:00:00 +0800
 categories: program
+tags:
+- linux
+- opencv
+- test
 ---
 
 最近一直都在搞图像传输，webrtc 可以检测网络状况来调整码率。为了探究图像传输中损失了多少数据，用 opencv 来计算输入视频流和输出视频流的相似性

@@ -1,10 +1,10 @@
 ---
-layout: post
 title:  "在 Arduino 里使用泛型"
-author: metal A-wing
 date:   2018-05-25 17:00:00 +0800
-comments: true
+updated:   2018-05-25 17:00:00 +0800
 categories: mcu
+tags:
+- mcu
 ---
 
 首先要知道 Arduino 自己的 `.ino` 的封装是不支持泛型的

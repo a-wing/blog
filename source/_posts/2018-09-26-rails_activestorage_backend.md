@@ -1,10 +1,11 @@
 ---
-layout: post
 title:  "一篇超水的 Rails ActiveStorage 源码解读（后端部分）"
-author: metal A-wing
 date:   2018-09-26 17:00:00 +0800
-comments: true
+updated:   2018-09-26 17:00:00 +0800
 categories: ruby
+tags:
+- ruby
+- rails
 ---
 
 ActiveStorage 是 Rails 5.2 的一个新特性 ，建议你先去读完官方的文档再回看来这个

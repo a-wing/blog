@@ -1,10 +1,13 @@
 ---
-layout: post
 title:  "Welcome to Jekyll! ——————————————历史的分割线"
-author: metal A-wing
 date:   2018-02-04 18:11:35 +0800
+updated:   2018-02-04 18:11:35 +0800
+noticeOutdate: false
 categories: log
+tags:
+- log
 ---
+
 新的一年把博客从WordPress迁移到jekyll，原来的文章有些格式有点混乱，有时间再修吧。。。。
 
 Linuxdeer 项目成功的太监了。。。。

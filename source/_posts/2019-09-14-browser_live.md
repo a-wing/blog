@@ -1,10 +1,12 @@
 ---
-layout: post
 title:  "浅谈浏览器实时流媒体"
-author: metal A-wing
 date:   2019-09-14 20:00:00 +0800
-comments: true
+updated:   2019-09-14 20:00:00 +0800
 categories: web
+tags:
+- web
+- media
+- webrtc
 ---
 
 我觉得应改把浏览器实时流媒体分成三层（传输，容器，编解码），这样更容易理解，不过他们并不能任意组合

@@ -1,14 +1,14 @@
 ---
-layout: post
 title:  "嘿 siri 把家里的门打开"
-author: metal A-wing
 date:   2019-03-15 17:00:00 +0800
-comments: true
+updated:   2019-03-15 17:00:00 +0800
+cover: "/assets/img/hey_siri_open_door/argus.webp"
 categories: diy
+tags:
+- diy
 ---
 
 ![argus_active](/assets/img/hey_siri_open_door/argus.webp)
-
 
 这东西本来是我上大学时写的一个项目，现在把他重构了一遍
 

@@ -1,10 +1,13 @@
 ---
-layout: post
 title:  "约定大于规则：优雅的在debian 上配置nginx 和 php-fpm"
-author: metal A-wing
 date:   2018-04-04 15:00:00 +0800
-comments: true
+updated:   2018-04-04 15:00:00 +0800
 categories: linux
+tags:
+- linux
+- debian
+- nginx
+- php
 ---
 
 本文只给对技术有追求的人看：少配置多用默认值。为什么要写这个，那天要查文档的时候看到文档都是一律编译安装的。。感觉好气愤。你们懂Linux吗？

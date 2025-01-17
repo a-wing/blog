@@ -1,11 +1,13 @@
 ---
-layout: post
 title:  "PingCAP 面试：Jenkins 和 Kubernetes"
-author: Metal A-wing
 date:   2021-01-27 17:00:00 +0800
-image: "/assets/img/jenkins_and_kubernetes/sticker_think.jpg"
-comments: true
+updated:   2021-01-27 17:00:00 +0800
+cover: "/assets/img/jenkins_and_kubernetes/sticker_think.jpg"
 categories: kubernetes
+tags:
+- linux
+- kubernetes
+- jenkins
 ---
 
 看我给你表演一个绝活，12 个小时之内完成

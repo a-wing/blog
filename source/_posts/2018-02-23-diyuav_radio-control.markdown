@@ -1,11 +1,12 @@
 ---
-layout: post
 title:  "DIY 无人机——遥控器篇"
-author: metal A-wing
 date:   2018-02-20 16:00:35 +0800
+updated:   2018-02-20 16:00:35 +0800
 categories: uav
+tags:
+- uav
+- diy
 ---
-
 
 常见的遥控器接收机输出信号的有PWM、PPM、SBUS
 

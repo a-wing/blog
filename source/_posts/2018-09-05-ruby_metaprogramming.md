@@ -1,10 +1,10 @@
 ---
-layout: post
 title:  "Ruby 元编程索引"
-author: metal A-wing
 date:   2018-09-05 17:00:00 +0800
-comments: true
+updated:   2018-09-05 17:00:00 +0800
 categories: ruby
+tags:
+- ruby
 ---
 
 大概会持续更新吧。。。。

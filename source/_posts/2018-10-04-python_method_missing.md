@@ -1,11 +1,12 @@
 ---
-layout: post
 title:  "在 Python 里使用 method_missing 方法"
-author: metal A-wing
 date:   2018-10-04 17:00:00 +0800
-comments: true
+updated:   2018-10-04 17:00:00 +0800
 categories: python
+tags:
+- python
 ---
+
 我不喜欢 python ，但又不得不写 python 。
 在 ruby 里 method_missing 我几乎天天用（
 

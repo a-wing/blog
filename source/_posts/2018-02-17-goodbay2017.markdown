@@ -1,9 +1,11 @@
 ---
-layout: post
 title:  "2017 的流水帐"
-author: metal A-wing
 date:   2018-02-17 20:11:35 +0800
+updated:   2018-02-17 20:11:35 +0800
+noticeOutdate: false
 categories: log
+tags:
+- log
 ---
 
 重度拖延症患者表示，应该在1月1日写的，拖到过年才写。。。

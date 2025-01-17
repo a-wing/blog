@@ -1,10 +1,13 @@
 ---
-layout: post
 title:  "自制旁路网关（一点一） ——增加clash订阅功能"
-author: metal A-wing
+series: "自制旁路网关"
 date:   2020-02-28 22:00:00 +0800
-comments: true
+updated:   2020-02-28 22:00:00 +0800
 categories: network
+tags:
+- linux
+- network
+- proxy
 ---
 
 说起来也惭愧，因为觉得自己维护线路太麻烦，所以买了机场的服务，不过要使用机场，肯定要配合订阅来一起食用

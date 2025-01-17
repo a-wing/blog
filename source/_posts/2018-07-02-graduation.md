@@ -1,10 +1,10 @@
 ---
-layout: post
 title:  "写在 2018 的毕业季"
-author: metal A-wing
 date:   2018-07-02 17:00:00 +0800
-comments: true
+updated:   2018-07-02 17:00:00 +0800
 categories: self
+tags:
+- self
 ---
 
 作为一个没毕业证。永远都毕不了业的人在这个季节满是心酸

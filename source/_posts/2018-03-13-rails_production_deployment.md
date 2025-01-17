@@ -1,10 +1,12 @@
 ---
-layout: post
 title:  "浅谈rails 项目自动部署"
-author: metal A-wing
 date:   2018-03-13 20:00:35 +0800
-comments: true
+updated:   2018-03-13 20:00:35 +0800
 categories: ruby
+tags:
+- linux
+- ruby
+- rails
 ---
 
 #### 一个项目从开发到上线。该记录点什么。

@@ -1,10 +1,13 @@
 ---
-layout: post
 title:  "自制旁路网关（二） ——用unbound和smartdns来优化dns服务"
-author: metal A-wing
+series: "自制旁路网关"
 date:   2020-03-01 22:00:00 +0800
-comments: true
+updated:   2020-03-01 22:00:00 +0800
 categories: network
+tags:
+- linux
+- network
+- proxy
 ---
 
 今天是三月一日，我应该昨天更新，因为昨天是四年一度的二月二十九日。错过了了个好日子 T_T 。不过没关系，今天还是一年一次的三月一号那（

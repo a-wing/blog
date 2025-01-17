@@ -1,10 +1,11 @@
 ---
-layout: post
 title:  "MacBook Pro 初体验感想"
-author: metal A-wing
 date:   2019-10-01 16:00:00 +0800
-comments: true
+updated:   2019-10-01 16:00:00 +0800
+cover: "/assets/img/macbookpro/mbp.jpg"
 categories: linux
+tags:
+- linux
 ---
 
 ![mbp](/assets/img/macbookpro/mbp.jpg)

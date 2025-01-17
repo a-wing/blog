@@ -1,10 +1,13 @@
 ---
-layout: post
 title:  "使用 systemd 来管理你的 rails 应用"
-author: metal A-wing
 date:   2018-09-11 07:00:00 +0800
-comments: true
+updated:   2018-09-11 07:00:00 +0800
 categories: ruby
+tags:
+- linux
+- systemd
+- ruby
+- rails
 ---
 
 这篇文章属于没什么卵用系列

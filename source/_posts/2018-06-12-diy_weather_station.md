@@ -1,10 +1,11 @@
 ---
-layout: post
 title:  "自制气象站"
-author: metal A-wing
 date:   2018-06-12 17:00:00 +0800
-comments: true
+updated:   2018-06-12 17:00:00 +0800
+cover: "/assets/img/weather_station/photo_2018-06-12_22-03-46.jpg"
 categories: diy
+tags:
+- diy
 ---
 
 最近来了个需求，要记录测量天气状况，来观测对无人机的影响

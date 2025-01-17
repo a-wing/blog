@@ -1,10 +1,13 @@
 ---
-layout: post
 title:  "自制旁路网关（一） ——使用clash做代理"
-author: metal A-wing
+series: "自制旁路网关"
 date:   2020-02-22 22:00:00 +0800
-comments: true
+updated:   2020-02-22 22:00:00 +0800
 categories: network
+tags:
+- linux
+- network
+- proxy
 ---
 
 由于武汉新冠肺炎（[COVID-19](https://zh.wikipedia.org/wiki/2019%E5%86%A0%E7%8A%B6%E7%97%85%E6%AF%92%E7%97%85)）的关系，我被困在老家，自从我买了 ac68u 之后基本上就再也没折腾过网。由于长期在家办公，需要好的网络，还好手里有树莓派，还有 nas。只能使用传统技能（时代变化还真实快，一觉醒来工具链全变了）

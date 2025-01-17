@@ -1,10 +1,13 @@
 ---
-layout: post
 title:  "自制旁路网关（三） ——nftables 来做透明代理"
-author: metal A-wing
+series: "自制旁路网关"
 date:   2020-03-07 12:00:00 +0800
-comments: true
+updated:   2020-03-07 12:00:00 +0800
 categories: network
+tags:
+- linux
+- network
+- proxy
 ---
 
 本以为这篇文章会写的很长，因为笔记上还有好多内容。不过博客不能是笔记，把最核心的地方用最简单的话提炼出来，尽可能让所有人能看懂才算是一篇好文章
