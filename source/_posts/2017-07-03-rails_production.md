@@ -1,14 +1,12 @@
 ---
-author: metal A-wing
-comments: true
+title: rails 部署
 date: 2017-07-03 08:28:00+00:00
-layout: post
-link: http://a-wing.top/rails_production/
-slug: rails_production
-title: rails部署
-wordpress_id: 115
-categories:
+updated: 2017-07-03 08:28:00+00:00
+categories: ruby
+tags:
+- linux
 - ruby
+- rails
 ---
 
 就是记几个容易忘的地方

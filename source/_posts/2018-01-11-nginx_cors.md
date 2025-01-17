@@ -1,14 +1,10 @@
 ---
-author: shiyongxin
-comments: true
+title: 关于 ajax 跨域调用 nginx
 date: 2018-01-11 11:07:57+00:00
-layout: post
-link: http://a-wing.top/%e5%85%b3%e4%ba%8eajax%e8%b7%a8%e5%9f%9f%e8%b0%83%e7%94%a8-nginx/
-slug: '%e5%85%b3%e4%ba%8eajax%e8%b7%a8%e5%9f%9f%e8%b0%83%e7%94%a8-nginx'
-title: 关于ajax跨域调用 nginx
-wordpress_id: 130
-categories:
-- 未分类
+updated: 2018-01-11 11:07:57+00:00
+categories: nginx
+tags:
+- nginx
 ---
 
 今天遇上了就解决一下

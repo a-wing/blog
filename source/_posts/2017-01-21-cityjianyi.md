@@ -1,14 +1,10 @@
 ---
-author: shiyongxin
-comments: true
-date: 2017-01-21 13:03:59+00:00
-layout: post
-link: http://a-wing.top/cityjianyi/
-slug: cityjianyi
 title: 关于同城购物我为什么不做了
-wordpress_id: 98
-categories:
-- 个人事业
+date: 2017-01-21 13:03:59+00:00
+updated: 2017-01-21 13:03:59+00:00
+categories: self
+tags:
+- self
 ---
 
 关于同城购物我为什么不做了

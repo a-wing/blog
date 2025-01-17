@@ -1,15 +1,11 @@
 ---
-author: shiyongxin
-comments: true
-date: 2016-03-02 04:01:26+00:00
-layout: post
-link: http://a-wing.top/%e8%a7%a3%e5%86%b3ruby-pg%e6%ad%bb%e6%b4%bb%e5%ae%89%e4%b8%8d%e4%b8%8a/
-slug: '%e8%a7%a3%e5%86%b3ruby-pg%e6%ad%bb%e6%b4%bb%e5%ae%89%e4%b8%8d%e4%b8%8a'
 title: 解决ruby pg死活安不上
-wordpress_id: 53
-categories:
+date: 2016-03-02 04:01:26+00:00
+updated: 2016-03-02 04:01:26+00:00
+categories: ruby
+tags:
+- linux
 - ruby
-- 环境
 ---
 
 问题如下

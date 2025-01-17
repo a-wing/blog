@@ -1,14 +1,11 @@
 ---
-author: shiyongxin
-comments: true
-date: 2016-02-08 14:38:23+00:00
-layout: post
-link: http://a-wing.top/archlinux%e5%ae%89%e8%a3%85%e7%ac%94%e8%ae%b0/
-slug: archlinux%e5%ae%89%e8%a3%85%e7%ac%94%e8%ae%b0
 title: archlinux安装笔记
-wordpress_id: 33
-categories:
-- Linux
+date: 2016-02-08 14:38:23+00:00
+updated: 2016-02-08 14:38:23+00:00
+categories: linux
+tags:
+- linux
+- archlinux
 ---
 
 设置网络

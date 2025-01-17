@@ -1,15 +1,11 @@
 ---
-author: shiyongxin
-comments: true
-date: 2016-03-02 03:55:30+00:00
-layout: post
-link: http://a-wing.top/rvm-ruby-version-manager%ef%bc%88%e8%9b%8b%e7%96%bc%e6%ad%bb%e4%ba%86ruby%e7%9a%84%e7%ab%9f%e7%89%88%e6%9c%ac%e4%b8%8d%e5%85%bc%e5%ae%b9%ef%bc%8d%ef%bc%bf%ef%bc%8d%ef%bd%9c%ef%bc%89/
-slug: rvm-ruby-version-manager%ef%bc%88%e8%9b%8b%e7%96%bc%e6%ad%bb%e4%ba%86ruby%e7%9a%84%e7%ab%9f%e7%89%88%e6%9c%ac%e4%b8%8d%e5%85%bc%e5%ae%b9%ef%bc%8d%ef%bc%bf%ef%bc%8d%ef%bd%9c%ef%bc%89
 title: 'RVM: Ruby Version Manager（蛋疼死了ruby的竟版本不兼容－＿－｜）'
-wordpress_id: 51
-categories:
+date: 2016-03-02 03:55:30+00:00
+updated: 2016-03-02 03:55:30+00:00
+categories: ruby
+tags:
+- linux
 - ruby
-- 环境
 ---
 
 安装RVM，软件源里没有

@@ -1,32 +1,17 @@
 ---
-author: shiyongxin
-comments: true
+title: Linux 常用软件
 date: 2017-05-24 01:18:45+00:00
-layout: post
-link: http://a-wing.top/linuxsoftware/
-slug: linuxsoftware
-title: Linux常用软件
-wordpress_id: 111
-categories:
-- Linux
-- Linux基础
+updated: 2017-07-03 08:28:00+00:00
+categories: linux
+tags:
+- linux
 ---
 
 # Linux常用软件
 
-
-
-
-
 ### 视频
 
-
-
-
-
 #### mplayer
-
-
 
 mplayer绝对是Linux下视频播放的王者
 他有两个图型前端基于gnome的gmplayer,和基于qt的smplayer

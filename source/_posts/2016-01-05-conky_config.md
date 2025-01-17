@@ -1,15 +1,10 @@
 ---
-author: shiyongxin
-comments: true
-date: 2016-01-05 03:13:46+00:00
-layout: post
-link: http://a-wing.top/conky-config/
-slug: conky-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e8%af%a6%e8%a7%a3
 title: conky 配置文件详解
-wordpress_id: 26
-categories:
-- Linux
-- Linux美化
+date: 2016-01-05 03:13:46+00:00
+updated: 2016-01-05 03:13:46+00:00
+categories: linux
+tags:
+- linux
 ---
 
 一个不错的conky配置文件
