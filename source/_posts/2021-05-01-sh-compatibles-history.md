@@ -1,5 +1,6 @@
 ---
 title: "如何使用 shell（1/3）—— shell 兼容和历史"
+series: "如何使用 shell"
 date: 2021-05-01 20:00:00 +0800
 updated: 2021-05-01 20:00:00 +0800
 cover: "/assets/img/sh-compatibles-history/unix-shells-large.png"
