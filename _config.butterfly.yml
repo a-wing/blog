@@ -18,6 +18,7 @@ nav:
 
 menu:
   首页酱: / || fas fa-home
+  每周报: /weekly/ || fas fa-newspaper
   陈列室: /projects/ || fas fa-square-check
   装备篇: /equipment/ || fas fa-toolbox
   后宫们: /links/ || fas fa-user-friends
