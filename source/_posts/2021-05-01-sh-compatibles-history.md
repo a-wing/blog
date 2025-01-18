@@ -194,9 +194,9 @@ KornShell 与 Bourne Shell 向后兼容，并受贝尔实验室用户的要求�
 - `Ctrl-k` 删除从光标至行尾的内容
 - `Ctrl-y` 粘贴已删除的文本（例如粘贴 `Ctrl-u` 所删除的内容）
 - `Alt-right`, `Alt-f`, `Ctrl-right` 向右移动一个词
-- `Alt-lift`, `Alt-b`, `Ctrl-lift` 向左移动一个词
+- `Alt-left`, `Alt-b`, `Ctrl-left` 向左移动一个词
 
-不过在 Apple 的设备里移动一个词只有 `Alt-right`, `Alt-lift` 是可以使用的
+不过在 Apple 的设备里移动一个词只有 `Alt-right`, `Alt-left` 是可以使用的
 
 我认为这里面用的最多的就是移动到 `Ctrl-a` （移动到行首，顺便加个 `sudo`）和 `Ctrl-e` （移动到行尾）
 
