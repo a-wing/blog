@@ -480,12 +480,6 @@ cargo new rust-hello
 
 对于每个平台我们都需要单独安装对应的 C 的工具链，更确切的说是，rust 目前自己没有 `ld`。rust 自己的编译器只能编译到 `.o` 文件，需要其他的 `ld` 来生成对应平台的 ELF
 
-### `rust-lld`
-
-rust 团队也意识到这个跨平台问题了，所以画了个饼。`rust-lld` ，rust 自己的 `ld` 工具，期望可以像 golang 一样在纯 rust 的情况直接交叉编译链接到对应的平台
-
-不过这个饼目前还不能吃，截止目前 2025.04 问题还是很多
-
 ### zig 和 rust
 
 rust 没法处理 `ld` 和 c 扩展的交叉编译问题，zig 有很好交叉编译工具链，集成 C 编译器
@@ -727,8 +721,6 @@ Error relocating ./rust-live777-gcc-gnu-elf: __register_atfork: symbol not found
 [ldd (Unix) - Wikipedia](https://en.wikipedia.org/wiki/Ldd_(Unix))
 
 [ldd 命令](https://aimuke.github.io/linux/2019/05/01/ldd/)
-
-[Faster linking times on nightly on Linux using `rust-lld` | Rust Blog](https://blog.rust-lang.org/2024/05/17/enabling-rust-lld-on-linux/)
 
 [记一次Rust静态编译](https://blog.xco.moe/posts/rust_build_musl/)
 
