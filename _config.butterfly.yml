@@ -265,7 +265,9 @@ footer:
     since: 2015
   custom_text:
   # Copyright of theme and framework
-  copyright: true
+  copyright:
+    enable: true
+    version: false
 
 # --------------------------------------
 # Aside Settings
@@ -509,7 +511,7 @@ share:
   # Share.js
   # https://github.com/overtrue/share.js
   sharejs:
-    sites: facebook,twitter,wechat,weibo,qq
+    sites: facebook,x,wechat,weibo,qq
 
   # AddToAny
   # https://www.addtoany.com/
@@ -970,11 +972,6 @@ pjax:
   exclude:
     # - /xxxxxx/
 
-# Inject the css and script (aplayer/meting)
-aplayerInject:
-  enable: false
-  per_page: true
-
 # Snackbar - Toast Notification
 # https://github.com/polonel/SnackBar
 # position: top-left / top-center / top-right / bottom-left / bottom-center / bottom-right
@@ -988,13 +985,6 @@ snackbar:
 # Instant.page
 # https://instant.page/
 instantpage: false
-
-# Pangu - Insert a space between Chinese character and English character
-# https://github.com/vinta/pangu.js
-pangu:
-  enable: false
-  # Specify the field to use pangu (site or post)
-  field: site
 
 # Lazyload
 # https://github.com/verlok/vanilla-lazyload
